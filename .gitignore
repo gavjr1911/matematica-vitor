@@ -1,0 +1,7 @@
+.venv/
+.DS_Store
+*.aiff
+_apptest.html
+# fotos do livro mantidas FORA do repo publico (privacidade/copyright)
+*.JPG
+*.jpg
