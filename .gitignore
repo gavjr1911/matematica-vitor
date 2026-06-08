@@ -5,3 +5,5 @@ _apptest.html
 # fotos do livro mantidas FORA do repo publico (privacidade/copyright)
 *.JPG
 *.jpg
+*.heic
+*.HEIC

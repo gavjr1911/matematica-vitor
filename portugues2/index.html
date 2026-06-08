@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>📚 Português Divertido do Vitor 📚</title>
+<style>
+  :root{
+    --rosa:#ff6b9d; --roxo:#a06cd5; --azul:#4d96ff; --verde:#6bcB77;
+    --amarelo:#ffd93d; --laranja:#ff924c; --vermelho:#ff5e5e; --ceu:#b8e3ff;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'Comic Sans MS','Baloo',"Trebuchet MS",sans-serif;
+    background:linear-gradient(160deg,#c5f0d8 0%,#d7e6ff 50%,#ffe0f0 100%);
+    color:#3a3a55; overflow-x:hidden; user-select:none;
+    min-height:100%; touch-action:manipulation;
+  }
+  #app{max-width:760px; margin:0 auto; padding:14px; min-height:100vh;}
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#fff; border-radius:22px; padding:8px 14px; margin-bottom:14px;
+    box-shadow:0 6px 0 rgba(0,0,0,.08);
+  }
+  .topbar .home-btn{
+    background:var(--azul); color:#fff; border:none; border-radius:16px;
+    font-size:22px; padding:8px 14px; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #2f6fd0;
+  }
+  .topbar .home-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #2f6fd0;}
+  .stars{font-size:24px; font-weight:bold; color:var(--laranja); display:flex; align-items:center; gap:6px;}
+  .stars .num{background:var(--amarelo); border-radius:14px; padding:2px 12px; box-shadow:0 3px 0 #d9a800;}
+
+  .hero{
+    text-align:center; background:#fff; border-radius:30px; padding:22px 18px;
+    box-shadow:0 8px 0 rgba(0,0,0,.08); margin-bottom:18px;
+  }
+  .hero h1{font-size:32px; margin:6px 0; color:var(--roxo); line-height:1.2;}
+  .hero p{font-size:18px; margin:4px 0; color:#666;}
+  .mascote{font-size:78px; display:inline-block; animation:flutua 2.5s ease-in-out infinite;}
+  @keyframes flutua{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-14px) rotate(3deg);}}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .card{
+    border:none; border-radius:26px; padding:16px 10px; cursor:pointer;
+    color:#fff; font-size:19px; font-weight:bold; text-align:center;
+    box-shadow:0 7px 0 rgba(0,0,0,.18); transition:transform .08s;
+    display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.15;
+  }
+  .card:active{transform:translateY(4px); box-shadow:0 3px 0 rgba(0,0,0,.18);}
+  .card .ico{font-size:46px;}
+  .c1{background:var(--rosa);} .c2{background:var(--azul);} .c3{background:var(--verde);}
+  .c4{background:var(--laranja);} .c5{background:var(--roxo);} .c6{background:var(--vermelho);}
+  .c7{background:#19c3b1;} .c8{background:#f76eb0;} .c9{background:#7c83ff;}
+
+  .game{
+    background:#fff; border-radius:30px; padding:18px; box-shadow:0 8px 0 rgba(0,0,0,.08);
+    text-align:center;
+  }
+  .game-title{font-size:24px; color:var(--roxo); margin:0 0 4px;}
+  .progress{font-size:16px; color:#999; margin-bottom:10px;}
+  .question{
+    font-size:23px; font-weight:bold; color:#3a3a55; margin:6px 0 14px; line-height:1.3;
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  }
+  .speak-btn{
+    background:var(--amarelo); border:none; border-radius:50%; width:54px; height:54px;
+    font-size:28px; cursor:pointer; box-shadow:0 4px 0 #d9a800; flex:0 0 auto;
+  }
+  .speak-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #d9a800;}
+  .speak-btn.playing{animation:pulse .7s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .stage{
+    min-height:120px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:10px; margin:10px auto 18px; padding:16px;
+    background:linear-gradient(160deg,#f0fff6,#eef5ff); border-radius:22px; border:4px dashed #cdeedd;
+  }
+  .obj{font-size:50px; animation:pop .35s ease;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+
+  /* ilustrações SVG */
+  .illo{display:inline-block; flex:0 0 auto; line-height:0; vertical-align:middle; animation:pop .4s ease;}
+  .illo svg{display:block; width:100%; height:100%;}
+
+  /* palavra em quadradinhos de letras */
+  .wordtiles{display:flex; gap:6px; flex-wrap:wrap; justify-content:center;}
+  .lettile{
+    width:46px; height:54px; border:3px solid #a06cd5; border-radius:10px; background:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:bold; color:#3a3a55;
+  }
+  .lettile.hl{background:#fff3b0; border-color:#ff924c; color:#e0651b;}
+  .lettile.miss{background:#ffe3ec; border-color:#ff5e5e; color:#ff5e5e; font-size:34px;}
+
+  /* montar sílabas */
+  .slots{display:flex; gap:8px; justify-content:center; margin-top:10px;}
+  .slot{
+    min-width:64px; height:58px; border:3px dashed #4d96ff; border-radius:12px; background:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:bold; color:#2f6fd0; padding:0 8px;
+  }
+  .slot.filled{border-style:solid; background:#e7f1ff;}
+  .tile{
+    border:none; border-radius:14px; padding:14px 18px; font-size:26px; font-weight:bold;
+    background:var(--verde); color:#fff; box-shadow:0 5px 0 #3f9c4f; cursor:pointer; margin:5px;
+  }
+  .tile:active{transform:translateY(3px); box-shadow:0 2px 0 #3f9c4f;}
+  .tile.used{opacity:.25; pointer-events:none;}
+  .tile.shake{animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+
+  .options{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
+  .opt{
+    border:none; border-radius:22px; padding:14px 8px; font-size:24px; font-weight:bold;
+    cursor:pointer; background:var(--azul); color:#fff; box-shadow:0 6px 0 #2f6fd0;
+    min-height:74px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    word-break:break-word; line-height:1.15;
+  }
+  .opt .cap{font-size:18px;}
+  .opt-colors .opt{font-size:20px;}
+  .opt:active{transform:translateY(3px); box-shadow:0 3px 0 #2f6fd0;}
+  .opt.big{font-size:54px;}
+  .opt.ok{background:var(--verde)!important; box-shadow:0 6px 0 #3f9c4f!important; animation:tada .5s;}
+  .opt.no{background:#cfcfe0!important; box-shadow:0 6px 0 #a0a0c0!important; opacity:.7;}
+  @keyframes tada{0%{transform:scale(1);}30%{transform:scale(1.18) rotate(-4deg);}60%{transform:scale(1.1) rotate(4deg);}100%{transform:scale(1);}}
+
+  .opt-colors .opt:nth-child(1){background:var(--rosa); box-shadow:0 6px 0 #d44d7c;}
+  .opt-colors .opt:nth-child(2){background:var(--verde); box-shadow:0 6px 0 #3f9c4f;}
+  .opt-colors .opt:nth-child(3){background:var(--laranja); box-shadow:0 6px 0 #d96d2e;}
+  .opt-colors .opt:nth-child(4){background:var(--roxo); box-shadow:0 6px 0 #7a4db0;}
+
+  /* cartão de convite / bilhete */
+  .paper{
+    background:#fffdf5; border-radius:18px; padding:16px 18px; text-align:left;
+    box-shadow:0 5px 0 rgba(0,0,0,.12); max-width:420px; margin:0 auto; line-height:1.5;
+    font-size:18px; border:3px solid #ffe1b0; position:relative;
+  }
+  .paper .ttl{font-size:20px; font-weight:bold; color:var(--rosa); margin-bottom:8px; text-align:center; padding:0 34px;}
+  .paper .row{display:flex; gap:8px; margin:3px 0;}
+  .paper .row b{color:var(--roxo);}
+  .paper.note{border-color:#cfe3ff; background:#f7fbff;}
+  .paper .deco{position:absolute; top:-16px; right:-6px; width:50px; height:50px; line-height:0;}
+  .paper .sign{text-align:right; font-style:italic; margin-top:8px; color:#666;}
+
+  .feedback{font-size:26px; font-weight:bold; min-height:40px; margin-top:12px;}
+  .feedback.good{color:var(--verde);} .feedback.bad{color:var(--laranja);}
+
+  .next-btn{
+    margin-top:14px; background:var(--verde); color:#fff; border:none; border-radius:22px;
+    font-size:24px; font-weight:bold; padding:14px 34px; cursor:pointer; box-shadow:0 6px 0 #3f9c4f;
+  }
+  .next-btn:active{transform:translateY(3px); box-shadow:0 3px 0 #3f9c4f;}
+
+  #splash{
+    position:fixed; inset:0; background:linear-gradient(160deg,var(--roxo),var(--azul));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; text-align:center; z-index:50; cursor:pointer; padding:20px;
+  }
+  #splash h1{font-size:34px; margin:10px;}
+  #splash .big{font-size:100px; animation:flutua 2.5s infinite;}
+  #splash .play{
+    margin-top:24px; background:var(--amarelo); color:#5a4500; border:none; border-radius:30px;
+    font-size:30px; font-weight:bold; padding:18px 44px; box-shadow:0 8px 0 #d9a800; cursor:pointer;
+  }
+
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:40;}
+  .win{text-align:center; padding:20px;}
+  .win .trophy{font-size:90px; animation:tada 1s;}
+
+  @media(max-width:480px){
+    .hero h1{font-size:26px;} .question{font-size:20px;} .card{font-size:17px;}
+    .lettile{width:38px; height:46px; font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="big">🦉</div>
+  <h1>Português Divertido<br>do Vitor!</h1>
+  <p style="font-size:20px;max-width:320px;">Vamos brincar com as letras e as palavras pra prova! 🎉<br>Toque no botão para começar.</p>
+  <button class="play" id="startBtn">▶ COMEÇAR</button>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   PORTUGUÊS DIVERTIDO DO VITOR — 1º ano (livro Bernoulli, Cap. 2 e 3)
+   Módulo 2 do projeto. Mesma estrutura do app de matemática:
+   - narração por arquivos pré-gravados (pasta /audio) -> funciona
+     em qualquer aparelho, online ou offline;
+   - ilustrações vetoriais SVG (não emojis) embutidas no arquivo;
+   - estrelas, confete, sons de efeito; tudo jogável sozinho.
+   Conteúdos: letra/sílaba/palavra, rima, P e B, convite,
+   bilhete e legenda de fotos.
+   ============================================================ */
+
+/* ===== ILUSTRAÇÕES SVG (injetadas) ===== */
+function art_bola(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g_bola" cx="38%" cy="32%" r="75%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8dde3"/></radialGradient></defs><circle cx="50" cy="50" r="42" fill="url(#g_bola)" stroke="#2b2b2b" stroke-width="3"/><polygon points="50,32 62,41 57,55 43,55 38,41" fill="#222"/><polygon points="50,32 38,41 28,33 38,22 50,24" fill="#fff" stroke="#bcc2c8" stroke-width="1"/><polygon points="50,32 62,41 72,33 62,22 50,24" fill="#fff" stroke="#bcc2c8" stroke-width="1"/><polygon points="43,55 57,55 60,68 50,74 40,68" fill="#fff" stroke="#bcc2c8" stroke-width="1"/><polygon points="38,41 43,55 40,68 27,64 26,49" fill="#fff" stroke="#bcc2c8" stroke-width="1"/><polygon points="62,41 57,55 60,68 73,64 74,49" fill="#fff" stroke="#bcc2c8" stroke-width="1"/><path d="M50 32 L38 41 M50 32 L62 41 M43 55 L38 41 M57 55 L62 41 M43 55 L40 68 M57 55 L60 68" stroke="#222" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="38" cy="30" rx="9" ry="5" fill="#ffffff" opacity="0.55"/></svg>';}
+function art_bolo(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_bolo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd34e"/><stop offset="100%" stop-color="#f6b73c"/></linearGradient></defs><ellipse cx="50" cy="86" rx="36" ry="6" fill="#000" opacity="0.12"/><rect x="20" y="52" width="60" height="32" rx="6" fill="url(#g_bolo)" stroke="#e09a2e" stroke-width="2"/><path d="M20 56 q8 8 15 0 q8 8 15 0 q8 8 15 0 q7 8 15 0 v8 q-8 8 -15 0 q-8 8 -15 0 q-8 8 -15 0 q-8 8 -15 0 z" fill="#ff7bac" stroke="#e85f93" stroke-width="1.5"/><circle cx="32" cy="62" r="2.4" fill="#5ad1e6"/><circle cx="48" cy="64" r="2.4" fill="#8be65a"/><circle cx="64" cy="62" r="2.4" fill="#b07bff"/><circle cx="72" cy="65" r="2.4" fill="#ffd34e"/><rect x="46" y="32" width="8" height="20" rx="2" fill="#ff5a6e"/><rect x="46" y="32" width="8" height="20" rx="2" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4" opacity="0.7"/><line x1="50" y1="32" x2="50" y2="24" stroke="#7a5a2e" stroke-width="2"/><path d="M50 14 q-6 5 0 10 q6 -5 0 -10z" fill="#ffb43c"/><path d="M50 16 q-3 3 0 6 q3 -3 0 -6z" fill="#ff7a2e"/></svg>';}
+function art_banana(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_banana" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff06b"/><stop offset="100%" stop-color="#f4c724"/></linearGradient></defs><ellipse cx="52" cy="84" rx="34" ry="6" fill="#000" opacity="0.12"/><path d="M22 32 q-4 30 18 44 q26 16 44 -2 q-6 6 -18 4 q-26 -4 -36 -28 q-5 -12 -3 -18z" fill="url(#g_banana)" stroke="#d9a91a" stroke-width="2.5"/><path d="M22 32 q-3 -6 2 -8 q3 6 1 10z" fill="#7a5a2e"/><path d="M84 78 q5 2 3 7 q-5 -1 -6 -5z" fill="#6e5326"/><path d="M30 40 q6 26 30 36" stroke="#fff6b0" stroke-width="3" fill="none" opacity="0.6" stroke-linecap="round"/><path d="M40 26 q-2 26 18 40 q22 14 38 0 q-6 4 -16 2 q-22 -5 -32 -26 q-6 -11 -8 -16z" fill="#ffe24d" stroke="#e0b41e" stroke-width="2" opacity="0.95"/></svg>';}
+function art_bicicleta(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="88" rx="40" ry="5" fill="#000" opacity="0.12"/><circle cx="26" cy="64" r="18" fill="none" stroke="#333" stroke-width="4"/><circle cx="26" cy="64" r="3" fill="#666"/><circle cx="74" cy="64" r="18" fill="none" stroke="#333" stroke-width="4"/><circle cx="74" cy="64" r="3" fill="#666"/><path d="M26 64 L46 64 L58 40 L70 64 M46 64 L60 40 L58 40 M58 40 L74 64" fill="none" stroke="#ff5a3c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><line x1="46" y1="64" x2="58" y2="40" stroke="#ff5a3c" stroke-width="4" stroke-linecap="round"/><path d="M58 40 L52 28 L46 28" fill="none" stroke="#2c6fd6" stroke-width="4" stroke-linecap="round"/><line x1="44" y1="26" x2="50" y2="30" stroke="#333" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="38" x2="68" y2="34" stroke="#2c6fd6" stroke-width="4" stroke-linecap="round"/><rect x="66" y="31" width="10" height="5" rx="2.5" fill="#7a4a1c"/><circle cx="46" cy="64" r="4" fill="#444"/><line x1="46" y1="64" x2="40" y2="70" stroke="#444" stroke-width="3" stroke-linecap="round"/></svg>';}
+function art_balanco(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="90" rx="34" ry="5" fill="#000" opacity="0.12"/><line x1="14" y1="88" x2="30" y2="20" stroke="#c0703a" stroke-width="5" stroke-linecap="round"/><line x1="86" y1="88" x2="70" y2="20" stroke="#c0703a" stroke-width="5" stroke-linecap="round"/><rect x="22" y="16" width="56" height="7" rx="3.5" fill="#e08a3c" stroke="#b86c28" stroke-width="1.5"/><line x1="38" y1="22" x2="38" y2="62" stroke="#7a7a7a" stroke-width="2.5"/><line x1="62" y1="22" x2="62" y2="62" stroke="#7a7a7a" stroke-width="2.5"/><rect x="30" y="62" width="40" height="9" rx="4" fill="#ffb43c" stroke="#e0902a" stroke-width="2"/><circle cx="38" cy="22" r="2.5" fill="#5a5a5a"/><circle cx="62" cy="22" r="2.5" fill="#5a5a5a"/></svg>';}
+function art_boneca(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_boneca" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff9ec4"/><stop offset="100%" stop-color="#ff7bac"/></linearGradient></defs><ellipse cx="50" cy="90" rx="28" ry="5" fill="#000" opacity="0.12"/><path d="M24 30 q26 -16 52 0 q4 12 -8 16 q-18 8 -36 0 q-12 -4 -8 -16z" fill="#7a4a2c"/><circle cx="50" cy="38" r="20" fill="#ffe0c4" stroke="#e8b48c" stroke-width="2"/><path d="M30 34 q20 -18 40 0 q-4 -16 -20 -16 q-16 0 -20 16z" fill="#7a4a2c"/><circle cx="42" cy="38" r="3" fill="#3a2a1a"/><circle cx="58" cy="38" r="3" fill="#3a2a1a"/><circle cx="43" cy="37" r="1" fill="#fff"/><circle cx="59" cy="37" r="1" fill="#fff"/><circle cx="36" cy="44" r="3" fill="#ff9ec4" opacity="0.7"/><circle cx="64" cy="44" r="3" fill="#ff9ec4" opacity="0.7"/><path d="M44 46 q6 5 12 0" stroke="#c0506a" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M34 58 q16 -6 32 0 l6 26 q-22 8 -44 0 z" fill="url(#g_boneca)" stroke="#e85f93" stroke-width="2"/><circle cx="50" cy="70" r="3" fill="#fff"/><circle cx="50" cy="80" r="3" fill="#fff"/><path d="M34 60 q-8 6 -6 18 M66 60 q8 6 6 18" stroke="#ffe0c4" stroke-width="5" fill="none" stroke-linecap="round"/></svg>';}
+function art_bota(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_bota" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff7b54"/><stop offset="100%" stop-color="#e0512c"/></linearGradient></defs><ellipse cx="52" cy="86" rx="34" ry="5" fill="#000" opacity="0.12"/><path d="M34 18 q-2 30 -2 42 q-12 4 -14 14 q-1 8 8 9 l40 0 q8 0 8 -7 q0 -12 -16 -16 q-8 -2 -8 -10 l0 -32 z" fill="#ff7b54" stroke="#d44a26" stroke-width="2.5"/><path d="M34 22 l16 0 l0 30 q0 8 8 10 q16 4 16 16" fill="none" stroke="#ffb39c" stroke-width="2" opacity="0.6"/><rect x="32" y="74" width="46" height="9" rx="4" fill="#5a3a2a"/><path d="M34 18 q8 -6 16 0 l0 6 l-16 0 z" fill="#ffd2c4"/><path d="M30 78 q24 6 48 0" stroke="#3a2418" stroke-width="2" fill="none" opacity="0.4"/></svg>';}
+function art_barco(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_barcoagua" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7fd6f5"/><stop offset="100%" stop-color="#3ba7e0"/></linearGradient></defs><rect x="6" y="70" width="88" height="24" rx="6" fill="url(#g_barcoagua)"/><path d="M6 74 q10 -5 20 0 q10 5 20 0 q10 -5 20 0 q10 5 20 0 q4 0 8 -2" stroke="#bfeaff" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="50" y1="20" x2="50" y2="66" stroke="#7a4a1c" stroke-width="3" stroke-linecap="round"/><path d="M50 22 L78 56 L50 56 z" fill="#ff5a6e" stroke="#d84358" stroke-width="2"/><path d="M50 26 L24 56 L50 56 z" fill="#ffd34e" stroke="#e0a82a" stroke-width="2"/><path d="M22 66 q28 12 56 0 l-6 12 q-22 6 -44 0 z" fill="#ff8c3c" stroke="#d96a22" stroke-width="2.5"/><circle cx="50" cy="18" r="3" fill="#ff5a6e"/></svg>';}
+function art_balao(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="g_balao" cx="38%" cy="30%" r="75%"><stop offset="0%" stop-color="#ff9eb0"/><stop offset="55%" stop-color="#ff4d6d"/><stop offset="100%" stop-color="#d62f50"/></radialGradient></defs><path d="M50 70 q-2 8 -1 16 q2 4 -2 8" stroke="#888" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M50 30 q22 0 22 24 q0 22 -22 24 q-22 -2 -22 -24 q0 -24 22 -24z" fill="url(#g_balao)" stroke="#c42a48" stroke-width="1.5"/><polygon points="50,76 45,82 55,82" fill="#ff4d6d"/><ellipse cx="42" cy="42" rx="6" ry="9" fill="#fff" opacity="0.45"/><path d="M50 30 q-6 26 0 48" stroke="#ffd0d8" stroke-width="1.5" fill="none" opacity="0.5"/></svg>';}
+function art_borboleta(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_borb1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff8ad4"/><stop offset="100%" stop-color="#c44bff"/></linearGradient><linearGradient id="g_borb2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5ad1ff"/><stop offset="100%" stop-color="#3a8aff"/></linearGradient></defs><ellipse cx="50" cy="62" rx="36" ry="5" fill="#000" opacity="0.1"/><path d="M50 50 q-26 -32 -40 -10 q-8 14 8 22 q20 8 32 -2z" fill="url(#g_borb1)" stroke="#a23ad0" stroke-width="2"/><path d="M50 50 q26 -32 40 -10 q8 14 -8 22 q-20 8 -32 -2z" fill="url(#g_borb1)" stroke="#a23ad0" stroke-width="2"/><path d="M50 50 q-22 18 -30 6 q-4 -8 6 -12 q14 -4 24 6z" fill="url(#g_borb2)" stroke="#2c6fd6" stroke-width="2"/><path d="M50 50 q22 18 30 6 q4 -8 -6 -12 q-14 -4 -24 6z" fill="url(#g_borb2)" stroke="#2c6fd6" stroke-width="2"/><circle cx="24" cy="34" r="5" fill="#fff" opacity="0.7"/><circle cx="76" cy="34" r="5" fill="#fff" opacity="0.7"/><circle cx="30" cy="50" r="3" fill="#ffe24d"/><circle cx="70" cy="50" r="3" fill="#ffe24d"/><rect x="47" y="38" width="6" height="34" rx="3" fill="#4a2a5a"/><circle cx="50" cy="38" r="5" fill="#4a2a5a"/><path d="M48 35 q-6 -8 -10 -10 M52 35 q6 -8 10 -10" stroke="#4a2a5a" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="38" cy="25" r="2" fill="#4a2a5a"/><circle cx="62" cy="25" r="2" fill="#4a2a5a"/></svg>';}
+function art_cao(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_cao" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8a85c"/><stop offset="100%" stop-color="#cf8a3e"/></linearGradient></defs><ellipse cx="50" cy="90" rx="28" ry="5" fill="#000" opacity="0.12"/><path d="M22 38 q-6 -16 4 -20 q12 -4 12 12z" fill="#a9692c" stroke="#8a531f" stroke-width="2"/><path d="M78 38 q6 -16 -4 -20 q-12 -4 -12 12z" fill="#a9692c" stroke="#8a531f" stroke-width="2"/><circle cx="50" cy="52" r="30" fill="url(#g_cao)" stroke="#b87a30" stroke-width="2.5"/><ellipse cx="50" cy="64" rx="20" ry="16" fill="#fbe6c4"/><circle cx="40" cy="48" r="4.5" fill="#3a2a1a"/><circle cx="60" cy="48" r="4.5" fill="#3a2a1a"/><circle cx="41.5" cy="46.5" r="1.5" fill="#fff"/><circle cx="61.5" cy="46.5" r="1.5" fill="#fff"/><ellipse cx="50" cy="60" rx="6" ry="4.5" fill="#3a2418"/><circle cx="48" cy="58.5" r="1.5" fill="#fff" opacity="0.7"/><path d="M50 64 q0 6 -6 7 M50 64 q0 6 6 7" stroke="#5a3a22" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M44 71 q6 4 12 0" stroke="#5a3a22" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="32" cy="60" r="4" fill="#ff9ec4" opacity="0.55"/><circle cx="68" cy="60" r="4" fill="#ff9ec4" opacity="0.55"/></svg>';}
+function art_sacola(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_sacola" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff6f91"/><stop offset="100%" stop-color="#e84d72"/></linearGradient></defs><ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity="0.12"/><path d="M36 34 q0 -16 14 -16 q14 0 14 16" fill="none" stroke="#7a4a8c" stroke-width="4" stroke-linecap="round"/><path d="M22 34 l56 0 l-5 52 q-1 4 -5 4 l-36 0 q-4 0 -5 -4 z" fill="url(#g_sacola)" stroke="#c43a5c" stroke-width="2.5"/><rect x="22" y="34" width="56" height="10" rx="2" fill="#ff8aa6"/><path d="M40 50 l0 -10 M60 50 l0 -10" stroke="#fff" stroke-width="3" opacity="0.6" stroke-linecap="round"/><path d="M30 60 l40 0 M30 70 l40 0" stroke="#fff" stroke-width="2" opacity="0.35"/><circle cx="50" cy="64" r="9" fill="#ffd34e" stroke="#e0a82a" stroke-width="1.5"/><path d="M46 64 l3 3 l6 -7" stroke="#7a4a1c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+function art_pao(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_pao" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4c64a"/><stop offset="1" stop-color="#d99524"/></linearGradient></defs><ellipse cx="50" cy="62" rx="42" ry="22" fill="#8a4f17" opacity="0.25"/><path d="M14 60 Q12 40 30 36 Q50 30 70 36 Q88 40 86 60 Q86 72 50 74 Q14 72 14 60 Z" fill="url(#g_pao)" stroke="#b9781f" stroke-width="2"/><path d="M30 40 L36 56" stroke="#fff3d0" stroke-width="3" stroke-linecap="round" opacity="0.8"/><path d="M44 36 L48 56" stroke="#fff3d0" stroke-width="3" stroke-linecap="round" opacity="0.8"/><path d="M58 38 L60 56" stroke="#fff3d0" stroke-width="3" stroke-linecap="round" opacity="0.8"/><path d="M70 42 L70 56" stroke="#fff3d0" stroke-width="3" stroke-linecap="round" opacity="0.8"/><ellipse cx="50" cy="50" rx="40" ry="20" fill="none" stroke="#a86518" stroke-width="1" opacity="0.4"/></svg>';}
+function art_peteca(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="88" rx="24" ry="6" fill="#000" opacity="0.12"/><polygon points="50,60 30,18 38,55" fill="#ff5a7a"/><polygon points="50,60 42,14 50,55" fill="#ffd23f"/><polygon points="50,60 58,16 52,55" fill="#3ddc97"/><polygon points="50,60 70,20 62,55" fill="#4aa3ff"/><polygon points="50,60 80,30 64,57" fill="#b06bff"/><polygon points="50,60 20,30 36,57" fill="#ff944d"/><ellipse cx="50" cy="72" rx="18" ry="13" fill="#f2c94c" stroke="#c98a1e" stroke-width="2"/><ellipse cx="50" cy="78" rx="13" ry="6" fill="#a85f1f"/><ellipse cx="46" cy="68" rx="4" ry="3" fill="#fff" opacity="0.6"/></svg>';}
+function art_pipa(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><path d="M50 56 Q60 70 56 84 Q64 80 66 88 Q56 92 50 84 Q44 92 34 88 Q36 80 44 84 Q40 70 50 56 Z" fill="#ff5a7a"/><circle cx="56" cy="80" r="3" fill="#4aa3ff"/><circle cx="44" cy="86" r="3" fill="#ffd23f"/><circle cx="50" cy="90" r="3" fill="#3ddc97"/><polygon points="50,10 86,46 50,58 14,46" fill="#4aa3ff" stroke="#1f5fa6" stroke-width="2"/><polygon points="50,10 50,58 14,46" fill="#3ddc97"/><polygon points="50,10 86,46 50,58" fill="#ffd23f"/><line x1="50" y1="10" x2="50" y2="58" stroke="#1f5fa6" stroke-width="1.5"/><line x1="14" y1="46" x2="86" y2="46" stroke="#1f5fa6" stroke-width="1.5"/></svg>';}
+function art_patinete(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="78" r="13" fill="#2b2b2b"/><circle cx="24" cy="78" r="5" fill="#bdbdbd"/><circle cx="80" cy="78" r="13" fill="#2b2b2b"/><circle cx="80" cy="78" r="5" fill="#bdbdbd"/><path d="M24 78 L70 60" stroke="#ff5a7a" stroke-width="7" stroke-linecap="round"/><rect x="14" y="56" width="22" height="7" rx="3" fill="#3ddc97"/><line x1="70" y1="60" x2="74" y2="22" stroke="#4aa3ff" stroke-width="6" stroke-linecap="round"/><line x1="58" y1="20" x2="88" y2="20" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round"/><circle cx="74" cy="20" r="4" fill="#ffd23f"/></svg>';}
+function art_pato(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity="0.1"/><ellipse cx="52" cy="64" rx="30" ry="24" fill="#ffd23f"/><path d="M70 58 Q88 56 86 72 Q80 78 70 72 Z" fill="#ffd23f"/><circle cx="34" cy="40" r="20" fill="#ffe14d"/><circle cx="28" cy="36" r="4.5" fill="#2b2b2b"/><circle cx="29.5" cy="34.5" r="1.6" fill="#fff"/><path d="M14 40 Q4 38 6 44 Q4 50 16 48 Z" fill="#ff944d"/><path d="M12 41 Q8 41 8 44 L14 44 Z" fill="#e07a2e"/><ellipse cx="50" cy="56" rx="6" ry="4" fill="#ffb84d" opacity="0.5"/></svg>';}
+function art_panela(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><ellipse cx="48" cy="88" rx="34" ry="5" fill="#000" opacity="0.12"/><rect x="18" y="44" width="60" height="40" rx="8" fill="#4a5560"/><ellipse cx="48" cy="46" rx="30" ry="8" fill="#6b7884"/><ellipse cx="48" cy="46" rx="24" ry="6" fill="#2f3942"/><rect x="76" y="50" width="20" height="7" rx="3.5" fill="#7a4a2a"/><circle cx="96" cy="53" r="4" fill="#5c3518"/><rect x="34" y="30" width="28" height="6" rx="3" fill="#8a99a6"/><circle cx="48" cy="28" r="4" fill="#c0ccd6"/><path d="M40 22 Q44 14 40 10" stroke="#cfd8e0" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/><path d="M52 24 Q56 16 52 12" stroke="#cfd8e0" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/></svg>';}
+function art_pipoca(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><g fill="#fff8e7" stroke="#f0d9a8" stroke-width="1"><circle cx="34" cy="22" r="7"/><circle cx="40" cy="16" r="6"/><circle cx="30" cy="16" r="5"/><circle cx="64" cy="20" r="7"/><circle cx="70" cy="15" r="5"/><circle cx="58" cy="15" r="5"/><circle cx="50" cy="30" r="8"/><circle cx="56" cy="24" r="6"/><circle cx="44" cy="24" r="6"/></g><path d="M24 38 L76 38 L70 90 L30 90 Z" fill="#fff"/><path d="M24 38 L76 38 L74 50 L26 50 Z" fill="#e8442e"/><g fill="#e8442e"><rect x="32" y="50" width="7" height="40"/><rect x="46" y="50" width="7" height="40"/><rect x="60" y="50" width="7" height="40"/></g><circle cx="44" cy="44" r="5" fill="#fff8e7" stroke="#f0d9a8"/><circle cx="58" cy="44" r="5" fill="#fff8e7" stroke="#f0d9a8"/></svg>';}
+function art_pera(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_pera" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a4d83c"/><stop offset="1" stop-color="#6fae1c"/></linearGradient></defs><ellipse cx="50" cy="90" rx="22" ry="5" fill="#000" opacity="0.1"/><path d="M50 22 Q60 22 58 38 Q72 46 72 64 Q72 88 50 88 Q28 88 28 64 Q28 46 42 38 Q40 22 50 22 Z" fill="url(#g_pera)" stroke="#5c930f" stroke-width="1.5"/><path d="M50 18 Q54 8 60 8" stroke="#7a4a2a" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M52 16 Q66 12 70 22 Q58 24 52 16 Z" fill="#3ddc97" stroke="#2aa874" stroke-width="1"/><ellipse cx="40" cy="58" rx="7" ry="14" fill="#fff" opacity="0.25"/></svg>';}
+function art_peixe(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_peixe" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff944d"/><stop offset="1" stop-color="#ff5a7a"/></linearGradient></defs><polygon points="78,50 96,34 96,66" fill="#4aa3ff"/><polygon points="78,50 92,50 96,34" fill="#73bbff"/><ellipse cx="44" cy="50" rx="36" ry="24" fill="url(#g_peixe)" stroke="#e0633a" stroke-width="1.5"/><path d="M44 26 Q54 34 60 30 Q56 38 60 44" fill="#ffd23f"/><path d="M44 74 Q54 66 60 70 Q56 62 60 56" fill="#ffd23f"/><g fill="#e0633a" opacity="0.4"><circle cx="46" cy="42" r="4"/><circle cx="56" cy="48" r="4"/><circle cx="46" cy="58" r="4"/><circle cx="36" cy="50" r="4"/></g><circle cx="22" cy="44" r="6" fill="#fff"/><circle cx="21" cy="44" r="3" fill="#2b2b2b"/><path d="M14 56 Q20 62 26 58" stroke="#c14a28" stroke-width="2" fill="none" stroke-linecap="round"/></svg>';}
+function art_pe(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="92" rx="26" ry="4" fill="#000" opacity="0.1"/><path d="M30 30 Q26 60 36 78 Q44 90 62 86 Q74 82 72 70 Q70 60 64 58 Q62 40 56 28 Q44 22 30 30 Z" fill="#f4c79a" stroke="#dba572" stroke-width="1.5"/><ellipse cx="36" cy="26" rx="6" ry="7" fill="#f7d3ac"/><ellipse cx="46" cy="22" rx="5" ry="6" fill="#f7d3ac"/><ellipse cx="54" cy="24" rx="4.5" ry="5.5" fill="#f7d3ac"/><ellipse cx="61" cy="28" rx="4" ry="5" fill="#f7d3ac"/><ellipse cx="67" cy="34" rx="3.5" ry="4.5" fill="#f7d3ac"/><ellipse cx="50" cy="62" rx="10" ry="14" fill="#ffb89a" opacity="0.4"/></svg>';}
+function art_porta(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="10" width="64" height="84" rx="4" fill="#a8632e" stroke="#7a4419" stroke-width="3"/><rect x="26" y="18" width="48" height="68" rx="3" fill="#c47a3e"/><rect x="32" y="24" width="36" height="24" rx="2" fill="#a8632e" stroke="#8a4f22" stroke-width="2"/><rect x="32" y="54" width="36" height="26" rx="2" fill="#a8632e" stroke="#8a4f22" stroke-width="2"/><circle cx="64" cy="54" r="4" fill="#ffd23f" stroke="#c99a1e" stroke-width="1.5"/><rect x="62" y="50" width="4" height="3" fill="#ffd23f"/></svg>';}
+function art_sol(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_sol" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe14d"/><stop offset="1" stop-color="#ffb01f"/></linearGradient></defs><g stroke="#ffc01f" stroke-width="6" stroke-linecap="round"><line x1="50" y1="6" x2="50" y2="18"/><line x1="50" y1="82" x2="50" y2="94"/><line x1="6" y1="50" x2="18" y2="50"/><line x1="82" y1="50" x2="94" y2="50"/><line x1="19" y1="19" x2="28" y2="28"/><line x1="72" y1="72" x2="81" y2="81"/><line x1="81" y1="19" x2="72" y2="28"/><line x1="28" y1="72" x2="19" y2="81"/></g><circle cx="50" cy="50" r="26" fill="url(#g_sol)" stroke="#ffae1a" stroke-width="2"/><circle cx="40" cy="45" r="3.5" fill="#7a4a10"/><circle cx="60" cy="45" r="3.5" fill="#7a4a10"/><path d="M38 58 Q50 68 62 58" stroke="#7a4a10" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="36" cy="56" r="4" fill="#ff8a8a" opacity="0.5"/><circle cx="64" cy="56" r="4" fill="#ff8a8a" opacity="0.5"/></svg>';}
+function art_gato(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_gato" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb877"/><stop offset="1" stop-color="#f59538"/></linearGradient></defs><polygon points="22,30 18,8 42,22" fill="#f59538"/><polygon points="78,30 82,8 58,22" fill="#f59538"/><polygon points="24,27 23,14 36,22" fill="#ffc1cc"/><polygon points="76,27 77,14 64,22" fill="#ffc1cc"/><circle cx="50" cy="55" r="38" fill="url(#g_gato)"/><circle cx="38" cy="48" r="7" fill="#fff"/><circle cx="62" cy="48" r="7" fill="#fff"/><circle cx="38" cy="49" r="4" fill="#3a2a1a"/><circle cx="62" cy="49" r="4" fill="#3a2a1a"/><circle cx="39.5" cy="47.5" r="1.4" fill="#fff"/><circle cx="63.5" cy="47.5" r="1.4" fill="#fff"/><polygon points="50,58 45,63 55,63" fill="#ff8fa3"/><path d="M50 63 Q44 70 38 66 M50 63 Q56 70 62 66" stroke="#5a3b22" stroke-width="2.4" fill="none" stroke-linecap="round"/><line x1="20" y1="56" x2="36" y2="58" stroke="#5a3b22" stroke-width="1.6" stroke-linecap="round"/><line x1="20" y1="62" x2="36" y2="62" stroke="#5a3b22" stroke-width="1.6" stroke-linecap="round"/><line x1="80" y1="56" x2="64" y2="58" stroke="#5a3b22" stroke-width="1.6" stroke-linecap="round"/><line x1="80" y1="62" x2="64" y2="62" stroke="#5a3b22" stroke-width="1.6" stroke-linecap="round"/><circle cx="30" cy="62" r="5" fill="#ff8fa3" opacity="0.5"/><circle cx="70" cy="62" r="5" fill="#ff8fa3" opacity="0.5"/></svg>';}
+function art_rato(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_rato" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9ccd6"/><stop offset="1" stop-color="#9aa0ad"/></linearGradient></defs><path d="M82 70 Q95 70 94 58 Q93 50 86 54" stroke="#f0a8b8" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="30" cy="40" r="16" fill="url(#g_rato)"/><circle cx="68" cy="40" r="16" fill="url(#g_rato)"/><circle cx="30" cy="40" r="9" fill="#f0c0d0"/><circle cx="68" cy="40" r="9" fill="#f0c0d0"/><ellipse cx="50" cy="62" rx="30" ry="26" fill="url(#g_rato)"/><circle cx="42" cy="56" r="6" fill="#fff"/><circle cx="58" cy="56" r="6" fill="#fff"/><circle cx="42" cy="57" r="3.2" fill="#2e2e3a"/><circle cx="58" cy="57" r="3.2" fill="#2e2e3a"/><circle cx="43" cy="55.5" r="1.1" fill="#fff"/><circle cx="59" cy="55.5" r="1.1" fill="#fff"/><circle cx="50" cy="67" r="4" fill="#ff8fa3"/><path d="M50 71 Q45 76 40 73 M50 71 Q55 76 60 73" stroke="#6a6f7a" stroke-width="2" fill="none" stroke-linecap="round"/><line x1="50" y1="68" x2="30" y2="66" stroke="#7a7f8a" stroke-width="1.3" stroke-linecap="round"/><line x1="50" y1="69" x2="32" y2="71" stroke="#7a7f8a" stroke-width="1.3" stroke-linecap="round"/><line x1="50" y1="68" x2="70" y2="66" stroke="#7a7f8a" stroke-width="1.3" stroke-linecap="round"/><line x1="50" y1="69" x2="68" y2="71" stroke="#7a7f8a" stroke-width="1.3" stroke-linecap="round"/></svg>';}
+function art_sapato(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_sapato" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ec8ff"/><stop offset="1" stop-color="#2f8fe0"/></linearGradient></defs><path d="M12 58 Q12 38 26 38 Q34 38 40 46 Q50 60 70 60 L86 60 Q92 60 92 68 L92 74 L12 74 Z" fill="url(#g_sapato)"/><path d="M12 74 L92 74 L92 82 Q92 86 88 86 L16 86 Q12 86 12 82 Z" fill="#fff"/><path d="M26 40 Q34 40 38 47" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/><line x1="44" y1="52" x2="58" y2="48" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/><line x1="48" y1="58" x2="62" y2="54" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/><circle cx="44" cy="52" r="2.2" fill="#1f6fc0"/><circle cx="58" cy="48" r="2.2" fill="#1f6fc0"/><circle cx="48" cy="58" r="2.2" fill="#1f6fc0"/><circle cx="62" cy="54" r="2.2" fill="#1f6fc0"/><path d="M70 60 L86 60 Q92 60 92 68 L70 68 Z" fill="#ff7a59"/></svg>';}
+function art_sapo(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_sapo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86e05a"/><stop offset="1" stop-color="#3fae2f"/></linearGradient></defs><ellipse cx="50" cy="74" rx="40" ry="18" fill="#3fae2f"/><ellipse cx="22" cy="80" rx="10" ry="6" fill="#69cc45"/><ellipse cx="78" cy="80" rx="10" ry="6" fill="#69cc45"/><circle cx="50" cy="52" r="34" fill="url(#g_sapo)"/><circle cx="34" cy="34" r="13" fill="url(#g_sapo)"/><circle cx="66" cy="34" r="13" fill="url(#g_sapo)"/><circle cx="34" cy="33" r="8" fill="#fff"/><circle cx="66" cy="33" r="8" fill="#fff"/><circle cx="34" cy="34" r="4" fill="#1f2a1a"/><circle cx="66" cy="34" r="4" fill="#1f2a1a"/><circle cx="35.5" cy="32" r="1.4" fill="#fff"/><circle cx="67.5" cy="32" r="1.4" fill="#fff"/><path d="M30 56 Q50 74 70 56" stroke="#1f5a12" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="50" r="2.2" fill="#1f5a12"/><circle cx="30" cy="64" r="4" fill="#ff9bb0" opacity="0.6"/><circle cx="70" cy="64" r="4" fill="#ff9bb0" opacity="0.6"/></svg>';}
+function art_casa(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_casa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#ffcf52"/></linearGradient></defs><rect x="20" y="46" width="60" height="44" rx="3" fill="url(#g_casa)"/><polygon points="50,12 88,48 12,48" fill="#e8503a"/><polygon points="50,20 80,48 20,48" fill="#ff6f57"/><rect x="42" y="62" width="16" height="28" rx="2" fill="#8a5a32"/><circle cx="54" cy="76" r="1.8" fill="#ffd84d"/><rect x="26" y="56" width="14" height="14" rx="2" fill="#aee3ff"/><line x1="33" y1="56" x2="33" y2="70" stroke="#fff" stroke-width="1.6"/><line x1="26" y1="63" x2="40" y2="63" stroke="#fff" stroke-width="1.6"/><rect x="60" y="56" width="14" height="14" rx="2" fill="#aee3ff"/><line x1="67" y1="56" x2="67" y2="70" stroke="#fff" stroke-width="1.6"/><line x1="60" y1="63" x2="74" y2="63" stroke="#fff" stroke-width="1.6"/><rect x="64" y="20" width="9" height="16" rx="1.5" fill="#c43f2c"/></svg>';}
+function art_mesa(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_mesa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d79658"/><stop offset="1" stop-color="#b06f34"/></linearGradient></defs><rect x="10" y="30" width="80" height="16" rx="5" fill="url(#g_mesa)"/><rect x="10" y="30" width="80" height="5" rx="2.5" fill="#e8b67e"/><rect x="18" y="46" width="9" height="42" rx="3" fill="#a3672f"/><rect x="73" y="46" width="9" height="42" rx="3" fill="#a3672f"/><rect x="38" y="46" width="9" height="42" rx="3" fill="#b06f34"/><rect x="53" y="46" width="9" height="42" rx="3" fill="#b06f34"/><path d="M22 40 Q30 36 40 40" stroke="#8a531f" stroke-width="1.4" fill="none" opacity="0.5"/><path d="M58 40 Q68 36 78 40" stroke="#8a531f" stroke-width="1.4" fill="none" opacity="0.5"/></svg>';}
+function art_sofa(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_sofa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8aa0"/><stop offset="1" stop-color="#ef5a78"/></linearGradient></defs><rect x="12" y="40" width="76" height="34" rx="10" fill="url(#g_sofa)"/><rect x="8" y="46" width="20" height="34" rx="9" fill="#e84e6e"/><rect x="72" y="46" width="20" height="34" rx="9" fill="#e84e6e"/><rect x="22" y="34" width="56" height="26" rx="9" fill="#ff9fb2"/><rect x="26" y="58" width="22" height="14" rx="6" fill="#ffc0cc"/><rect x="52" y="58" width="22" height="14" rx="6" fill="#ffc0cc"/><line x1="50" y1="40" x2="50" y2="58" stroke="#e84e6e" stroke-width="2"/><rect x="16" y="74" width="8" height="12" rx="2" fill="#8a4a2f"/><rect x="76" y="74" width="8" height="12" rx="2" fill="#8a4a2f"/></svg>';}
+function art_corda(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_corda" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6f57"/><stop offset="1" stop-color="#d83f28"/></linearGradient></defs><path d="M22 24 Q22 84 50 84 Q78 84 78 24" stroke="#ffd84d" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M22 24 Q22 84 50 84 Q78 84 78 24" stroke="#f0b820" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-dasharray="5 5"/><rect x="14" y="14" width="14" height="22" rx="6" fill="url(#g_corda)"/><rect x="72" y="14" width="14" height="22" rx="6" fill="url(#g_corda)"/><rect x="17" y="18" width="8" height="5" rx="2" fill="#ffb3a0" opacity="0.8"/><rect x="75" y="18" width="8" height="5" rx="2" fill="#ffb3a0" opacity="0.8"/></svg>';}
+function art_sorvete(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_sorvete" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c074"/><stop offset="1" stop-color="#d49a44"/></linearGradient></defs><polygon points="38,52 62,52 50,92" fill="url(#g_sorvete)"/><line x1="44" y1="56" x2="52" y2="78" stroke="#b07c30" stroke-width="1.3"/><line x1="56" y1="56" x2="48" y2="78" stroke="#b07c30" stroke-width="1.3"/><line x1="40" y1="62" x2="46" y2="62" stroke="#b07c30" stroke-width="1.3"/><line x1="52" y1="70" x2="58" y2="66" stroke="#b07c30" stroke-width="1.3"/><circle cx="40" cy="44" r="15" fill="#ff8fb0"/><circle cx="60" cy="44" r="15" fill="#aee3a0"/><circle cx="50" cy="30" r="16" fill="#9ad0ff"/><circle cx="45" cy="26" r="3" fill="#fff" opacity="0.6"/><circle cx="50" cy="16" r="4" fill="#e8503a"/><circle cx="36" cy="40" r="2" fill="#fff" opacity="0.7"/><circle cx="64" cy="40" r="2" fill="#fff" opacity="0.7"/></svg>';}
+function art_flor(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_flor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7eb6"/><stop offset="1" stop-color="#ef4f95"/></linearGradient></defs><rect x="47" y="50" width="6" height="42" rx="3" fill="#3fae2f"/><path d="M50 70 Q34 64 28 76 Q42 80 50 74 Z" fill="#69cc45"/><path d="M50 78 Q66 72 72 84 Q58 88 50 82 Z" fill="#69cc45"/><ellipse cx="50" cy="22" rx="11" ry="15" fill="url(#g_flor)"/><ellipse cx="78" cy="42" rx="15" ry="11" fill="url(#g_flor)"/><ellipse cx="22" cy="42" rx="15" ry="11" fill="url(#g_flor)"/><ellipse cx="34" cy="64" rx="11" ry="15" fill="url(#g_flor)"/><ellipse cx="66" cy="64" rx="11" ry="15" fill="url(#g_flor)"/><circle cx="50" cy="42" r="14" fill="#ffd84d"/><circle cx="50" cy="42" r="9" fill="#ffb52e"/><circle cx="46" cy="39" r="2" fill="#fff" opacity="0.7"/></svg>';}
+function art_mao(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_mao" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9b3"/><stop offset="1" stop-color="#f4b87e"/></linearGradient></defs><rect x="30" y="52" width="40" height="36" rx="14" fill="url(#g_mao)"/><rect x="31" y="20" width="9" height="40" rx="4.5" fill="url(#g_mao)"/><rect x="44" y="12" width="9" height="48" rx="4.5" fill="url(#g_mao)"/><rect x="57" y="16" width="9" height="44" rx="4.5" fill="url(#g_mao)"/><rect x="69" y="26" width="9" height="34" rx="4.5" fill="url(#g_mao)"/><rect x="20" y="46" width="22" height="9" rx="4.5" fill="url(#g_mao)" transform="rotate(-32 31 50)"/><path d="M38 60 Q40 56 44 60 M50 58 Q52 54 56 58 M61 60 Q63 56 67 60" stroke="#e0a070" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>';}
+function art_coracao(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_coracao" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5e7a"/><stop offset="1" stop-color="#e01030"/></linearGradient></defs><path d="M50 86 C18 62 12 42 12 30 C12 16 24 10 34 12 C42 14 48 20 50 26 C52 20 58 14 66 12 C76 10 88 16 88 30 C88 42 82 62 50 86 Z" fill="url(#g_coracao)"/><path d="M30 24 Q24 28 24 38" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.55"/><circle cx="38" cy="30" r="3" fill="#fff" opacity="0.5"/></svg>';}
+function art_estrela(){return '<svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g_estrela" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe35a"/><stop offset="1" stop-color="#ffb301"/></linearGradient></defs><polygon points="50,8 61,38 93,38 67,58 77,90 50,70 23,90 33,58 7,38 39,38" fill="url(#g_estrela)" stroke="#ffa000" stroke-width="2" stroke-linejoin="round"/><polygon points="50,18 57,38 50,52 43,38" fill="#fff" opacity="0.35"/><circle cx="50" cy="55" r="2.4" fill="#fff" opacity="0.6"/></svg>';}
+function ART(key){ const f=window['art_'+key]; return f?f():''; }
+function illo(key,size){ return '<span class="illo" style="width:'+size+'px;height:'+size+'px">'+ART(key)+'</span>'; }
+
+const App = document.getElementById('app');
+let stars = parseInt(localStorage.getItem('vitor_pt_stars')||'0',10);
+
+/* ============================================================
+   VOCABULÁRIO DE VOZ (chave -> texto falado).
+   Fonte da verdade para o gerar-audios.py (gera audio/<chave>.mp3).
+   ============================================================ */
+const VOICE = {
+  /* navegação e feedback */
+  greet:"Oi, Vitor! Escolha uma brincadeira de Português para começar.",
+  test:"Olá, Vitor! Você está me ouvindo? Vamos brincar com as palavras!",
+  win:"Parabéns, Vitor! Você conseguiu! Que orgulho de você!",
+  choose:"As respostas são:",
+  ok1:"Muito bem!", ok2:"Isso aí!", ok3:"Você acertou!",
+  ok4:"Boa, Vitor!", ok5:"Mandou bem!", ok6:"Perfeito!",
+  no1:"Quase! Tenta outra.", no2:"Hmm, tenta de novo.", no3:"Não foi essa, tenta outra.",
+
+  /* perguntas dos jogos */
+  q_letra:"Qual letra se repete nessa palavra?",
+  q_abc:"Coloque as letras na ordem do alfabeto. Qual fila está certa?",
+  q_silaba:"Bata uma palma para cada pedaço da palavra. Quantas palmas tem?",
+  q_juntar:"Monte a palavra! Toque nos pedacinhos na ordem certa.",
+  q_rima:"Qual palavra rima? Ouça bem o som do final.",
+  q_peb:"Essa palavra começa com a letra P ou com a letra B?",
+  q_convite_data:"Olhe o convite. Em que dia vai ser a festa?",
+  q_convite_hora:"Olhe o convite. A que horas vai ser?",
+  q_convite_local:"Olhe o convite. Onde vai ser?",
+  q_bilhete_quem:"Ouça o bilhete. Quem escreveu?",
+  q_bilhete_paraquem:"Ouça o bilhete. Para quem é o bilhete?",
+  q_bilhete_obj:"Para que serve esse bilhete?",
+  q_legenda:"Olhe a figura. Qual legenda combina com ela?",
+
+  /* explicações */
+  exp_rima:"Isso! Essas palavras rimam, terminam com o mesmo som!",
+  peb_b:"Começa com a letra bê!",
+  peb_p:"Começa com a letra pê!",
+
+  /* nomes das letras */
+  l_a:"a", l_b:"bê", l_c:"cê", l_d:"dê", l_e:"é", l_f:"efe", l_g:"gê",
+  l_h:"agá", l_i:"i", l_j:"jota", l_k:"cá", l_l:"ele", l_m:"eme", l_n:"ene",
+  l_o:"ó", l_p:"pê", l_q:"quê", l_r:"erre", l_s:"esse", l_t:"tê", l_u:"u",
+  l_v:"vê", l_w:"dáblio", l_x:"xis", l_y:"ípsilon", l_z:"zê",
+
+  /* palmas (quantidade de sílabas) */
+  p1:"uma palma", p2:"duas palmas", p3:"três palmas", p4:"quatro palmas", p5:"cinco palmas",
+
+  /* palavras (ilustrações) */
+  w_bola:"bola", w_bolo:"bolo", w_banana:"banana", w_bicicleta:"bicicleta",
+  w_balanco:"balanço", w_boneca:"boneca", w_bota:"bota", w_barco:"barco",
+  w_balao:"balão", w_borboleta:"borboleta", w_cao:"cão", w_sacola:"sacola",
+  w_pao:"pão", w_peteca:"peteca", w_pipa:"pipa", w_patinete:"patinete",
+  w_pato:"pato", w_panela:"panela", w_pipoca:"pipoca", w_pera:"pera",
+  w_peixe:"peixe", w_pe:"pé", w_porta:"porta", w_sol:"sol",
+  w_gato:"gato", w_rato:"rato", w_sapato:"sapato", w_sapo:"sapo",
+  w_casa:"casa", w_mesa:"mesa", w_sofa:"sofá", w_corda:"corda",
+  w_sorvete:"sorvete", w_flor:"flor", w_mao:"mão", w_coracao:"coração",
+  w_estrela:"estrela",
+  /* palavras sem ilustração (jogo da letra que repete) */
+  w_sala:"sala", w_dedo:"dedo", w_tatu:"tatu", w_vaca:"vaca", w_pepino:"pepino",
+
+  /* legendas */
+  cap_pato:"O patinho na lagoa.", cap_gato:"O gatinho fofo.",
+  cap_bola:"A bola no jogo.", cap_flor:"A florzinha do jardim.",
+  cap_sorvete:"O sorvete gelado.", cap_cao:"O cachorro feliz.",
+  cap_borboleta:"A borboleta colorida.", cap_bolo:"O bolo de aniversário.",
+  cap_peixe:"O peixinho no mar.", cap_sol:"O sol brilhando no céu.",
+  cap_casa:"A casa da família.", cap_barco:"O barquinho no rio.",
+
+  /* convites: tipo, datas, horas, locais */
+  inv_festa:"Festa de aniversário!", inv_junina:"Festa junina!",
+  inv_pic:"Piquenique!", inv_ballet:"Apresentação de ballet!",
+  d_16maio:"dia dezesseis de maio", d_10junho:"dia dez de junho",
+  d_30agosto:"dia trinta de agosto", d_20dez:"dia vinte de dezembro",
+  d_5abril:"dia cinco de abril", d_2set:"dia dois de setembro",
+  t_15:"às quinze horas", t_10:"às dez horas da manhã", t_17:"às dezessete horas",
+  t_9:"às nove horas", t_14:"às quatorze horas",
+  l_clube:"no Clube das Festas", l_escola:"no pátio da escola",
+  l_parque:"no Parque das Bananeiras", l_estudio:"no Estúdio Alecrim",
+  l_sitio:"no sítio do vovô", l_casa:"na minha casa",
+
+  /* bilhetes: leitura completa e opções */
+  bil_a:"Querido filho, não se esqueça de arrumar a sua cama. Te amo, mamãe.",
+  bil_b:"Professora Denise, informo que minha filha não poderá ir à aula hoje. Atenciosamente, Luiz Felipe.",
+  bil_c:"Filha, lembre-se de entregar o livro na biblioteca. Com carinho, papai.",
+  bil_d:"Mamãe, você mora no meu coração. Te amo! Lucas.",
+  n_mae:"A mãe", n_pai:"O pai", n_prof:"A professora", n_vovo:"A vovó",
+  n_filho:"O filho", n_familia:"A família", n_aluno:"Os alunos",
+  obj_lembrar:"Lembrar de uma tarefa", obj_avisar:"Avisar sobre algo",
+  obj_convidar:"Fazer um convite", obj_carinho:"Mandar um carinho",
+};
+
+/* ============================================================
+   PLAYER DE ÁUDIO (clipes em sequência) — um único <audio>
+   destravado no 1º toque (compatível com iPhone/iPad).
+   ============================================================ */
+const AUDIO_DIR='audio/', AUDIO_EXT='.mp3';
+const player=new Audio();
+player.preload='auto';
+let playToken=0, audioOn=true;
+function stopAudio(){ playToken++; try{player.pause();}catch(e){} setPlayingBadge(false); }
+function playKeys(keys){
+  if(!audioOn) return;
+  stopAudio();
+  const list=[].concat(...keys.map(k=>Array.isArray(k)?k:[k])).filter(Boolean);
+  if(!list.length) return;
+  const my=playToken; let i=0;
+  setPlayingBadge(true);
+  const next=()=>{
+    if(my!==playToken) return;
+    if(i>=list.length){ setPlayingBadge(false); return; }
+    const key=list[i++];
+    player.src=AUDIO_DIR+key+AUDIO_EXT;
+    player.onended=next;
+    player.onerror=()=>{ setTimeout(next,10); };
+    const p=player.play();
+    if(p&&p.catch) p.catch(()=>setTimeout(next,10));
+  };
+  next();
+}
+function setPlayingBadge(on){
+  const b=document.getElementById('qspeak'); if(b) b.classList.toggle('playing',on);
+}
+function unlockAudio(){
+  try{ player.muted=true; player.src=AUDIO_DIR+'greet'+AUDIO_EXT;
+       const p=player.play();
+       if(p&&p.then) p.then(()=>{player.pause();player.currentTime=0;player.muted=false;})
+                      .catch(()=>{player.muted=false;});
+       else {player.pause();player.muted=false;}
+  }catch(e){ player.muted=false; }
+}
+
+/* ===== SONS DE EFEITO (Web Audio) ===== */
+let actx=null;
+function initAudio(){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }catch(e){} }
+function tone(freq,start,dur,type='sine',vol=0.2){
+  if(!actx) return;
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+  const t=actx.currentTime+start;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function sndClick(){ initAudio(); tone(540,0,0.07,'triangle',0.14); }
+function sndRight(){ initAudio(); [523,659,784,1047].forEach((f,i)=>tone(f,i*0.09,0.25,'triangle',0.18)); }
+function sndWrong(){ initAudio(); tone(300,0,0.18,'sine',0.13); tone(220,0.12,0.25,'sine',0.13); }
+function sndWin(){ initAudio(); [523,659,784,1047,784,1047,1319].forEach((f,i)=>tone(f,i*0.12,0.3,'triangle',0.2)); }
+
+/* ===== UTILIDADES ===== */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rint(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+const OK_KEYS=['ok1','ok2','ok3','ok4','ok5','ok6'], NO_KEYS=['no1','no2','no3'];
+
+function updateStars(){ const el=document.getElementById('starNum'); if(el) el.textContent=stars; localStorage.setItem('vitor_pt_stars',stars); }
+function addStar(n=1){ stars+=n; updateStars(); }
+
+/* ---------------- CONFETE ---------------- */
+const cv=document.getElementById('confetti'), cx=cv.getContext('2d');
+let confs=[];
+function resizeCv(){cv.width=innerWidth;cv.height=innerHeight;}
+addEventListener('resize',resizeCv); resizeCv();
+function burst(){
+  const cols=['#ff6b9d','#ffd93d','#6bcB77','#4d96ff','#a06cd5','#ff924c'];
+  for(let i=0;i<70;i++){confs.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-0.5)*14,vy:Math.random()*-12-3,c:pick(cols),s:rint(7,14),r:Math.random()*6,vr:(Math.random()-.5)*.4});}
+}
+function loopConf(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  confs.forEach(p=>{p.vy+=0.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s);cx.restore();});
+  confs=confs.filter(p=>p.y<cv.height+30);
+  requestAnimationFrame(loopConf);
+}
+loopConf();
+
+/* ===== SHELL ===== */
+function shell(inner){
+  App.innerHTML=`
+    <div class="topbar">
+      <button class="home-btn" onclick="sndClick();goHome()">🏠</button>
+      <div class="stars">⭐ <span class="num" id="starNum">${stars}</span></div>
+    </div>
+    ${inner}`;
+}
+
+/* ===== MENU ===== */
+const GAMES=[
+  {id:'letra',   ico:'🔤', nome:'Letra que Repete', sub:'Letra e palavra', cls:'c1'},
+  {id:'abc',     ico:'🔠', nome:'Ordem do ABC',     sub:'Alfabeto',        cls:'c2'},
+  {id:'silaba',  ico:'👏', nome:'Conta Sílabas',    sub:'Bater palmas',    cls:'c3'},
+  {id:'juntar',  ico:'🧩', nome:'Junta Sílabas',    sub:'Montar palavra',  cls:'c4'},
+  {id:'rima',    ico:'🎵', nome:'Rima',             sub:'Sons parecidos',  cls:'c5'},
+  {id:'peb',     ico:'🅱️', nome:'P ou B?',          sub:'Sons parecidos',  cls:'c6'},
+  {id:'convite', ico:'🎉', nome:'Convite',          sub:'Dia, hora, local',cls:'c7'},
+  {id:'bilhete', ico:'✉️', nome:'Bilhete',          sub:'Quem e para quem',cls:'c8'},
+  {id:'legenda', ico:'📸', nome:'Legenda',          sub:'Descrever a foto',cls:'c9'},
+];
+function goHome(silent){
+  stopAudio();
+  shell(`
+    <div class="hero">
+      <div class="mascote">🦉</div>
+      <h1>Oi, Vitor!</h1>
+      <p>Escolha uma brincadeira 👇</p>
+      <button onclick="testSound()" style="margin-top:6px;background:var(--amarelo);color:#5a4500;border:none;border-radius:18px;padding:9px 18px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #d9a800;">🔈 Testar som</button>
+    </div>
+    <div class="grid">
+      ${GAMES.map(g=>`<button class="card ${g.cls}" onclick="sndClick();startGame('${g.id}')">
+        <span class="ico">${g.ico}</span><span>${g.nome}</span>
+        <span style="font-size:13px;font-weight:normal;opacity:.9">${g.sub}</span>
+      </button>`).join('')}
+    </div>
+    <p style="text-align:center;color:#7a6;margin-top:18px;font-size:14px;">Feito com 💜 para o Vitor estudar pra prova</p>
+  `);
+  if(!silent) setTimeout(()=>playKeys(['greet']),250);
+}
+function testSound(){ initAudio(); sndClick(); playKeys(['test']); }
+
+/* ===== MOTOR DE RODADAS ===== */
+let current=null, locked=false;
+function startGame(id){
+  const rounds=BUILDERS[id]();
+  current={id, title:GAMES.find(g=>g.id===id).nome, rounds, idx:0};
+  renderRound();
+}
+function gameFrame(c,r,bodyHtml){
+  shell(`
+    <div class="game">
+      <h2 class="game-title">${GAMES.find(g=>g.id===c.id).ico} ${c.title}</h2>
+      <div class="progress">Pergunta ${c.idx+1} de ${c.rounds.length}</div>
+      <div class="question">
+        <button class="speak-btn" id="qspeak" onclick="sndClick();speakRound()">🔊</button>
+        <span>${r.q}</span>
+      </div>
+      <div class="stage">${r.stage||''}</div>
+      ${bodyHtml}
+      <div style="font-size:14px;color:#aaa;margin-top:6px;">👆 Toque para responder. Toque no 🔊 para ouvir de novo.</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+}
+function renderRound(){
+  locked=false;
+  const c=current, r=c.rounds[c.idx];
+  if(r.mode==='build'){ return renderBuild(c,r); }
+  gameFrame(c,r,`<div class="options ${r.colorOpts?'opt-colors':''}" id="opts"></div>`);
+  const shown=shuffle(r.options);
+  const opts=document.getElementById('opts');
+  shown.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'+(o.big?' big':'');
+    b.innerHTML=o.label;
+    b.onclick=()=>answer(b,o);
+    opts.appendChild(b);
+  });
+  window._roundKeys=[].concat(r.audio||[], ['choose'], shown.map(o=>o.aud));
+  setTimeout(()=>speakRound(),400);
+}
+function speakRound(){ playKeys(window._roundKeys||[]); }
+
+function showNextButton(){
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=null);
+  const nb=document.createElement('button');
+  nb.className='next-btn';
+  const last=current.idx>=current.rounds.length-1;
+  nb.textContent=last?'🏆 Terminar':'Próxima ➡';
+  nb.onclick=()=>{sndClick();locked=false;if(last){winScreen();}else{current.idx++;renderRound();}};
+  document.querySelector('.game').appendChild(nb);
+}
+function correctFlow(extraAudio){
+  locked=true; sndRight(); burst(); addStar(1);
+  const fb=document.getElementById('fb'); if(fb){fb.className='feedback good'; fb.textContent='⭐ Muito bem!';}
+  playKeys(extraAudio.filter(Boolean));
+  showNextButton();
+}
+function answer(btn,opt){
+  if(locked) return;
+  if(opt.correct){
+    btn.classList.add('ok');
+    document.querySelectorAll('.opt').forEach(b=>{if(b!==btn)b.classList.add('no');});
+    correctFlow([opt.aud, pick(OK_KEYS), opt.expAud]);
+  }else{
+    btn.classList.add('no'); btn.onclick=null;
+    sndWrong();
+    const fb=document.getElementById('fb'); fb.className='feedback bad'; fb.textContent='🤔 Tenta de novo!';
+    playKeys([opt.aud, pick(NO_KEYS)].filter(Boolean));
+  }
+}
+
+/* ---- modo MONTAR (junta sílabas) ---- */
+function renderBuild(c,r){
+  const slots=r.syl.map(()=>`<div class="slot"></div>`).join('');
+  gameFrame(c,r,`
+    <div class="slots" id="slots">${slots}</div>
+    <div class="options" id="opts" style="margin-top:14px"></div>
+  `);
+  const opts=document.getElementById('opts');
+  shuffle(r.syl.map((s,i)=>({s,i}))).forEach(t=>{
+    const b=document.createElement('button');
+    b.className='tile'; b.textContent=t.s;
+    b.onclick=()=>tapTile(b,t.s,r);
+    opts.appendChild(b);
+  });
+  window._roundKeys=[].concat(r.audio||[]);
+  setTimeout(()=>speakRound(),400);
+}
+let buildPos=0;
+function tapTile(btn,syl,r){
+  if(locked) return;
+  if(buildPos===0) buildPos=0;
+  if(syl===r.syl[window._bp||0]){
+    const bp=window._bp||0;
+    const slot=document.querySelectorAll('#slots .slot')[bp];
+    slot.textContent=syl; slot.classList.add('filled');
+    btn.classList.add('used');
+    sndClick();
+    window._bp=bp+1;
+    if(window._bp>=r.syl.length){ correctFlow([r.ak, pick(OK_KEYS)]); }
+  }else{
+    sndWrong();
+    btn.classList.add('shake'); setTimeout(()=>btn.classList.remove('shake'),420);
+    const fb=document.getElementById('fb'); fb.className='feedback bad'; fb.textContent='🤔 Esse não é o próximo!';
+  }
+}
+
+function winScreen(){
+  sndWin(); burst(); setTimeout(burst,400); setTimeout(burst,800);
+  const c=current;
+  shell(`
+    <div class="game win">
+      <div class="trophy">🏆</div>
+      <h2 class="game-title">Parabéns, Vitor!</h2>
+      <p style="font-size:22px;">Você ganhou <b>${c.rounds.length}</b> estrelas! ⭐</p>
+      <p style="font-size:18px;color:#888;">Você está ficando craque em <b>${c.title}</b>!</p>
+      <button class="next-btn" onclick="sndClick();startGame('${c.id}')">🔁 Jogar de novo</button>
+      <br>
+      <button class="next-btn" style="background:var(--azul);box-shadow:0 6px 0 #2f6fd0;margin-top:10px;" onclick="sndClick();goHome()">🏠 Escolher outro</button>
+    </div>
+  `);
+  setTimeout(()=>playKeys(['win']),250);
+}
+
+/* ============================================================
+   BASE DE PALAVRAS E DADOS
+   ============================================================ */
+/* w=palavra; syl=sílabas; art=ilustração; ak=chave de áudio; rim=rima; ini=letra inicial(P/B) */
+const WORDS=[
+  {w:'BOLA',syl:['BO','LA'],art:'bola',ak:'w_bola',rim:'ola',ini:'B'},
+  {w:'BOLO',syl:['BO','LO'],art:'bolo',ak:'w_bolo',rim:'olo',ini:'B'},
+  {w:'BANANA',syl:['BA','NA','NA'],art:'banana',ak:'w_banana',rim:'ana',ini:'B'},
+  {w:'BICICLETA',syl:['BI','CI','CLE','TA'],art:'bicicleta',ak:'w_bicicleta',rim:'eta',ini:'B'},
+  {w:'BALANÇO',syl:['BA','LAN','ÇO'],art:'balanco',ak:'w_balanco',rim:'anco',ini:'B'},
+  {w:'BONECA',syl:['BO','NE','CA'],art:'boneca',ak:'w_boneca',rim:'eca',ini:'B'},
+  {w:'BOTA',syl:['BO','TA'],art:'bota',ak:'w_bota',rim:'ota',ini:'B'},
+  {w:'BARCO',syl:['BAR','CO'],art:'barco',ak:'w_barco',rim:'arco',ini:'B'},
+  {w:'BALÃO',syl:['BA','LÃO'],art:'balao',ak:'w_balao',rim:'ao',ini:'B'},
+  {w:'BORBOLETA',syl:['BOR','BO','LE','TA'],art:'borboleta',ak:'w_borboleta',rim:'eta',ini:'B'},
+  {w:'CÃO',syl:['CÃO'],art:'cao',ak:'w_cao',rim:'ao'},
+  {w:'SACOLA',syl:['SA','CO','LA'],art:'sacola',ak:'w_sacola',rim:'ola'},
+  {w:'PÃO',syl:['PÃO'],art:'pao',ak:'w_pao',rim:'ao',ini:'P'},
+  {w:'PETECA',syl:['PE','TE','CA'],art:'peteca',ak:'w_peteca',rim:'eca',ini:'P'},
+  {w:'PIPA',syl:['PI','PA'],art:'pipa',ak:'w_pipa',rim:'ipa',ini:'P'},
+  {w:'PATINETE',syl:['PA','TI','NE','TE'],art:'patinete',ak:'w_patinete',rim:'ete',ini:'P'},
+  {w:'PATO',syl:['PA','TO'],art:'pato',ak:'w_pato',rim:'ato',ini:'P'},
+  {w:'PANELA',syl:['PA','NE','LA'],art:'panela',ak:'w_panela',rim:'ela',ini:'P'},
+  {w:'PIPOCA',syl:['PI','PO','CA'],art:'pipoca',ak:'w_pipoca',rim:'oca',ini:'P'},
+  {w:'PERA',syl:['PE','RA'],art:'pera',ak:'w_pera',rim:'era',ini:'P'},
+  {w:'PEIXE',syl:['PEI','XE'],art:'peixe',ak:'w_peixe',rim:'eixe',ini:'P'},
+  {w:'PORTA',syl:['POR','TA'],art:'porta',ak:'w_porta',rim:'orta',ini:'P'},
+  {w:'GATO',syl:['GA','TO'],art:'gato',ak:'w_gato',rim:'ato'},
+  {w:'RATO',syl:['RA','TO'],art:'rato',ak:'w_rato',rim:'ato'},
+  {w:'SAPATO',syl:['SA','PA','TO'],art:'sapato',ak:'w_sapato',rim:'ato'},
+  {w:'SAPO',syl:['SA','PO'],art:'sapo',ak:'w_sapo',rim:'apo'},
+  {w:'CASA',syl:['CA','SA'],art:'casa',ak:'w_casa',rim:'asa'},
+  {w:'MESA',syl:['ME','SA'],art:'mesa',ak:'w_mesa',rim:'esa'},
+  {w:'SOFÁ',syl:['SO','FÁ'],art:'sofa',ak:'w_sofa',rim:'afa'},
+  {w:'CORDA',syl:['COR','DA'],art:'corda',ak:'w_corda',rim:'orda'},
+  {w:'SORVETE',syl:['SOR','VE','TE'],art:'sorvete',ak:'w_sorvete',rim:'ete'},
+  {w:'FLOR',syl:['FLOR'],art:'flor',ak:'w_flor',rim:'or'},
+  {w:'MÃO',syl:['MÃO'],art:'mao',ak:'w_mao',rim:'ao'},
+  {w:'CORAÇÃO',syl:['CO','RA','ÇÃO'],art:'coracao',ak:'w_coracao',rim:'ao'},
+  {w:'ESTRELA',syl:['ES','TRE','LA'],art:'estrela',ak:'w_estrela',rim:'ela'},
+];
+function byArt(a){ return WORDS.find(x=>x.art===a); }
+
+/* letra que se repete */
+const LETRA=[
+  {w:'SORVETE',rep:'E',ak:'w_sorvete',art:'sorvete'},
+  {w:'PIPA',rep:'P',ak:'w_pipa',art:'pipa'},
+  {w:'CASA',rep:'A',ak:'w_casa',art:'casa'},
+  {w:'BOLO',rep:'O',ak:'w_bolo',art:'bolo'},
+  {w:'SAPATO',rep:'A',ak:'w_sapato',art:'sapato'},
+  {w:'SALA',rep:'A',ak:'w_sala'},
+  {w:'DEDO',rep:'D',ak:'w_dedo'},
+  {w:'TATU',rep:'T',ak:'w_tatu'},
+  {w:'VACA',rep:'A',ak:'w_vaca'},
+  {w:'PEPINO',rep:'P',ak:'w_pepino'},
+];
+
+const LETKEY=c=>'l_'+c.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'');
+
+const CONVITES=[
+  {tipo:'inv_festa',  d:'d_16maio', t:'t_15', l:'l_clube',   art:'bolo'},
+  {tipo:'inv_junina', d:'d_10junho',t:'t_15', l:'l_escola',  art:'balao'},
+  {tipo:'inv_pic',    d:'d_30agosto',t:'t_10',l:'l_parque',  art:'sacola'},
+  {tipo:'inv_ballet', d:'d_20dez',  t:'t_17', l:'l_estudio', art:'estrela'},
+];
+const INV_TTL={inv_festa:'🎂 Festa de aniversário!',inv_junina:'🔥 Festa junina!',inv_pic:'🧺 Piquenique!',inv_ballet:'🩰 Apresentação de ballet!'};
+const ALL_D=['d_16maio','d_10junho','d_30agosto','d_20dez','d_5abril','d_2set'];
+const ALL_T=['t_15','t_10','t_17','t_9','t_14'];
+const ALL_L=['l_clube','l_escola','l_parque','l_estudio','l_sitio','l_casa'];
+const LBL_D={d_16maio:'16 de maio',d_10junho:'10 de junho',d_30agosto:'30 de agosto',d_20dez:'20 de dezembro',d_5abril:'5 de abril',d_2set:'2 de setembro'};
+const LBL_T={t_15:'15 horas',t_10:'10 horas da manhã',t_17:'17 horas',t_9:'9 horas',t_14:'14 horas'};
+const LBL_L={l_clube:'Clube das Festas',l_escola:'Pátio da escola',l_parque:'Parque das Bananeiras',l_estudio:'Estúdio Alecrim',l_sitio:'Sítio do vovô',l_casa:'Minha casa'};
+
+const BILHETES=[
+  {read:'bil_a', autor:'n_mae',  para:'n_filho', obj:'obj_lembrar', deco:'coracao',
+   linhas:['<b>Querido filho,</b>','Não se esqueça de arrumar a sua cama.','Te amo!','— Mamãe']},
+  {read:'bil_b', autor:'n_pai',  para:'n_prof',  obj:'obj_avisar', deco:'casa',
+   linhas:['<b>Professora Denise,</b>','Minha filha não poderá ir à aula hoje.','Atenciosamente,','— Luiz Felipe']},
+  {read:'bil_c', autor:'n_pai',  para:'n_filho', obj:'obj_lembrar', deco:'flor',
+   linhas:['<b>Filha,</b>','Lembre-se de entregar o livro na biblioteca.','Com carinho,','— Papai']},
+  {read:'bil_d', autor:'n_filho',para:'n_mae',   obj:'obj_carinho', deco:'coracao',
+   linhas:['<b>Mamãe,</b>','Você mora no meu coração.','Te amo!','— Lucas']},
+];
+const ALL_N=['n_mae','n_pai','n_prof','n_vovo','n_filho','n_familia','n_aluno'];
+const LBL_N={n_mae:'A mãe',n_pai:'O pai',n_prof:'A professora',n_vovo:'A vovó',n_filho:'O filho',n_familia:'A família',n_aluno:'Os alunos'};
+const ALL_OBJ=['obj_lembrar','obj_avisar','obj_convidar','obj_carinho'];
+const LBL_OBJ={obj_lembrar:'Lembrar de uma tarefa',obj_avisar:'Avisar sobre algo',obj_convidar:'Fazer um convite',obj_carinho:'Mandar um carinho'};
+
+const LEGENDAS=[
+  {art:'pato',cap:'cap_pato',lbl:'O patinho na lagoa'},
+  {art:'gato',cap:'cap_gato',lbl:'O gatinho fofo'},
+  {art:'bola',cap:'cap_bola',lbl:'A bola no jogo'},
+  {art:'flor',cap:'cap_flor',lbl:'A florzinha do jardim'},
+  {art:'sorvete',cap:'cap_sorvete',lbl:'O sorvete gelado'},
+  {art:'cao',cap:'cap_cao',lbl:'O cachorro feliz'},
+  {art:'borboleta',cap:'cap_borboleta',lbl:'A borboleta colorida'},
+  {art:'bolo',cap:'cap_bolo',lbl:'O bolo de aniversário'},
+  {art:'peixe',cap:'cap_peixe',lbl:'O peixinho no mar'},
+  {art:'sol',cap:'cap_sol',lbl:'O sol brilhando no céu'},
+  {art:'casa',cap:'cap_casa',lbl:'A casa da família'},
+  {art:'barco',cap:'cap_barco',lbl:'O barquinho no rio'},
+];
+
+/* helper: opções de letra */
+function letterOpt(c){ return {label:`<span style="font-size:40px">${c}</span>`, aud:LETKEY(c), correct:false}; }
+
+/* ============================================================
+   GERADORES DE CONTEÚDO (9 jogos)
+   ============================================================ */
+const BUILDERS={
+  /* 1. LETRA QUE SE REPETE */
+  letra(){
+    return shuffle(LETRA).slice(0,7).map(it=>{
+      const tiles=it.w.split('').map(ch=>`<span class="lettile ${ch===it.rep?'hl':''}">${ch}</span>`).join('');
+      const stage=(it.art?illo(it.art,90):'')+`<div class="wordtiles" style="margin-top:10px">${tiles}</div>`;
+      const distinct=[...new Set(it.w.split(''))].filter(c=>c!==it.rep);
+      const others=shuffle(distinct).slice(0,3);
+      const opts=shuffle([it.rep,...others]).map(c=>{const o=letterOpt(c); o.correct=(c===it.rep); return o;});
+      return { q:'Qual letra se <b>repete</b>?', audio:['q_letra',it.ak], stage, options:opts };
+    });
+  },
+
+  /* 2. ORDEM DO ABC */
+  abc(){
+    const POOL=['A','B','C','D','E','F','G','I','L','M','N','O','P','R','S','T','U','V'];
+    const rounds=[];
+    for(let i=0;i<6;i++){
+      const set=shuffle(POOL).slice(0,3);
+      const correct=[...set].sort();
+      let wrong1=[...correct].reverse();
+      let wrong2=shuffle(set); let guard=0;
+      while((wrong2.join('')===correct.join('')||wrong2.join('')===wrong1.join(''))&&guard++<20) wrong2=shuffle(set);
+      const stage=`<div class="wordtiles">${set.map(c=>`<span class="lettile">${c}</span>`).join('')}</div>`;
+      const mk=arr=>({label:arr.join(' '), aud:arr.map(LETKEY), correct:arr.join('')===correct.join('')});
+      rounds.push({ q:'Qual fila está na <b>ordem do ABC</b>? 🔤', audio:['q_abc'], stage, colorOpts:true,
+        options:[mk(correct),mk(wrong1),mk(wrong2)] });
+    }
+    return rounds;
+  },
+
+  /* 3. CONTA SÍLABAS (palmas) */
+  silaba(){
+    const pool=WORDS.filter(w=>w.art);
+    return shuffle(pool).slice(0,8).map(it=>{
+      const n=it.syl.length;
+      const split=it.syl.map(s=>`<span style="color:#a06cd5">${s}</span>`).join('<span style="color:#ff924c">·</span>');
+      const stage=illo(it.art,90)+`<div class="wordtiles" style="font-size:30px;font-weight:bold;margin-top:8px">${split}</div><div style="font-size:30px;margin-top:4px">👏</div>`;
+      const set=new Set([n]); while(set.size<4){set.add(rint(1,5));}
+      const opts=shuffle([...set]).map(v=>({label:`<span style="font-size:40px">${v}</span>`,aud:'p'+v,correct:v===n,expAud:v===n?it.ak:null}));
+      return { q:`Quantas palmas tem <b>${it.w}</b>? 👏`, audio:['q_silaba',it.ak], stage, options:opts };
+    });
+  },
+
+  /* 4. JUNTA SÍLABAS (montar) */
+  juntar(){
+    const pool=WORDS.filter(w=>w.art && w.syl.length>=2 && w.syl.length<=4);
+    return shuffle(pool).slice(0,6).map(it=>({
+      mode:'build', q:`Monte a palavra <b>${it.w}</b>! 🧩`, audio:['q_juntar',it.ak],
+      stage:illo(it.art,100), syl:it.syl, ak:it.ak
+    }));
+  },
+
+  /* 5. RIMA */
+  rima(){
+    const groups={};
+    WORDS.forEach(w=>{ (groups[w.rim]=groups[w.rim]||[]).push(w); });
+    const rhymeKeys=Object.keys(groups).filter(k=>groups[k].length>=2);
+    const rounds=[];
+    for(let i=0;i<7;i++){
+      const gk=pick(rhymeKeys);
+      const two=shuffle(groups[gk]).slice(0,2);
+      const target=two[0], partner=two[1];
+      const distract=shuffle(WORDS.filter(w=>w.rim!==gk && w.art)).slice(0,2);
+      const optWords=shuffle([partner,...distract]);
+      const stage=`<div style="font-size:18px;color:#a06cd5;font-weight:bold">Rima com:</div>`+illo(target.art,86)+`<div style="font-size:22px;font-weight:bold">${target.w}</div>`;
+      const opts=optWords.map(w=>({label:illo(w.art,56)+`<span class="cap">${w.w}</span>`, aud:w.ak, correct:w===partner, expAud:w===partner?'exp_rima':null}));
+      rounds.push({ q:'Qual palavra <b>rima</b>? 🎵', audio:['q_rima',target.ak], stage, options:opts });
+    }
+    return rounds;
+  },
+
+  /* 6. P OU B */
+  peb(){
+    const pool=WORDS.filter(w=>w.ini==='P'||w.ini==='B');
+    return shuffle(pool).slice(0,8).map(it=>{
+      const rest=it.w.slice(1);
+      const stage=illo(it.art,90)+`<div class="wordtiles" style="margin-top:10px"><span class="lettile miss">?</span>${rest.split('').map(c=>`<span class="lettile">${c}</span>`).join('')}</div>`;
+      const opts=[
+        {label:'B',big:true,aud:'l_b',correct:it.ini==='B',expAud:it.ini==='B'?'peb_b':null},
+        {label:'P',big:true,aud:'l_p',correct:it.ini==='P',expAud:it.ini==='P'?'peb_p':null},
+      ];
+      return { q:'Começa com <b>P</b> ou com <b>B</b>?', audio:['q_peb',it.ak], stage, colorOpts:true, options:opts };
+    });
+  },
+
+  /* 7. CONVITE */
+  convite(){
+    const rounds=[];
+    shuffle(CONVITES.concat(shuffle(CONVITES).slice(0,3))).slice(0,7).forEach(cv=>{
+      const card=`<div class="paper"><div class="deco">${ART(cv.art)}</div>
+        <div class="ttl">${INV_TTL[cv.tipo]}</div>
+        <div class="row"><b>📅 Dia:</b> ${LBL_D[cv.d]}</div>
+        <div class="row"><b>⏰ Hora:</b> ${LBL_T[cv.t]}</div>
+        <div class="row"><b>📍 Local:</b> ${LBL_L[cv.l]}</div></div>`;
+      const kind=pick(['data','hora','local']);
+      let q,qa,pool,lbls,correct;
+      if(kind==='data'){q='Em que <b>dia</b> é a festa? 📅';qa='q_convite_data';pool=ALL_D;lbls=LBL_D;correct=cv.d;}
+      else if(kind==='hora'){q='A que <b>horas</b> é? ⏰';qa='q_convite_hora';pool=ALL_T;lbls=LBL_T;correct=cv.t;}
+      else{q='<b>Onde</b> vai ser? 📍';qa='q_convite_local';pool=ALL_L;lbls=LBL_L;correct=cv.l;}
+      const others=shuffle(pool.filter(x=>x!==correct)).slice(0,2);
+      const opts=shuffle([correct,...others]).map(k=>({label:lbls[k],aud:k,correct:k===correct}));
+      rounds.push({ q, audio:[qa,cv.tipo,cv.d,cv.t,cv.l], stage:card, colorOpts:true, options:opts });
+    });
+    return rounds;
+  },
+
+  /* 8. BILHETE */
+  bilhete(){
+    const rounds=[];
+    shuffle(BILHETES.concat(shuffle(BILHETES).slice(0,2))).slice(0,6).forEach(b=>{
+      const card=`<div class="paper note"><div class="deco">${ART(b.deco)}</div>${b.linhas.map(l=>`<div>${l}</div>`).join('')}</div>`;
+      const kind=pick(['quem','paraquem','obj']);
+      let q,qa,correct,pool,lbls;
+      if(kind==='quem'){q='Quem <b>escreveu</b>? ✍️';qa='q_bilhete_quem';correct=b.autor;pool=ALL_N;lbls=LBL_N;}
+      else if(kind==='paraquem'){q='Para <b>quem</b> é? 💌';qa='q_bilhete_paraquem';correct=b.para;pool=ALL_N;lbls=LBL_N;}
+      else{q='Para que <b>serve</b>? 🤔';qa='q_bilhete_obj';correct=b.obj;pool=ALL_OBJ;lbls=LBL_OBJ;}
+      const others=shuffle(pool.filter(x=>x!==correct)).slice(0,2);
+      const opts=shuffle([correct,...others]).map(k=>({label:lbls[k],aud:k,correct:k===correct}));
+      rounds.push({ q, audio:[qa,b.read], stage:card, colorOpts:true, options:opts });
+    });
+    return rounds;
+  },
+
+  /* 9. LEGENDA */
+  legenda(){
+    return shuffle(LEGENDAS).slice(0,7).map(it=>{
+      const stage=illo(it.art,120);
+      const others=shuffle(LEGENDAS.filter(x=>x.cap!==it.cap)).slice(0,2);
+      const opts=shuffle([it,...others]).map(o=>({label:`<span class="cap">${o.lbl}</span>`,aud:o.cap,correct:o.cap===it.cap}));
+      return { q:'Qual <b>legenda</b> combina? 📸', audio:['q_legenda'], stage, colorOpts:true, options:opts };
+    });
+  },
+};
+
+/* ===== SPLASH -> INÍCIO ===== */
+function enterApp(){
+  initAudio();
+  unlockAudio();
+  document.getElementById('splash').style.display='none';
+  goHome(true);
+  setTimeout(()=>playKeys(['greet']),350);
+}
+document.getElementById('startBtn').addEventListener('click',enterApp);
+document.getElementById('splash').addEventListener('click',e=>{ if(e.target.id!=='startBtn'){ enterApp(); } });
+
+/* zera o ponteiro de montagem a cada rodada */
+const _origRender=renderRound;
+renderRound=function(){ window._bp=0; _origRender(); };
+</script>
+</body>
+</html>
