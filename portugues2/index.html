@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>📚 Português Divertido do Vitor 📚</title>
+<title>📚 Português Divertido 📚</title>
 <style>
   :root{
     --rosa:#ff6b9d; --roxo:#a06cd5; --azul:#4d96ff; --verde:#6bcB77;
@@ -177,7 +177,7 @@
 
 <div id="splash">
   <div class="big">🦉</div>
-  <h1>Português Divertido<br>do Vitor!</h1>
+  <h1>Português<br>Divertido!</h1>
   <p style="font-size:20px;max-width:320px;">Vamos brincar com as letras e as palavras pra prova! 🎉<br>Toque no botão para começar.</p>
   <button class="play" id="startBtn">▶ COMEÇAR</button>
 </div>
@@ -247,12 +247,12 @@ let stars = parseInt(localStorage.getItem('vitor_pt_stars')||'0',10);
    ============================================================ */
 const VOICE = {
   /* navegação e feedback */
-  greet:"Oi, Vitor! Escolha uma brincadeira de Português para começar.",
-  test:"Olá, Vitor! Você está me ouvindo? Vamos brincar com as palavras!",
-  win:"Parabéns, Vitor! Você conseguiu! Que orgulho de você!",
+  greet:"Olá! Escolha uma brincadeira de Português para começar.",
+  test:"Olá! Você está me ouvindo? Vamos brincar com as palavras!",
+  win:"Parabéns! Você conseguiu! Que orgulho de você!",
   choose:"As respostas são:",
   ok1:"Muito bem!", ok2:"Isso aí!", ok3:"Você acertou!",
-  ok4:"Boa, Vitor!", ok5:"Mandou bem!", ok6:"Perfeito!",
+  ok4:"Boa demais!", ok5:"Mandou bem!", ok6:"Perfeito!",
   no1:"Quase! Tenta outra.", no2:"Hmm, tenta de novo.", no3:"Não foi essa, tenta outra.",
 
   /* perguntas dos jogos */
@@ -439,7 +439,7 @@ function goHome(silent){
   shell(`
     <div class="hero">
       <div class="mascote">🦉</div>
-      <h1>Oi, Vitor!</h1>
+      <h1>Olá!</h1>
       <p>Escolha uma brincadeira 👇</p>
       <button onclick="testSound()" style="margin-top:6px;background:var(--amarelo);color:#5a4500;border:none;border-radius:18px;padding:9px 18px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #d9a800;">🔈 Testar som</button>
     </div>
@@ -449,7 +449,7 @@ function goHome(silent){
         <span style="font-size:13px;font-weight:normal;opacity:.9">${g.sub}</span>
       </button>`).join('')}
     </div>
-    <p style="text-align:center;color:#7a6;margin-top:18px;font-size:14px;">Feito com 💜 para o Vitor estudar pra prova</p>
+    <p style="text-align:center;color:#7a6;margin-top:18px;font-size:14px;">Feito com 💜 para estudar pra prova</p>
   `);
   if(!silent) setTimeout(()=>playKeys(['greet']),250);
 }
@@ -568,7 +568,7 @@ function winScreen(){
   shell(`
     <div class="game win">
       <div class="trophy">🏆</div>
-      <h2 class="game-title">Parabéns, Vitor!</h2>
+      <h2 class="game-title">Parabéns!</h2>
       <p style="font-size:22px;">Você ganhou <b>${c.rounds.length}</b> estrelas! ⭐</p>
       <p style="font-size:18px;color:#888;">Você está ficando craque em <b>${c.title}</b>!</p>
       <button class="next-btn" onclick="sndClick();startGame('${c.id}')">🔁 Jogar de novo</button>
