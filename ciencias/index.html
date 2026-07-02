@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🔬 Ciências Divertida 🔬</title>
+<style>
+  :root{
+    --rosa:#ff6b9d; --roxo:#a06cd5; --azul:#4d96ff; --verde:#6bcB77;
+    --amarelo:#ffd93d; --laranja:#ff924c; --vermelho:#ff5e5e; --ceu:#b8e3ff;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'Comic Sans MS','Baloo',"Trebuchet MS",sans-serif;
+    background:linear-gradient(160deg,#c5f0d8 0%,#d7e6ff 50%,#ffe0f0 100%);
+    color:#3a3a55; overflow-x:hidden; user-select:none;
+    min-height:100%; touch-action:manipulation;
+  }
+  #app{max-width:760px; margin:0 auto; padding:14px; min-height:100vh;}
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#fff; border-radius:22px; padding:8px 14px; margin-bottom:14px;
+    box-shadow:0 6px 0 rgba(0,0,0,.08);
+  }
+  .topbar .home-btn{
+    background:var(--azul); color:#fff; border:none; border-radius:16px;
+    font-size:22px; padding:8px 14px; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #2f6fd0;
+  }
+  .topbar .home-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #2f6fd0;}
+  .stars{font-size:24px; font-weight:bold; color:var(--laranja); display:flex; align-items:center; gap:6px;}
+  .stars .num{background:var(--amarelo); border-radius:14px; padding:2px 12px; box-shadow:0 3px 0 #d9a800;}
+
+  .hero{
+    text-align:center; background:#fff; border-radius:30px; padding:22px 18px;
+    box-shadow:0 8px 0 rgba(0,0,0,.08); margin-bottom:18px;
+  }
+  .hero h1{font-size:32px; margin:6px 0; color:var(--verde); line-height:1.2;}
+  .hero p{font-size:18px; margin:4px 0; color:#666;}
+  .mascote{font-size:78px; display:inline-block; animation:flutua 2.5s ease-in-out infinite;}
+  @keyframes flutua{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-14px) rotate(3deg);}}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .card{
+    border:none; border-radius:26px; padding:16px 10px; cursor:pointer;
+    color:#fff; font-size:19px; font-weight:bold; text-align:center;
+    box-shadow:0 7px 0 rgba(0,0,0,.18); transition:transform .08s;
+    display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.15;
+  }
+  .card:active{transform:translateY(4px); box-shadow:0 3px 0 rgba(0,0,0,.18);}
+  .card .ico{font-size:46px;}
+  .c1{background:var(--rosa);} .c2{background:var(--azul);} .c3{background:var(--verde);}
+  .c4{background:var(--laranja);} .c5{background:var(--roxo);} .c6{background:var(--vermelho);}
+  .c7{background:#19c3b1;} .c8{background:#f76eb0;} .c9{background:#7c83ff;}
+
+  .game{
+    background:#fff; border-radius:30px; padding:18px; box-shadow:0 8px 0 rgba(0,0,0,.08);
+    text-align:center;
+  }
+  .game-title{font-size:24px; color:var(--verde); margin:0 0 4px;}
+  .progress{font-size:16px; color:#999; margin-bottom:10px;}
+  .question{
+    font-size:23px; font-weight:bold; color:#3a3a55; margin:6px 0 14px; line-height:1.3;
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  }
+  .speak-btn{
+    background:var(--amarelo); border:none; border-radius:50%; width:54px; height:54px;
+    font-size:28px; cursor:pointer; box-shadow:0 4px 0 #d9a800; flex:0 0 auto;
+  }
+  .speak-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #d9a800;}
+  .speak-btn.playing{animation:pulse .7s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .stage{
+    min-height:120px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:10px; margin:10px auto 18px; padding:16px;
+    background:linear-gradient(160deg,#f0fff6,#eef5ff); border-radius:22px; border:4px dashed #cdeedd;
+    flex-direction:column;
+  }
+  .obj{font-size:80px; animation:pop .35s ease; line-height:1;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+  .stage .cardtxt{font-size:22px; font-weight:bold; color:#2f6fd0; margin-top:4px; line-height:1.3;}
+  .stage .quote{font-size:21px; font-weight:bold; color:#a06cd5; font-style:italic; max-width:420px;}
+
+  .options{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));}
+  .opt{
+    border:none; border-radius:22px; padding:16px 10px; font-size:24px; font-weight:bold;
+    cursor:pointer; background:var(--azul); color:#fff; box-shadow:0 6px 0 #2f6fd0;
+    min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    word-break:break-word; line-height:1.15;
+  }
+  .opt .cap{font-size:18px;}
+  .opt-colors .opt{font-size:20px;}
+  .opt:active{transform:translateY(3px); box-shadow:0 3px 0 #2f6fd0;}
+  .opt.big{font-size:44px;}
+  .opt.ok{background:var(--verde)!important; box-shadow:0 6px 0 #3f9c4f!important; animation:tada .5s;}
+  .opt.no{background:#cfcfe0!important; box-shadow:0 6px 0 #a0a0c0!important; opacity:.7;}
+  @keyframes tada{0%{transform:scale(1);}30%{transform:scale(1.18) rotate(-4deg);}60%{transform:scale(1.1) rotate(4deg);}100%{transform:scale(1);}}
+
+  .opt-colors .opt:nth-child(1){background:var(--rosa); box-shadow:0 6px 0 #d44d7c;}
+  .opt-colors .opt:nth-child(2){background:var(--verde); box-shadow:0 6px 0 #3f9c4f;}
+  .opt-colors .opt:nth-child(3){background:var(--laranja); box-shadow:0 6px 0 #d96d2e;}
+  .opt-colors .opt:nth-child(4){background:var(--roxo); box-shadow:0 6px 0 #7a4db0;}
+
+  .feedback{font-size:26px; font-weight:bold; min-height:40px; margin-top:12px;}
+  .feedback.good{color:var(--verde);} .feedback.bad{color:var(--laranja);}
+
+  .next-btn{
+    margin-top:14px; background:var(--verde); color:#fff; border:none; border-radius:22px;
+    font-size:24px; font-weight:bold; padding:14px 34px; cursor:pointer; box-shadow:0 6px 0 #3f9c4f;
+  }
+  .next-btn:active{transform:translateY(3px); box-shadow:0 3px 0 #3f9c4f;}
+
+  #splash{
+    position:fixed; inset:0; background:linear-gradient(160deg,var(--verde),var(--azul));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; text-align:center; z-index:50; cursor:pointer; padding:20px;
+  }
+  #splash h1{font-size:34px; margin:10px;}
+  #splash .big{font-size:100px; animation:flutua 2.5s infinite;}
+  #splash .play{
+    margin-top:24px; background:var(--amarelo); color:#5a4500; border:none; border-radius:30px;
+    font-size:30px; font-weight:bold; padding:18px 44px; box-shadow:0 8px 0 #d9a800; cursor:pointer;
+  }
+
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:40;}
+  .win{text-align:center; padding:20px;}
+  .win .trophy{font-size:90px; animation:tada 1s;}
+
+  @media(max-width:480px){
+    .hero h1{font-size:26px;} .question{font-size:20px;} .card{font-size:17px;}
+    .obj{font-size:66px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="big">🔬</div>
+  <h1>Ciências<br>Divertida!</h1>
+  <p style="font-size:20px;max-width:340px;">Vamos aprender sobre o corpo, os sentidos e os cuidados para a prova! 🎉<br>Toque no botão para começar.</p>
+  <button class="play" id="startBtn">▶ COMEÇAR</button>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   CIÊNCIAS DIVERTIDA — 1º ano (livro Bernoulli, Cap. 2 e 3)
+   Módulo 3 do projeto. Mesma estrutura dos apps de Matemática
+   e Português:
+   - narração por arquivos pré-gravados (pasta /audio) -> funciona
+     em qualquer aparelho, online ou offline;
+   - estrelas, confete, sons de efeito; tudo jogável sozinho.
+   Conteúdos: cinco sentidos e seus órgãos; partes do corpo
+   (cabeça, tronco, membros); membros superiores/inferiores;
+   órgãos internos; períodos do dia; dias da semana; higiene;
+   alimentação saudável.
+   ============================================================ */
+
+const App = document.getElementById('app');
+let stars = parseInt(localStorage.getItem('vitor_ci_stars')||'0',10);
+
+/* ============================================================
+   VOCABULÁRIO DE VOZ (chave -> texto falado).
+   Fonte da verdade para o gerar-audios.py (gera audio/<chave>.mp3).
+   ============================================================ */
+const VOICE = {
+  /* navegação e feedback */
+  greet:"Olá! Bem-vindo aos jogos de Ciências! Escolha uma brincadeira para começar.",
+  test:"Olá! Você está me ouvindo? Vamos aprender sobre o corpo humano!",
+  win:"Parabéns! Você conseguiu! Que orgulho de você!",
+  choose:"As respostas são:",
+  ok1:"Muito bem!", ok2:"Isso aí!", ok3:"Você acertou!",
+  ok4:"Boa demais!", ok5:"Mandou bem!", ok6:"Perfeito!",
+  no1:"Quase! Tenta outra.", no2:"Hmm, tenta de novo.", no3:"Não foi essa, tenta outra.",
+
+  /* 1. CINCO SENTIDOS */
+  q_sent:"Qual órgão do corpo nós usamos para",
+  ac_ver:"ver as coisas ao nosso redor?",
+  ac_ouvir:"ouvir os sons e as músicas?",
+  ac_cheirar:"sentir os cheiros, como o de um bolo?",
+  ac_gosto:"sentir o gosto e o sabor da comida?",
+  ac_tato:"sentir a temperatura e o toque das coisas?",
+  q_sent_qual:"Qual é o sentido que usamos com este órgão?",
+  o_olhos:"os olhos", o_orelhas:"as orelhas", o_nariz:"o nariz", o_lingua:"a língua", o_pele:"a pele",
+  s_visao:"a visão", s_audicao:"a audição", s_olfato:"o olfato", s_paladar:"o paladar", s_tato:"o tato",
+
+  /* 2. PARTES DO CORPO */
+  q_parte:"A que parte do corpo isso pertence: cabeça, tronco ou membros?",
+  it_olhos:"os olhos", it_boca:"a boca", it_nariz:"o nariz", it_orelha:"a orelha",
+  it_cerebro:"o cérebro", it_cabelo:"os cabelos",
+  it_pescoco:"o pescoço", it_torax:"o tórax", it_abdome:"o abdome", it_costas:"as costas", it_barriga:"a barriga",
+  it_braco:"o braço", it_perna:"a perna", it_mao:"a mão", it_pe:"o pé",
+  it_joelho:"o joelho", it_cotovelo:"o cotovelo", it_dedos:"os dedos",
+  pt_cabeca:"a cabeça", pt_tronco:"o tronco", pt_membros:"os membros",
+
+  /* 3. BRAÇOS E PERNAS (membros) */
+  q_membro:"Essa parte do corpo é um membro superior, do braço, ou inferior, da perna?",
+  m_ombro:"o ombro", m_braco:"o braço", m_antebraco:"o antebraço", m_cotovelo:"o cotovelo",
+  m_punho:"o punho", m_mao:"a mão", m_unha:"a unha",
+  m_quadril:"o quadril", m_coxa:"a coxa", m_joelho:"o joelho", m_perna:"a perna",
+  m_tornozelo:"o tornozelo", m_pe:"o pé",
+  sup:"membro superior", inf:"membro inferior",
+
+  /* 4. POR DENTRO DO CORPO (órgãos) */
+  q_orgao_local:"Onde fica esse órgão: no tórax ou no abdome?",
+  q_orgao_func:"Qual órgão faz este trabalho?",
+  og_coracao:"o coração", og_pulmoes:"os pulmões", og_estomago:"o estômago",
+  og_intestino:"o intestino", og_rins:"os rins", og_bexiga:"a bexiga",
+  fn_coracao:"Eu envio o sangue para todas as partes do corpo.",
+  fn_pulmoes:"Eu pego o oxigênio do ar que respiramos.",
+  fn_estomago:"Eu recebo os alimentos e bebidas que engolimos.",
+  fn_intestino:"Eu absorvo os nutrientes da comida.",
+  fn_rins:"Eu funciono como um filtro e faço a urina.",
+  fn_bexiga:"Eu guardo a urina até você ir ao banheiro.",
+  loc_torax:"no tórax", loc_abdome:"no abdome",
+
+  /* 5. DIA E NOITE */
+  q_periodo:"Que período do dia é este?",
+  ct_manha:"O sol está nascendo e o dia começa.",
+  ct_tarde:"Já passou do meio-dia e o dia continua claro.",
+  ct_noite:"O céu está escuro, com a lua e as estrelas.",
+  pe_manha:"a manhã", pe_tarde:"a tarde", pe_noite:"a noite",
+  q_ceu_noite:"O que aparece no céu durante a noite?",
+  q_ceu_dia:"O que ilumina o céu durante o dia?",
+  ce_lua:"a lua e as estrelas", ce_sol:"o sol",
+  q_sol_nasce:"Em que período do dia o sol nasce?",
+  q_lua_estrelas:"Em que período do dia vemos a lua e as estrelas?",
+
+  /* 6. DIAS DA SEMANA */
+  q_semana_qtd:"Quantos dias tem uma semana?",
+  q_semana_depois:"Qual dia da semana vem logo depois deste?",
+  q_semana_antes:"Qual dia da semana vem logo antes deste?",
+  w_domingo:"domingo", w_segunda:"segunda-feira", w_terca:"terça-feira",
+  w_quarta:"quarta-feira", w_quinta:"quinta-feira", w_sexta:"sexta-feira", w_sabado:"sábado",
+  nd5:"cinco dias", nd7:"sete dias", nd10:"dez dias",
+
+  /* 7. HIGIENE */
+  q_hig_dente:"O que usamos para limpar os dentes?",
+  q_hig_cabelo:"O que usamos para lavar os cabelos no banho?",
+  q_hig_pele:"O que usamos para limpar a pele no banho?",
+  q_hig_maos:"O que devemos fazer sempre antes de comer?",
+  q_hig_carie:"Como se chama o buraquinho no dente causado pelas bactérias?",
+  q_hig_banho:"De quanto em quanto tempo devemos tomar banho?",
+  q_hig_unha:"Como devemos manter as nossas unhas?",
+  h_escova:"a escova de dente com pasta", h_xampu:"o xampu", h_sabonete:"o sabonete",
+  h_lavar_maos:"lavar bem as mãos", h_carie:"a cárie", h_todos_dias:"todos os dias",
+  h_lapis:"o lápis", h_bola:"a bola de futebol", h_refri:"o refrigerante",
+  h_nada:"não fazer nada", h_correr:"sair correndo", h_gripe:"a gripe", h_espirro:"o espirro",
+  h_uma_semana:"uma vez por semana", h_uma_mes:"uma vez por mês",
+  h_limpas_cortadas:"limpas e cortadas", h_sujas_grandes:"sujas e compridas", h_pintadas:"cheias de tinta",
+
+  /* 8. ALIMENTAÇÃO */
+  q_alim_tipo:"Este alimento é saudável?",
+  q_alim_refeicao:"Qual é a refeição mais importante do dia, para começar bem a manhã?",
+  f_maca:"a maçã", f_banana:"a banana", f_cenoura:"a cenoura", f_brocolis:"o brócolis",
+  f_laranja:"a laranja", f_castanha:"as castanhas",
+  f_pirulito:"o pirulito", f_bala:"a bala", f_refri:"o refrigerante",
+  f_batata:"a batata frita", f_rosquinha:"a rosquinha",
+  al_sim:"Sim, é um alimento saudável.", al_nao:"Não, é pouco saudável.",
+  exp_saudavel:"Isso! Frutas, verduras e castanhas são bem saudáveis!",
+  exp_ultra:"Isso! Doces e refrigerantes têm muito açúcar. Coma pouquinho!",
+  r_cafe:"o café da manhã", r_almoco:"o almoço", r_jantar:"o jantar",
+};
+
+/* ============================================================
+   PLAYER DE ÁUDIO (clipes em sequência) — um único <audio>
+   destravado no 1º toque (compatível com iPhone/iPad).
+   ============================================================ */
+const AUDIO_DIR='audio/', AUDIO_EXT='.mp3';
+const player=new Audio();
+player.preload='auto';
+let playToken=0, audioOn=true;
+function stopAudio(){ playToken++; try{player.pause();}catch(e){} setPlayingBadge(false); }
+function playKeys(keys){
+  if(!audioOn) return;
+  stopAudio();
+  const list=[].concat(...keys.map(k=>Array.isArray(k)?k:[k])).filter(Boolean);
+  if(!list.length) return;
+  const my=playToken; let i=0;
+  setPlayingBadge(true);
+  const next=()=>{
+    if(my!==playToken) return;
+    if(i>=list.length){ setPlayingBadge(false); return; }
+    const key=list[i++];
+    player.src=AUDIO_DIR+key+AUDIO_EXT;
+    player.onended=next;
+    player.onerror=()=>{ setTimeout(next,10); };
+    const p=player.play();
+    if(p&&p.catch) p.catch(()=>setTimeout(next,10));
+  };
+  next();
+}
+function setPlayingBadge(on){
+  const b=document.getElementById('qspeak'); if(b) b.classList.toggle('playing',on);
+}
+function unlockAudio(){
+  try{ player.muted=true; player.src=AUDIO_DIR+'greet'+AUDIO_EXT;
+       const p=player.play();
+       if(p&&p.then) p.then(()=>{player.pause();player.currentTime=0;player.muted=false;})
+                      .catch(()=>{player.muted=false;});
+       else {player.pause();player.muted=false;}
+  }catch(e){ player.muted=false; }
+}
+
+/* ===== SONS DE EFEITO (Web Audio) ===== */
+let actx=null;
+function initAudio(){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }catch(e){} }
+function tone(freq,start,dur,type='sine',vol=0.2){
+  if(!actx) return;
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+  const t=actx.currentTime+start;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function sndClick(){ initAudio(); tone(540,0,0.07,'triangle',0.14); }
+function sndRight(){ initAudio(); [523,659,784,1047].forEach((f,i)=>tone(f,i*0.09,0.25,'triangle',0.18)); }
+function sndWrong(){ initAudio(); tone(300,0,0.18,'sine',0.13); tone(220,0.12,0.25,'sine',0.13); }
+function sndWin(){ initAudio(); [523,659,784,1047,784,1047,1319].forEach((f,i)=>tone(f,i*0.12,0.3,'triangle',0.2)); }
+
+/* ===== UTILIDADES ===== */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rint(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+const OK_KEYS=['ok1','ok2','ok3','ok4','ok5','ok6'], NO_KEYS=['no1','no2','no3'];
+function emo(e,size){ return '<span class="obj" style="font-size:'+(size||80)+'px">'+e+'</span>'; }
+
+function updateStars(){ const el=document.getElementById('starNum'); if(el) el.textContent=stars; localStorage.setItem('vitor_ci_stars',stars); }
+function addStar(n=1){ stars+=n; updateStars(); }
+
+/* ---------------- CONFETE ---------------- */
+const cv=document.getElementById('confetti'), cx=cv.getContext('2d');
+let confs=[];
+function resizeCv(){cv.width=innerWidth;cv.height=innerHeight;}
+addEventListener('resize',resizeCv); resizeCv();
+function burst(){
+  const cols=['#ff6b9d','#ffd93d','#6bcB77','#4d96ff','#a06cd5','#ff924c'];
+  for(let i=0;i<70;i++){confs.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-0.5)*14,vy:Math.random()*-12-3,c:pick(cols),s:rint(7,14),r:Math.random()*6,vr:(Math.random()-.5)*.4});}
+}
+function loopConf(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  confs.forEach(p=>{p.vy+=0.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s);cx.restore();});
+  confs=confs.filter(p=>p.y<cv.height+30);
+  requestAnimationFrame(loopConf);
+}
+loopConf();
+
+/* ===== SHELL ===== */
+function shell(inner){
+  App.innerHTML=`
+    <div class="topbar">
+      <button class="home-btn" onclick="sndClick();goHome()">🏠</button>
+      <div class="stars">⭐ <span class="num" id="starNum">${stars}</span></div>
+    </div>
+    ${inner}`;
+}
+
+/* ===== MENU ===== */
+const GAMES=[
+  {id:'sentidos',    ico:'👀', nome:'Cinco Sentidos',  sub:'Ver, ouvir, cheirar...', cls:'c1'},
+  {id:'partes',      ico:'🧍', nome:'Partes do Corpo', sub:'Cabeça, tronco, membros', cls:'c2'},
+  {id:'membros',     ico:'💪', nome:'Braços e Pernas', sub:'Superior ou inferior',    cls:'c3'},
+  {id:'orgaos',      ico:'❤️', nome:'Por Dentro',      sub:'Órgãos do corpo',         cls:'c4'},
+  {id:'dianoite',    ico:'🌞', nome:'Dia e Noite',     sub:'Manhã, tarde, noite',     cls:'c5'},
+  {id:'semana',      ico:'📅', nome:'Dias da Semana',  sub:'Os 7 dias',               cls:'c6'},
+  {id:'higiene',     ico:'🧼', nome:'Higiene',         sub:'Cuidar do corpo',         cls:'c7'},
+  {id:'alimentacao', ico:'🥗', nome:'Alimentação',     sub:'Comida saudável',         cls:'c8'},
+];
+function goHome(silent){
+  stopAudio();
+  shell(`
+    <div class="hero">
+      <div class="mascote">🔬</div>
+      <h1>Olá!</h1>
+      <p>Escolha uma brincadeira 👇</p>
+      <button onclick="testSound()" style="margin-top:6px;background:var(--amarelo);color:#5a4500;border:none;border-radius:18px;padding:9px 18px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #d9a800;">🔈 Testar som</button>
+    </div>
+    <div class="grid">
+      ${GAMES.map(g=>`<button class="card ${g.cls}" onclick="sndClick();startGame('${g.id}')">
+        <span class="ico">${g.ico}</span><span>${g.nome}</span>
+        <span style="font-size:13px;font-weight:normal;opacity:.9">${g.sub}</span>
+      </button>`).join('')}
+    </div>
+    <p style="text-align:center;color:#7a6;margin-top:18px;font-size:14px;">Feito com 💜 para estudar pra prova</p>
+  `);
+  if(!silent) setTimeout(()=>playKeys(['greet']),250);
+}
+function testSound(){ initAudio(); sndClick(); playKeys(['test']); }
+
+/* ===== MOTOR DE RODADAS ===== */
+let current=null, locked=false;
+function startGame(id){
+  const rounds=BUILDERS[id]();
+  current={id, title:GAMES.find(g=>g.id===id).nome, rounds, idx:0};
+  renderRound();
+}
+function gameFrame(c,r,bodyHtml){
+  shell(`
+    <div class="game">
+      <h2 class="game-title">${GAMES.find(g=>g.id===c.id).ico} ${c.title}</h2>
+      <div class="progress">Pergunta ${c.idx+1} de ${c.rounds.length}</div>
+      <div class="question">
+        <button class="speak-btn" id="qspeak" onclick="sndClick();speakRound()">🔊</button>
+        <span>${r.q}</span>
+      </div>
+      <div class="stage">${r.stage||''}</div>
+      ${bodyHtml}
+      <div style="font-size:14px;color:#aaa;margin-top:6px;">👆 Toque para responder. Toque no 🔊 para ouvir de novo.</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+}
+function renderRound(){
+  locked=false;
+  const c=current, r=c.rounds[c.idx];
+  gameFrame(c,r,`<div class="options ${r.colorOpts?'opt-colors':''}" id="opts"></div>`);
+  const shown=shuffle(r.options);
+  const opts=document.getElementById('opts');
+  shown.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'+(o.big?' big':'');
+    b.innerHTML=o.label;
+    b.onclick=()=>answer(b,o);
+    opts.appendChild(b);
+  });
+  window._roundKeys=[].concat(r.audio||[], ['choose'], shown.map(o=>o.aud));
+  setTimeout(()=>speakRound(),400);
+}
+function speakRound(){ playKeys(window._roundKeys||[]); }
+
+function showNextButton(){
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=null);
+  const nb=document.createElement('button');
+  nb.className='next-btn';
+  const last=current.idx>=current.rounds.length-1;
+  nb.textContent=last?'🏆 Terminar':'Próxima ➡';
+  nb.onclick=()=>{sndClick();locked=false;if(last){winScreen();}else{current.idx++;renderRound();}};
+  document.querySelector('.game').appendChild(nb);
+}
+function correctFlow(extraAudio){
+  locked=true; sndRight(); burst(); addStar(1);
+  const fb=document.getElementById('fb'); if(fb){fb.className='feedback good'; fb.textContent='⭐ Muito bem!';}
+  playKeys(extraAudio.filter(Boolean));
+  showNextButton();
+}
+function answer(btn,opt){
+  if(locked) return;
+  if(opt.correct){
+    btn.classList.add('ok');
+    document.querySelectorAll('.opt').forEach(b=>{if(b!==btn)b.classList.add('no');});
+    correctFlow([opt.aud, pick(OK_KEYS), opt.expAud]);
+  }else{
+    btn.classList.add('no'); btn.onclick=null;
+    sndWrong();
+    const fb=document.getElementById('fb'); fb.className='feedback bad'; fb.textContent='🤔 Tenta de novo!';
+    playKeys([opt.aud, pick(NO_KEYS)].filter(Boolean));
+  }
+}
+
+function winScreen(){
+  sndWin(); burst(); setTimeout(burst,400); setTimeout(burst,800);
+  const c=current;
+  shell(`
+    <div class="game win">
+      <div class="trophy">🏆</div>
+      <h2 class="game-title">Parabéns!</h2>
+      <p style="font-size:22px;">Você ganhou <b>${c.rounds.length}</b> estrelas! ⭐</p>
+      <p style="font-size:18px;color:#888;">Você está ficando craque em <b>${c.title}</b>!</p>
+      <button class="next-btn" onclick="sndClick();startGame('${c.id}')">🔁 Jogar de novo</button>
+      <br>
+      <button class="next-btn" style="background:var(--azul);box-shadow:0 6px 0 #2f6fd0;margin-top:10px;" onclick="sndClick();goHome()">🏠 Escolher outro</button>
+    </div>
+  `);
+  setTimeout(()=>playKeys(['win']),250);
+}
+
+/* ============================================================
+   BASE DE DADOS DO CONTEÚDO
+   ============================================================ */
+
+/* ---- 1. CINCO SENTIDOS ---- */
+const SENTIDOS=[
+  {org:'o_olhos',   sent:'s_visao',    oe:'👀', sc:'🌈', acAud:'ac_ver',     qA:'Qual órgão usamos para <b>VER</b> as coisas?'},
+  {org:'o_orelhas', sent:'s_audicao',  oe:'👂', sc:'🎶', acAud:'ac_ouvir',   qA:'Qual órgão usamos para <b>OUVIR</b> os sons?'},
+  {org:'o_nariz',   sent:'s_olfato',   oe:'👃', sc:'🌸', acAud:'ac_cheirar', qA:'Qual órgão usamos para <b>SENTIR O CHEIRO</b>?'},
+  {org:'o_lingua',  sent:'s_paladar',  oe:'👅', sc:'🍫', acAud:'ac_gosto',   qA:'Qual órgão sente o <b>GOSTO</b> da comida?'},
+  {org:'o_pele',    sent:'s_tato',     oe:'✋', sc:'🧊', acAud:'ac_tato',    qA:'Qual órgão sente o <b>TOQUE</b> e a temperatura?'},
+];
+const ORG_LBL={o_olhos:'👀<span class="cap">Olhos</span>', o_orelhas:'👂<span class="cap">Orelhas</span>', o_nariz:'👃<span class="cap">Nariz</span>', o_lingua:'👅<span class="cap">Língua</span>', o_pele:'✋<span class="cap">Pele</span>'};
+const SENT_LBL={s_visao:'👀<span class="cap">Visão</span>', s_audicao:'👂<span class="cap">Audição</span>', s_olfato:'👃<span class="cap">Olfato</span>', s_paladar:'👅<span class="cap">Paladar</span>', s_tato:'✋<span class="cap">Tato</span>'};
+
+/* ---- 2. PARTES DO CORPO ---- */
+const CORPO=[
+  {it:'it_olhos',   nome:'OS OLHOS',   e:'👁️', pt:'pt_cabeca'},
+  {it:'it_boca',    nome:'A BOCA',     e:'👄', pt:'pt_cabeca'},
+  {it:'it_nariz',   nome:'O NARIZ',    e:'👃', pt:'pt_cabeca'},
+  {it:'it_orelha',  nome:'A ORELHA',   e:'👂', pt:'pt_cabeca'},
+  {it:'it_cerebro', nome:'O CÉREBRO',  e:'🧠', pt:'pt_cabeca'},
+  {it:'it_cabelo',  nome:'OS CABELOS', e:'💇', pt:'pt_cabeca'},
+  {it:'it_pescoco', nome:'O PESCOÇO',  e:'🧣', pt:'pt_tronco'},
+  {it:'it_torax',   nome:'O TÓRAX',    e:'🫁', pt:'pt_tronco'},
+  {it:'it_abdome',  nome:'O ABDOME',   e:'🍽️', pt:'pt_tronco'},
+  {it:'it_costas',  nome:'AS COSTAS',  e:'🔙', pt:'pt_tronco'},
+  {it:'it_barriga', nome:'A BARRIGA',  e:'🤰', pt:'pt_tronco'},
+  {it:'it_braco',   nome:'O BRAÇO',    e:'💪', pt:'pt_membros'},
+  {it:'it_perna',   nome:'A PERNA',    e:'🦵', pt:'pt_membros'},
+  {it:'it_mao',     nome:'A MÃO',      e:'✋', pt:'pt_membros'},
+  {it:'it_pe',      nome:'O PÉ',       e:'🦶', pt:'pt_membros'},
+  {it:'it_joelho',  nome:'O JOELHO',   e:'🦵', pt:'pt_membros'},
+  {it:'it_cotovelo',nome:'O COTOVELO', e:'💪', pt:'pt_membros'},
+  {it:'it_dedos',   nome:'OS DEDOS',   e:'🖐️', pt:'pt_membros'},
+];
+const PARTE_LBL={pt_cabeca:'🧠<span class="cap">Cabeça</span>', pt_tronco:'👕<span class="cap">Tronco</span>', pt_membros:'💪<span class="cap">Membros</span>'};
+
+/* ---- 3. BRAÇOS E PERNAS (membros) ---- */
+const MEMBROS=[
+  {it:'m_ombro',    nome:'O OMBRO',      tp:'sup', e:'🙋'},
+  {it:'m_braco',    nome:'O BRAÇO',      tp:'sup', e:'💪'},
+  {it:'m_antebraco',nome:'O ANTEBRAÇO',  tp:'sup', e:'💪'},
+  {it:'m_cotovelo', nome:'O COTOVELO',   tp:'sup', e:'💪'},
+  {it:'m_punho',    nome:'O PUNHO',      tp:'sup', e:'🤛'},
+  {it:'m_mao',      nome:'A MÃO',        tp:'sup', e:'✋'},
+  {it:'m_unha',     nome:'A UNHA',       tp:'sup', e:'💅'},
+  {it:'m_quadril',  nome:'O QUADRIL',    tp:'inf', e:'🕺'},
+  {it:'m_coxa',     nome:'A COXA',       tp:'inf', e:'🦵'},
+  {it:'m_joelho',   nome:'O JOELHO',     tp:'inf', e:'🦵'},
+  {it:'m_perna',    nome:'A PERNA',      tp:'inf', e:'🦵'},
+  {it:'m_tornozelo',nome:'O TORNOZELO',  tp:'inf', e:'🦶'},
+  {it:'m_pe',       nome:'O PÉ',         tp:'inf', e:'🦶'},
+];
+const MEMBRO_LBL={sup:'💪<span class="cap">Membro superior<br>(braço)</span>', inf:'🦵<span class="cap">Membro inferior<br>(perna)</span>'};
+
+/* ---- 4. POR DENTRO DO CORPO (órgãos) ---- */
+const ORGAOS=[
+  {it:'og_coracao',  nome:'O CORAÇÃO',  e:'❤️', loc:'loc_torax',  fn:'fn_coracao',  fnTxt:'Eu envio o SANGUE para todo o corpo.'},
+  {it:'og_pulmoes',  nome:'OS PULMÕES', e:'🫁', loc:'loc_torax',  fn:'fn_pulmoes',  fnTxt:'Eu pego o AR que respiramos.'},
+  {it:'og_estomago', nome:'O ESTÔMAGO', e:'🍽️', loc:'loc_abdome', fn:'fn_estomago', fnTxt:'Eu recebo os ALIMENTOS que comemos.'},
+  {it:'og_intestino',nome:'O INTESTINO',e:'🌀', loc:'loc_abdome', fn:'fn_intestino',fnTxt:'Eu absorvo os NUTRIENTES da comida.'},
+  {it:'og_rins',     nome:'OS RINS',    e:'🫘', loc:'loc_abdome', fn:'fn_rins',     fnTxt:'Eu filtro e faço a URINA.'},
+  {it:'og_bexiga',   nome:'A BEXIGA',   e:'💧', loc:'loc_abdome', fn:'fn_bexiga',   fnTxt:'Eu guardo a URINA.'},
+];
+const LOC_LBL={loc_torax:'🫁<span class="cap">No tórax<br>(peito)</span>', loc_abdome:'🍽️<span class="cap">No abdome<br>(barriga)</span>'};
+const OG_NAME_LBL={og_coracao:'❤️<span class="cap">Coração</span>', og_pulmoes:'🫁<span class="cap">Pulmões</span>', og_estomago:'🍽️<span class="cap">Estômago</span>', og_intestino:'🌀<span class="cap">Intestino</span>', og_rins:'🫘<span class="cap">Rins</span>', og_bexiga:'💧<span class="cap">Bexiga</span>'};
+
+/* ---- 5. DIA E NOITE ---- */
+const PERIODOS=[
+  {p:'pe_manha', ct:'ct_manha', sc:'🌅', txt:'O sol está nascendo e o dia começa'},
+  {p:'pe_tarde', ct:'ct_tarde', sc:'🌤️', txt:'Já passou do meio-dia, o dia está claro'},
+  {p:'pe_noite', ct:'ct_noite', sc:'🌙', txt:'O céu está escuro, com a lua e as estrelas'},
+];
+const PE_LBL={pe_manha:'🌅<span class="cap">Manhã</span>', pe_tarde:'🌤️<span class="cap">Tarde</span>', pe_noite:'🌙<span class="cap">Noite</span>'};
+
+/* ---- 6. DIAS DA SEMANA ---- */
+const DIAS_ORD=['w_domingo','w_segunda','w_terca','w_quarta','w_quinta','w_sexta','w_sabado'];
+const DIA_LBL={w_domingo:'Domingo', w_segunda:'Segunda', w_terca:'Terça', w_quarta:'Quarta', w_quinta:'Quinta', w_sexta:'Sexta', w_sabado:'Sábado'};
+
+/* ---- 7. HIGIENE ---- */
+const HIGIENE=[
+  {q:'O que usamos para limpar os <b>DENTES</b>? 🦷', qa:'q_hig_dente', c:'h_escova', d:['h_sabonete','h_bola']},
+  {q:'O que usamos para lavar os <b>CABELOS</b>? 🧴', qa:'q_hig_cabelo', c:'h_xampu', d:['h_sabonete','h_lapis']},
+  {q:'O que usamos para limpar a <b>PELE</b> no banho? 🧼', qa:'q_hig_pele', c:'h_sabonete', d:['h_xampu','h_refri']},
+  {q:'O que devemos fazer sempre <b>ANTES DE COMER</b>? 🍽️', qa:'q_hig_maos', c:'h_lavar_maos', d:['h_nada','h_correr']},
+  {q:'Como se chama o buraquinho no dente feito pelas <b>bactérias</b>? 🦠', qa:'q_hig_carie', c:'h_carie', d:['h_gripe','h_espirro']},
+  {q:'De quanto em quanto tempo devemos tomar <b>BANHO</b>? 🚿', qa:'q_hig_banho', c:'h_todos_dias', d:['h_uma_semana','h_uma_mes']},
+  {q:'Como devemos manter as nossas <b>UNHAS</b>? 💅', qa:'q_hig_unha', c:'h_limpas_cortadas', d:['h_sujas_grandes','h_pintadas']},
+];
+const HIG_LBL={
+  h_escova:'🪥<span class="cap">Escova e pasta</span>', h_xampu:'🧴<span class="cap">Xampu</span>', h_sabonete:'🧼<span class="cap">Sabonete</span>',
+  h_lavar_maos:'🧼<span class="cap">Lavar as mãos</span>', h_carie:'🦷<span class="cap">Cárie</span>', h_todos_dias:'📅<span class="cap">Todos os dias</span>',
+  h_lapis:'✏️<span class="cap">O lápis</span>', h_bola:'⚽<span class="cap">A bola</span>', h_refri:'🥤<span class="cap">Refrigerante</span>',
+  h_nada:'🙅<span class="cap">Nada</span>', h_correr:'🏃<span class="cap">Sair correndo</span>',
+  h_gripe:'🤧<span class="cap">A gripe</span>', h_espirro:'😤<span class="cap">O espirro</span>',
+  h_uma_semana:'📆<span class="cap">1 vez por semana</span>', h_uma_mes:'🗓️<span class="cap">1 vez por mês</span>',
+  h_limpas_cortadas:'✨<span class="cap">Limpas e cortadas</span>', h_sujas_grandes:'😬<span class="cap">Sujas e compridas</span>', h_pintadas:'🎨<span class="cap">Cheias de tinta</span>',
+};
+
+/* ---- 8. ALIMENTAÇÃO ---- */
+const ALIMENTOS=[
+  {it:'f_maca',     nome:'A MAÇÃ',          e:'🍎', saud:true},
+  {it:'f_banana',   nome:'A BANANA',        e:'🍌', saud:true},
+  {it:'f_cenoura',  nome:'A CENOURA',       e:'🥕', saud:true},
+  {it:'f_brocolis', nome:'O BRÓCOLIS',      e:'🥦', saud:true},
+  {it:'f_laranja',  nome:'A LARANJA',       e:'🍊', saud:true},
+  {it:'f_castanha', nome:'AS CASTANHAS',    e:'🥜', saud:true},
+  {it:'f_pirulito', nome:'O PIRULITO',      e:'🍭', saud:false},
+  {it:'f_bala',     nome:'A BALA',          e:'🍬', saud:false},
+  {it:'f_refri',    nome:'O REFRIGERANTE',  e:'🥤', saud:false},
+  {it:'f_batata',   nome:'A BATATA FRITA',  e:'🍟', saud:false},
+  {it:'f_rosquinha',nome:'A ROSQUINHA',     e:'🍩', saud:false},
+];
+const AL_LBL={al_sim:'✅<span class="cap">Sim, é saudável</span>', al_nao:'🍭<span class="cap">Não, comer pouco</span>'};
+const REF_LBL={r_cafe:'🌅<span class="cap">Café da manhã</span>', r_almoco:'🍽️<span class="cap">Almoço</span>', r_jantar:'🌙<span class="cap">Jantar</span>'};
+
+/* helper para montar opções a partir de um mapa de rótulos */
+function mkOpts(correct, all, lblMap, extra){
+  return shuffle(all).map(k=>{
+    const o={label:lblMap[k], aud:k, correct:k===correct};
+    if(extra) Object.assign(o, extra(k));
+    return o;
+  });
+}
+
+/* ============================================================
+   GERADORES DE CONTEÚDO (8 jogos)
+   ============================================================ */
+const BUILDERS={
+  /* 1. CINCO SENTIDOS */
+  sentidos(){
+    const A=SENTIDOS.map(it=>({type:'A',it}));
+    const B=SENTIDOS.map(it=>({type:'B',it}));
+    return shuffle([...A,...B]).slice(0,7).map(({type,it})=>{
+      if(type==='A'){
+        const opts=mkOpts(it.org, Object.keys(ORG_LBL), ORG_LBL);
+        return { q:it.qA, audio:['q_sent',it.acAud], stage:emo(it.sc,88), colorOpts:false, options:opts };
+      }else{
+        const opts=mkOpts(it.sent, Object.keys(SENT_LBL), SENT_LBL);
+        return { q:'Qual é o <b>sentido</b> desse órgão? 🤔', audio:[it.org,'q_sent_qual'], stage:emo(it.oe,88), colorOpts:false, options:opts };
+      }
+    });
+  },
+
+  /* 2. PARTES DO CORPO */
+  partes(){
+    return shuffle(CORPO).slice(0,8).map(it=>{
+      const opts=mkOpts(it.pt, ['pt_cabeca','pt_tronco','pt_membros'], PARTE_LBL);
+      return { q:'A que parte pertence <b>'+it.nome+'</b>? 🧍', audio:[it.it,'q_parte'], stage:emo(it.e,80), colorOpts:true, options:opts };
+    });
+  },
+
+  /* 3. BRAÇOS E PERNAS */
+  membros(){
+    return shuffle(MEMBROS).slice(0,8).map(it=>{
+      const opts=mkOpts(it.tp, ['sup','inf'], MEMBRO_LBL);
+      return { q:'<b>'+it.nome+'</b> é membro superior ou inferior? 💪🦵', audio:[it.it,'q_membro'], stage:emo(it.e,80), colorOpts:true, options:opts };
+    });
+  },
+
+  /* 4. POR DENTRO DO CORPO */
+  orgaos(){
+    const locR=ORGAOS.map(it=>({type:'loc',it}));
+    const funcR=ORGAOS.filter(it=>it.fnTxt).map(it=>({type:'fn',it}));
+    return shuffle([...locR,...funcR]).slice(0,7).map(({type,it})=>{
+      if(type==='loc'){
+        const opts=mkOpts(it.loc, ['loc_torax','loc_abdome'], LOC_LBL);
+        return { q:'Onde fica <b>'+it.nome+'</b>? '+it.e, audio:[it.it,'q_orgao_local'], stage:emo(it.e,80), colorOpts:true, options:opts };
+      }else{
+        const others=shuffle(ORGAOS.filter(o=>o.it!==it.it)).slice(0,3).map(o=>o.it);
+        const pool=[it.it,...others];
+        const opts=mkOpts(it.it, pool, OG_NAME_LBL);
+        return { q:'Qual órgão diz: <b>"'+it.fnTxt+'"</b> 🤔', audio:['q_orgao_func',it.fn], stage:'<span class="quote">'+it.fnTxt+'</span>', colorOpts:false, options:opts };
+      }
+    });
+  },
+
+  /* 5. DIA E NOITE */
+  dianoite(){
+    const rounds=PERIODOS.map(pr=>{
+      const opts=mkOpts(pr.p, ['pe_manha','pe_tarde','pe_noite'], PE_LBL);
+      return { q:'Que <b>período</b> do dia é este? 🕐', audio:['q_periodo',pr.ct], stage:emo(pr.sc,88)+'<div class="cardtxt">'+pr.txt+'</div>', colorOpts:true, options:opts };
+    });
+    const extra=[
+      { q:'Em que período o <b>SOL NASCE</b>? 🌅', audio:['q_sol_nasce'], stage:emo('🌅',88), colorOpts:true, options:mkOpts('pe_manha',['pe_manha','pe_tarde','pe_noite'],PE_LBL) },
+      { q:'Quando vemos a <b>LUA e as ESTRELAS</b>? 🌙', audio:['q_lua_estrelas'], stage:emo('🌙',88), colorOpts:true, options:mkOpts('pe_noite',['pe_manha','pe_tarde','pe_noite'],PE_LBL) },
+      { q:'O que aparece no céu à <b>NOITE</b>? 🌙', audio:['q_ceu_noite'], stage:emo('🌌',88), colorOpts:false, options:mkOpts('ce_lua',['ce_lua','ce_sol'],{ce_lua:'🌙<span class="cap">A lua e as estrelas</span>', ce_sol:'☀️<span class="cap">O sol</span>'}) },
+      { q:'O que ilumina o céu de <b>DIA</b>? ☀️', audio:['q_ceu_dia'], stage:emo('☀️',88), colorOpts:false, options:mkOpts('ce_sol',['ce_lua','ce_sol'],{ce_lua:'🌙<span class="cap">A lua e as estrelas</span>', ce_sol:'☀️<span class="cap">O sol</span>'}) },
+    ];
+    return shuffle([...rounds,...extra]).slice(0,7);
+  },
+
+  /* 6. DIAS DA SEMANA */
+  semana(){
+    const rounds=[];
+    rounds.push({ q:'Quantos dias tem uma <b>semana</b>? 📅', audio:['q_semana_qtd'], stage:emo('📅',88),
+      colorOpts:true, options:mkOpts('nd7',['nd5','nd7','nd10'],{nd5:'<span style="font-size:30px">5</span><span class="cap">dias</span>', nd7:'<span style="font-size:30px">7</span><span class="cap">dias</span>', nd10:'<span style="font-size:30px">10</span><span class="cap">dias</span>'}) });
+    /* depois */
+    for(const i of shuffle([0,1,2,3,4,5]).slice(0,3)){
+      const ref=DIAS_ORD[i], cor=DIAS_ORD[i+1];
+      const others=shuffle(DIAS_ORD.filter(d=>d!==cor&&d!==ref)).slice(0,2);
+      const opts=mkOpts(cor,[cor,...others],DIA_LBL);
+      rounds.push({ q:'Qual dia vem <b>DEPOIS</b> de '+DIA_LBL[ref]+'? ➡️', audio:[ref,'q_semana_depois'], stage:emo('➡️',80)+'<div class="cardtxt">'+DIA_LBL[ref]+' e depois...</div>', colorOpts:true, options:opts });
+    }
+    /* antes */
+    for(const i of shuffle([1,2,3,4,5,6]).slice(0,3)){
+      const ref=DIAS_ORD[i], cor=DIAS_ORD[i-1];
+      const others=shuffle(DIAS_ORD.filter(d=>d!==cor&&d!==ref)).slice(0,2);
+      const opts=mkOpts(cor,[cor,...others],DIA_LBL);
+      rounds.push({ q:'Qual dia vem <b>ANTES</b> de '+DIA_LBL[ref]+'? ⬅️', audio:[ref,'q_semana_antes'], stage:emo('⬅️',80)+'<div class="cardtxt">... e depois '+DIA_LBL[ref]+'</div>', colorOpts:true, options:opts });
+    }
+    return shuffle(rounds).slice(0,7);
+  },
+
+  /* 7. HIGIENE */
+  higiene(){
+    return shuffle(HIGIENE).slice(0,7).map(h=>{
+      const pool=[h.c,...h.d];
+      const opts=mkOpts(h.c, pool, HIG_LBL);
+      return { q:h.q, audio:[h.qa], stage:emo('🧼',80), colorOpts:false, options:opts };
+    });
+  },
+
+  /* 8. ALIMENTAÇÃO */
+  alimentacao(){
+    const foods=shuffle(ALIMENTOS).slice(0,6).map(f=>{
+      const correct=f.saud?'al_sim':'al_nao';
+      const opts=mkOpts(correct, ['al_sim','al_nao'], AL_LBL, k=>({expAud: k===correct?(f.saud?'exp_saudavel':'exp_ultra'):null}));
+      return { q:'Este alimento é <b>saudável</b>? 🤔', audio:[f.it,'q_alim_tipo'], stage:emo(f.e,88)+'<div class="cardtxt">'+f.nome+'</div>', colorOpts:false, options:opts };
+    });
+    const refeicao={ q:'Qual é a <b>principal</b> refeição do dia? 🌅', audio:['q_alim_refeicao'], stage:emo('🍽️',80), colorOpts:true, options:mkOpts('r_cafe',['r_cafe','r_almoco','r_jantar'],REF_LBL) };
+    return shuffle([...foods, refeicao]).slice(0,7);
+  },
+};
+
+/* ===== SPLASH -> INÍCIO ===== */
+function enterApp(){
+  initAudio();
+  unlockAudio();
+  document.getElementById('splash').style.display='none';
+  goHome(true);
+  setTimeout(()=>playKeys(['greet']),350);
+}
+document.getElementById('startBtn').addEventListener('click',enterApp);
+document.getElementById('splash').addEventListener('click',e=>{ if(e.target.id!=='startBtn'){ enterApp(); } });
+</script>
+</body>
+</html>
