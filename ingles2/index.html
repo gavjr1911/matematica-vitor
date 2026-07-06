@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🦉 English Fun! — Inglês Divertido 🦉</title>
+<style>
+  :root{
+    --rosa:#ff6b9d; --roxo:#a06cd5; --azul:#4d96ff; --verde:#6bcB77;
+    --amarelo:#ffd93d; --laranja:#ff924c; --vermelho:#ff5e5e; --ceu:#b8e3ff;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'Comic Sans MS','Baloo',"Trebuchet MS",sans-serif;
+    background:linear-gradient(160deg,#cfe4ff 0%,#e7edff 50%,#ffe6ef 100%);
+    color:#3a3a55; overflow-x:hidden; user-select:none;
+    min-height:100%; touch-action:manipulation;
+  }
+  #app{max-width:760px; margin:0 auto; padding:14px; min-height:100vh;}
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#fff; border-radius:22px; padding:8px 14px; margin-bottom:14px;
+    box-shadow:0 6px 0 rgba(0,0,0,.08);
+  }
+  .topbar .home-btn{
+    background:var(--azul); color:#fff; border:none; border-radius:16px;
+    font-size:22px; padding:8px 14px; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #2f6fd0;
+  }
+  .topbar .home-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #2f6fd0;}
+  .stars{font-size:24px; font-weight:bold; color:var(--laranja); display:flex; align-items:center; gap:6px;}
+  .stars .num{background:var(--amarelo); border-radius:14px; padding:2px 12px; box-shadow:0 3px 0 #d9a800;}
+
+  .hero{
+    text-align:center; background:#fff; border-radius:30px; padding:22px 18px;
+    box-shadow:0 8px 0 rgba(0,0,0,.08); margin-bottom:18px;
+  }
+  .hero h1{font-size:32px; margin:6px 0; color:var(--azul); line-height:1.2;}
+  .hero p{font-size:18px; margin:4px 0; color:#666;}
+  .mascote{font-size:78px; display:inline-block; animation:flutua 2.5s ease-in-out infinite;}
+  @keyframes flutua{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-14px) rotate(3deg);}}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .card{
+    border:none; border-radius:26px; padding:16px 10px; cursor:pointer;
+    color:#fff; font-size:19px; font-weight:bold; text-align:center;
+    box-shadow:0 7px 0 rgba(0,0,0,.18); transition:transform .08s;
+    display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.15;
+  }
+  .card:active{transform:translateY(4px); box-shadow:0 3px 0 rgba(0,0,0,.18);}
+  .card .ico{font-size:46px;}
+  .c1{background:var(--rosa);} .c2{background:var(--azul);} .c3{background:var(--verde);}
+  .c4{background:var(--laranja);} .c5{background:var(--roxo);} .c6{background:var(--vermelho);}
+  .c7{background:#19c3b1;} .c8{background:#f76eb0;} .c9{background:#7c83ff;}
+
+  .game{
+    background:#fff; border-radius:30px; padding:18px; box-shadow:0 8px 0 rgba(0,0,0,.08);
+    text-align:center;
+  }
+  .game-title{font-size:24px; color:var(--azul); margin:0 0 4px;}
+  .progress{font-size:16px; color:#999; margin-bottom:10px;}
+  .question{
+    font-size:23px; font-weight:bold; color:#3a3a55; margin:6px 0 14px; line-height:1.3;
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  }
+  .speak-btn{
+    background:var(--amarelo); border:none; border-radius:50%; width:54px; height:54px;
+    font-size:28px; cursor:pointer; box-shadow:0 4px 0 #d9a800; flex:0 0 auto;
+  }
+  .speak-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #d9a800;}
+  .speak-btn.playing{animation:pulse .7s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .stage{
+    min-height:120px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:10px; margin:10px auto 18px; padding:16px;
+    background:linear-gradient(160deg,#eef5ff,#fff0f6); border-radius:22px; border:4px dashed #cfe0ff;
+    flex-direction:column;
+  }
+  .obj{font-size:80px; animation:pop .35s ease; line-height:1;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+  .stage .cardtxt{font-size:22px; font-weight:bold; color:#2f6fd0; margin-top:4px; line-height:1.3;}
+  .stage .quote{font-size:30px; font-weight:bold; color:#a06cd5; letter-spacing:.5px; max-width:460px; line-height:1.2;}
+  .stage .row{display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; flex-direction:row;}
+
+  .options{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));}
+  .opt{
+    border:none; border-radius:22px; padding:16px 10px; font-size:23px; font-weight:bold;
+    cursor:pointer; background:var(--azul); color:#fff; box-shadow:0 6px 0 #2f6fd0;
+    min-height:84px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    word-break:break-word; line-height:1.12;
+  }
+  .opt b{font-size:24px;}
+  .opt .cap{font-size:16px; font-weight:normal; opacity:.95;}
+  .opt-colors .opt{font-size:22px;}
+  .opt:active{transform:translateY(3px); box-shadow:0 3px 0 #2f6fd0;}
+  .opt.big{font-size:44px;}
+  .opt.ok{background:var(--verde)!important; box-shadow:0 6px 0 #3f9c4f!important; animation:tada .5s;}
+  .opt.no{background:#cfcfe0!important; box-shadow:0 6px 0 #a0a0c0!important; opacity:.7;}
+  @keyframes tada{0%{transform:scale(1);}30%{transform:scale(1.18) rotate(-4deg);}60%{transform:scale(1.1) rotate(4deg);}100%{transform:scale(1);}}
+
+  .opt-colors .opt:nth-child(1){background:var(--rosa); box-shadow:0 6px 0 #d44d7c;}
+  .opt-colors .opt:nth-child(2){background:var(--verde); box-shadow:0 6px 0 #3f9c4f;}
+  .opt-colors .opt:nth-child(3){background:var(--laranja); box-shadow:0 6px 0 #d96d2e;}
+  .opt-colors .opt:nth-child(4){background:var(--roxo); box-shadow:0 6px 0 #7a4db0;}
+
+  .feedback{font-size:26px; font-weight:bold; min-height:40px; margin-top:12px;}
+  .feedback.good{color:var(--verde);} .feedback.bad{color:var(--laranja);}
+
+  .next-btn{
+    margin-top:14px; background:var(--verde); color:#fff; border:none; border-radius:22px;
+    font-size:24px; font-weight:bold; padding:14px 34px; cursor:pointer; box-shadow:0 6px 0 #3f9c4f;
+  }
+  .next-btn:active{transform:translateY(3px); box-shadow:0 3px 0 #3f9c4f;}
+
+  #splash{
+    position:fixed; inset:0; background:linear-gradient(160deg,var(--azul),var(--roxo));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; text-align:center; z-index:50; cursor:pointer; padding:20px;
+  }
+  #splash h1{font-size:34px; margin:10px;}
+  #splash .big{font-size:100px; animation:flutua 2.5s infinite;}
+  #splash .play{
+    margin-top:24px; background:var(--amarelo); color:#5a4500; border:none; border-radius:30px;
+    font-size:30px; font-weight:bold; padding:18px 44px; box-shadow:0 8px 0 #d9a800; cursor:pointer;
+  }
+
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:40;}
+  .win{text-align:center; padding:20px;}
+  .win .trophy{font-size:90px; animation:tada 1s;}
+
+  @media(max-width:480px){
+    .hero h1{font-size:26px;} .question{font-size:20px;} .card{font-size:17px;}
+    .obj{font-size:66px;} .stage .quote{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="big">🦉</div>
+  <h1>English Fun!<br><span style="font-size:22px;font-weight:normal">Inglês Divertido</span></h1>
+  <p style="font-size:20px;max-width:340px;">Vamos aprender inglês para a prova, brincando! 🎉<br>Toque no botão para começar.</p>
+  <button class="play" id="startBtn">▶ START / COMEÇAR</button>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   ENGLISH FUN! — Inglês 1º ano (livro Bernoulli, Cap. 3 e 4)
+   Módulo 4 do projeto. Mesma estrutura dos apps de Matemática,
+   Português e Ciências, com um diferencial: ÁUDIO BILÍNGUE.
+   - VOICE     -> voz pt-BR (perguntas, traduções, feedback)
+   - VOICE_EN  -> voz en-US (as palavras/frases em inglês)
+   O gerar-audios.py lê os dois dicionários e usa a voz certa,
+   gerando audio/<chave>.mp3 para cada frase.
+   Conteúdos: brincadeiras (action vocabulary) e opinião
+   (I like / I don't like); instrumentos do cientista;
+   invenções de antes e agora (Then & Now); seres vivos e não
+   vivos; macio/duro; natural/feito pelo homem; flexível/rígido;
+   cientistas famosos (Marie Curie, Santos Dumont).
+   ============================================================ */
+
+const App = document.getElementById('app');
+let stars = parseInt(localStorage.getItem('vitor_en_stars')||'0',10);
+
+/* ============================================================
+   VOZ EM PORTUGUÊS (chave -> texto falado com voz pt-BR).
+   Fonte da verdade para o gerar-audios.py.
+   ============================================================ */
+const VOICE = {
+  /* navegação e feedback */
+  greet:"Olá! Bem-vindo aos jogos de Inglês! Escolha uma brincadeira para começar.",
+  test:"Olá! Você está me ouvindo? Vamos aprender inglês brincando!",
+  win:"Parabéns! Você conseguiu! Que orgulho de você!",
+  choose:"As respostas são:",
+  ok1:"Muito bem!", ok2:"Isso aí!", ok3:"Você acertou!",
+  ok4:"Boa demais!", ok5:"Mandou bem!", ok6:"Perfeito!",
+  no1:"Quase! Tenta outra.", no2:"Hmm, tenta de novo.", no3:"Não foi essa, tenta outra.",
+
+  /* perguntas dos jogos */
+  q_action_en:"Como se diz esta brincadeira em inglês?",
+  q_action_pt:"O que quer dizer esta palavra? Escolha a figura certa.",
+  q_opinion_face:"Olhe a carinha. Escolha a frase certa em inglês.",
+  q_opinion_mean:"O que esta frase quer dizer?",
+  q_tool_en:"Como se diz este instrumento em inglês?",
+  q_tool_use:"Qual instrumento o cientista deve usar?",
+  q_thennow:"Esta invenção é do passado ou de hoje?",
+  q_pastnow:"Antes era assim. E hoje, o que a gente usa?",
+  q_living:"Isto é um ser vivo ou não é vivo?",
+  q_needs:"Do que os seres vivos precisam para viver?",
+  q_soft:"Este objeto é macio ou duro?",
+  q_natural:"Este objeto é natural ou feito pelo homem?",
+  q_flex:"Este objeto é flexível ou rígido?",
+  q_sci_invent:"Quem inventou isto?",
+  q_sci_country:"De qual país era o Santos Dumont?",
+  q_sci_help:"O que os cientistas fazem pelas pessoas?",
+  q_sci_star:"Qual instrumento a gente usa para ver as estrelas?",
+
+  /* falas de propósito dos instrumentos */
+  use_micro:"Quero ver coisas bem pequenininhas.",
+  use_tele:"Quero ver as estrelas lá no céu.",
+  use_mag:"Quero olhar bem de pertinho.",
+  use_scale:"Quero pesar e medir as coisas.",
+
+  /* respostas dos cientistas */
+  c_brasil:"o Brasil", c_eua:"os Estados Unidos", c_franca:"a França",
+  sci_help:"ajudam as pessoas e o mundo", sci_sleep:"ficam só dormindo", sci_nothing:"não fazem nada",
+
+  /* explicações extras */
+  exp_then:"Isso! É uma invenção antiga, do passado.",
+  exp_now:"Isso! É uma invenção moderna, de hoje.",
+  exp_alive:"Isso! Nasce, cresce e precisa de comida, água e ar.",
+  exp_notalive:"Isso! Não nasce nem cresce, não é um ser vivo.",
+
+  /* TRADUÇÕES (faladas em pt logo depois da palavra em inglês) */
+  tr_play_ball:"jogar bola", tr_play_video:"jogar videogame", tr_play_board:"jogar jogo de tabuleiro",
+  tr_jump_rope:"pular corda", tr_play_dolls:"brincar de boneca", tr_play_cars:"brincar de carrinho",
+  tr_assemble:"montar quebra-cabeça", tr_ride_bike:"andar de bicicleta", tr_color:"pintar e colorir",
+  tr_skateboard:"andar de skate", tr_fly_kite:"soltar pipa", tr_blocks:"brincar de blocos de montar",
+  tr_microscope:"o microscópio, para ver coisas pequenas", tr_telescope:"o telescópio, para ver as estrelas",
+  tr_magnifying:"a lupa, para olhar de pertinho", tr_scale:"a balança, para pesar e medir",
+  tr_then:"antes, no passado", tr_now:"agora, nos dias de hoje",
+  tr_living:"é um ser vivo", tr_nonliving:"não é um ser vivo",
+  tr_food:"comida", tr_water:"água", tr_air:"ar",
+  tr_soft:"macio", tr_hard:"duro",
+  tr_natural:"natural, vem da natureza", tr_manmade:"feito pelo homem",
+  tr_flexible:"flexível, dobra fácil", tr_rigid:"rígido, não dobra",
+  tr_ilike:"eu gosto de", tr_idont:"eu não gosto de",
+  tr_car:"o carro", tr_cellphone:"o celular", tr_computer:"o computador", tr_lamp:"a lâmpada", tr_train:"o trem",
+  tr_rock:"a pedra", tr_flower:"a flor", tr_chair:"a cadeira", tr_teddy:"o ursinho de pelúcia",
+  tr_glass:"o copo de vidro", tr_leaf:"a folha", tr_cotton:"o algodão", tr_pillow:"o travesseiro",
+  tr_pencil:"o lápis", tr_dog:"o cachorro", tr_tree:"a árvore", tr_turtle:"a tartaruga",
+  tr_cat:"o gato", tr_bird:"o passarinho", tr_fish:"o peixe", tr_ball:"a bola",
+  tr_sun:"o sol", tr_snake:"a cobra", tr_rope:"a corda", tr_wood:"a madeira",
+  tr_spoon:"a colher", tr_ruler:"a régua", tr_scarf:"o cachecol", tr_sponge:"a esponja",
+  tr_brick:"o tijolo", tr_apple:"a maçã", tr_shell:"a concha", tr_ribbon:"a fita",
+  tr_plant:"a plantinha", tr_kite:"a pipa",
+  tr_airplane:"o avião", tr_xray:"o raio-x", tr_marie:"a Marie Curie", tr_santos:"o Santos Dumont",
+};
+
+/* ============================================================
+   VOZ EM INGLÊS (chave -> texto falado com voz en-US).
+   O gerar-audios.py usa a voz inglesa para todas estas chaves.
+   ============================================================ */
+const VOICE_EN = {
+  hello:"Hello! Let's play in English!",
+  /* ações */
+  en_play_ball:"Play ball.", en_play_video:"Play video games.", en_play_board:"Play board games.",
+  en_jump_rope:"Jump rope.", en_play_dolls:"Play with dolls.", en_play_cars:"Play with cars.",
+  en_assemble:"Assemble puzzles.", en_ride_bike:"Ride a bike.", en_color:"Color.",
+  en_skateboard:"Skateboard.", en_fly_kite:"Fly a kite.", en_blocks:"Play with building blocks.",
+  /* instrumentos */
+  en_microscope:"Microscope.", en_telescope:"Telescope.", en_magnifying:"Magnifying glass.", en_scale:"Scale.",
+  /* categorias */
+  en_then:"Then.", en_now:"Now.",
+  en_living:"Living thing.", en_nonliving:"Non living thing.",
+  en_food:"Food.", en_water:"Water.", en_air:"Air.",
+  en_soft:"Soft.", en_hard:"Hard.",
+  en_natural:"Natural.", en_manmade:"Man made.",
+  en_flexible:"Flexible.", en_rigid:"Rigid.",
+  en_ilike:"I like to.", en_idont:"I don't like to.",
+  /* modernos (then & now) */
+  en_car:"Car.", en_cellphone:"Cell phone.", en_computer:"Computer.", en_lamp:"Lamp.", en_train:"Train.",
+  /* objetos */
+  en_rock:"Rock.", en_flower:"Flower.", en_chair:"Chair.", en_teddy:"Teddy bear.",
+  en_glass:"Glass.", en_leaf:"Leaf.", en_cotton:"Cotton.", en_pillow:"Pillow.",
+  en_pencil:"Pencil.", en_dog:"Dog.", en_tree:"Tree.", en_turtle:"Turtle.",
+  en_cat:"Cat.", en_bird:"Bird.", en_fish:"Fish.", en_ball:"Ball.",
+  en_sun:"Sun.", en_snake:"Snake.", en_rope:"Rope.", en_wood:"Wood.",
+  en_spoon:"Spoon.", en_ruler:"Ruler.", en_scarf:"Scarf.", en_sponge:"Sponge.",
+  en_brick:"Brick.", en_apple:"Apple.", en_shell:"Shell.", en_ribbon:"Ribbon.",
+  en_plant:"Plant.", en_kite:"Kite.",
+  /* cientistas */
+  en_airplane:"Airplane.", en_xray:"X ray.", en_marie:"Marie Curie.", en_santos:"Santos Dumont.",
+};
+
+/* ============================================================
+   PLAYER DE ÁUDIO (clipes em sequência) — um único <audio>
+   destravado no 1º toque (compatível com iPhone/iPad).
+   ============================================================ */
+const AUDIO_DIR='audio/', AUDIO_EXT='.mp3';
+const player=new Audio();
+player.preload='auto';
+let playToken=0, audioOn=true;
+function stopAudio(){ playToken++; try{player.pause();}catch(e){} setPlayingBadge(false); }
+function playKeys(keys){
+  if(!audioOn) return;
+  stopAudio();
+  const list=[].concat(...keys.map(k=>Array.isArray(k)?k:[k])).filter(Boolean);
+  if(!list.length) return;
+  const my=playToken; let i=0;
+  setPlayingBadge(true);
+  const next=()=>{
+    if(my!==playToken) return;
+    if(i>=list.length){ setPlayingBadge(false); return; }
+    const key=list[i++];
+    player.src=AUDIO_DIR+key+AUDIO_EXT;
+    player.onended=next;
+    player.onerror=()=>{ setTimeout(next,10); };
+    const p=player.play();
+    if(p&&p.catch) p.catch(()=>setTimeout(next,10));
+  };
+  next();
+}
+function setPlayingBadge(on){
+  const b=document.getElementById('qspeak'); if(b) b.classList.toggle('playing',on);
+}
+function unlockAudio(){
+  try{ player.muted=true; player.src=AUDIO_DIR+'greet'+AUDIO_EXT;
+       const p=player.play();
+       if(p&&p.then) p.then(()=>{player.pause();player.currentTime=0;player.muted=false;})
+                      .catch(()=>{player.muted=false;});
+       else {player.pause();player.muted=false;}
+  }catch(e){ player.muted=false; }
+}
+
+/* ===== SONS DE EFEITO (Web Audio) ===== */
+let actx=null;
+function initAudio(){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }catch(e){} }
+function tone(freq,start,dur,type='sine',vol=0.2){
+  if(!actx) return;
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+  const t=actx.currentTime+start;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function sndClick(){ initAudio(); tone(540,0,0.07,'triangle',0.14); }
+function sndRight(){ initAudio(); [523,659,784,1047].forEach((f,i)=>tone(f,i*0.09,0.25,'triangle',0.18)); }
+function sndWrong(){ initAudio(); tone(300,0,0.18,'sine',0.13); tone(220,0.12,0.25,'sine',0.13); }
+function sndWin(){ initAudio(); [523,659,784,1047,784,1047,1319].forEach((f,i)=>tone(f,i*0.12,0.3,'triangle',0.2)); }
+
+/* ===== UTILIDADES ===== */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rint(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function pickN(arr,n,exclude){ return shuffle(arr.filter(x=>!exclude||exclude.indexOf(x)<0)).slice(0,n); }
+const OK_KEYS=['ok1','ok2','ok3','ok4','ok5','ok6'], NO_KEYS=['no1','no2','no3'];
+function emo(e,size){ return '<span class="obj" style="font-size:'+(size||80)+'px">'+e+'</span>'; }
+
+function updateStars(){ const el=document.getElementById('starNum'); if(el) el.textContent=stars; localStorage.setItem('vitor_en_stars',stars); }
+function addStar(n=1){ stars+=n; updateStars(); }
+
+/* ---------------- CONFETE ---------------- */
+const cv=document.getElementById('confetti'), cx=cv.getContext('2d');
+let confs=[];
+function resizeCv(){cv.width=innerWidth;cv.height=innerHeight;}
+addEventListener('resize',resizeCv); resizeCv();
+function burst(){
+  const cols=['#ff6b9d','#ffd93d','#6bcB77','#4d96ff','#a06cd5','#ff924c'];
+  for(let i=0;i<70;i++){confs.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-0.5)*14,vy:Math.random()*-12-3,c:pick(cols),s:rint(7,14),r:Math.random()*6,vr:(Math.random()-.5)*.4});}
+}
+function loopConf(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  confs.forEach(p=>{p.vy+=0.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s);cx.restore();});
+  confs=confs.filter(p=>p.y<cv.height+30);
+  requestAnimationFrame(loopConf);
+}
+loopConf();
+
+/* ===== SHELL ===== */
+function shell(inner){
+  App.innerHTML=`
+    <div class="topbar">
+      <button class="home-btn" onclick="sndClick();goHome()">🏠</button>
+      <div class="stars">⭐ <span class="num" id="starNum">${stars}</span></div>
+    </div>
+    ${inner}`;
+}
+
+/* ===== MENU ===== */
+const GAMES=[
+  {id:'actions',  ico:'🎮', nome:'Brincadeiras',   sub:'Playing is fun!',    cls:'c1'},
+  {id:'opinion',  ico:'🗣️', nome:'Eu Gosto',        sub:"I like / I don't",   cls:'c2'},
+  {id:'tools',    ico:'🔎', nome:'Instrumentos',    sub:'Scientific tools',   cls:'c3'},
+  {id:'thennow',  ico:'⏳', nome:'Antes ou Agora',  sub:'Then & Now',         cls:'c4'},
+  {id:'living',   ico:'🌱', nome:'Vivo ou Não',     sub:'Living things',      cls:'c5'},
+  {id:'softhard', ico:'🧸', nome:'Macio ou Duro',   sub:'Soft or Hard',       cls:'c6'},
+  {id:'natmade',  ico:'🍃', nome:'Natural?',        sub:'Natural / Manmade',  cls:'c7'},
+  {id:'flexrig',  ico:'🤸', nome:'Flexível?',       sub:'Flexible / Rigid',   cls:'c8'},
+  {id:'science',  ico:'🧑‍🔬', nome:'Cientistas',     sub:'Famous scientists',  cls:'c9'},
+];
+function goHome(silent){
+  stopAudio();
+  shell(`
+    <div class="hero">
+      <div class="mascote">🦉</div>
+      <h1>English Fun!</h1>
+      <p>Escolha uma brincadeira 👇</p>
+      <button onclick="testSound()" style="margin-top:6px;background:var(--amarelo);color:#5a4500;border:none;border-radius:18px;padding:9px 18px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #d9a800;">🔈 Testar som</button>
+    </div>
+    <div class="grid">
+      ${GAMES.map(g=>`<button class="card ${g.cls}" onclick="sndClick();startGame('${g.id}')">
+        <span class="ico">${g.ico}</span><span>${g.nome}</span>
+        <span style="font-size:13px;font-weight:normal;opacity:.9">${g.sub}</span>
+      </button>`).join('')}
+    </div>
+    <p style="text-align:center;color:#7a8;margin-top:18px;font-size:14px;">Feito com 💙 para estudar pra prova</p>
+  `);
+  if(!silent) setTimeout(()=>playKeys(['greet']),250);
+}
+function testSound(){ initAudio(); sndClick(); playKeys(['test']); }
+
+/* ===== MOTOR DE RODADAS ===== */
+let current=null, locked=false;
+function startGame(id){
+  const rounds=BUILDERS[id]();
+  current={id, title:GAMES.find(g=>g.id===id).nome, rounds, idx:0};
+  renderRound();
+}
+function gameFrame(c,r,bodyHtml){
+  shell(`
+    <div class="game">
+      <h2 class="game-title">${GAMES.find(g=>g.id===c.id).ico} ${c.title}</h2>
+      <div class="progress">Pergunta ${c.idx+1} de ${c.rounds.length}</div>
+      <div class="question">
+        <button class="speak-btn" id="qspeak" onclick="sndClick();speakRound()">🔊</button>
+        <span>${r.q}</span>
+      </div>
+      <div class="stage">${r.stage||''}</div>
+      ${bodyHtml}
+      <div style="font-size:14px;color:#aaa;margin-top:6px;">👆 Toque para responder. Toque no 🔊 para ouvir de novo.</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+}
+function renderRound(){
+  locked=false;
+  const c=current, r=c.rounds[c.idx];
+  gameFrame(c,r,`<div class="options ${r.colorOpts?'opt-colors':''}" id="opts"></div>`);
+  const shown=shuffle(r.options);
+  const opts=document.getElementById('opts');
+  shown.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'+(o.big?' big':'');
+    b.innerHTML=o.label;
+    b.onclick=()=>answer(b,o);
+    opts.appendChild(b);
+  });
+  window._roundKeys=[].concat(r.audio||[], ['choose'], shown.map(o=>o.aud));
+  setTimeout(()=>speakRound(),400);
+}
+function speakRound(){ playKeys(window._roundKeys||[]); }
+
+function showNextButton(){
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=null);
+  const nb=document.createElement('button');
+  nb.className='next-btn';
+  const last=current.idx>=current.rounds.length-1;
+  nb.textContent=last?'🏆 Terminar':'Próxima ➡';
+  nb.onclick=()=>{sndClick();locked=false;if(last){winScreen();}else{current.idx++;renderRound();}};
+  document.querySelector('.game').appendChild(nb);
+}
+function correctFlow(extraAudio){
+  locked=true; sndRight(); burst(); addStar(1);
+  const fb=document.getElementById('fb'); if(fb){fb.className='feedback good'; fb.textContent='⭐ Muito bem! Great!';}
+  playKeys(extraAudio.filter(Boolean));
+  showNextButton();
+}
+function answer(btn,opt){
+  if(locked) return;
+  if(opt.correct){
+    btn.classList.add('ok');
+    document.querySelectorAll('.opt').forEach(b=>{if(b!==btn)b.classList.add('no');});
+    correctFlow([opt.aud, pick(OK_KEYS), opt.expAud]);
+  }else{
+    btn.classList.add('no'); btn.onclick=null;
+    sndWrong();
+    const fb=document.getElementById('fb'); fb.className='feedback bad'; fb.textContent='🤔 Tenta de novo!';
+    playKeys([opt.aud, pick(NO_KEYS)].filter(Boolean));
+  }
+}
+
+function winScreen(){
+  sndWin(); burst(); setTimeout(burst,400); setTimeout(burst,800);
+  const c=current;
+  shell(`
+    <div class="game win">
+      <div class="trophy">🏆</div>
+      <h2 class="game-title">Parabéns! Congratulations!</h2>
+      <p style="font-size:22px;">Você ganhou <b>${c.rounds.length}</b> estrelas! ⭐</p>
+      <p style="font-size:18px;color:#888;">Você está ficando craque em <b>${c.title}</b>!</p>
+      <button class="next-btn" onclick="sndClick();startGame('${c.id}')">🔁 Jogar de novo</button>
+      <br>
+      <button class="next-btn" style="background:var(--azul);box-shadow:0 6px 0 #2f6fd0;margin-top:10px;" onclick="sndClick();goHome()">🏠 Escolher outro</button>
+    </div>
+  `);
+  setTimeout(()=>playKeys(['win']),250);
+}
+
+/* ============================================================
+   VOCABULÁRIO (fonte única de emoji + palavra em inglês + tradução curta).
+   Toda palavra aqui tem en_<chave> em VOICE_EN e tr_<chave> em VOICE.
+   ============================================================ */
+const WORDS={
+  /* ações */
+  play_ball:{e:'⚽', en:'PLAY BALL', cap:'jogar bola'},
+  play_video:{e:'🎮', en:'PLAY VIDEO GAMES', cap:'jogar videogame'},
+  play_board:{e:'🎲', en:'PLAY BOARD GAMES', cap:'jogo de tabuleiro'},
+  jump_rope:{e:'🤸', en:'JUMP ROPE', cap:'pular corda'},
+  play_dolls:{e:'🪆', en:'PLAY WITH DOLLS', cap:'brincar de boneca'},
+  play_cars:{e:'🚗', en:'PLAY WITH CARS', cap:'brincar de carrinho'},
+  assemble:{e:'🧩', en:'ASSEMBLE PUZZLES', cap:'montar quebra-cabeça'},
+  ride_bike:{e:'🚲', en:'RIDE A BIKE', cap:'andar de bicicleta'},
+  color:{e:'🖍️', en:'COLOR', cap:'colorir'},
+  skateboard:{e:'🛹', en:'SKATEBOARD', cap:'andar de skate'},
+  fly_kite:{e:'🪁', en:'FLY A KITE', cap:'soltar pipa'},
+  blocks:{e:'🧱', en:'BUILDING BLOCKS', cap:'blocos de montar'},
+  /* instrumentos */
+  microscope:{e:'🔬', en:'MICROSCOPE', cap:'microscópio'},
+  telescope:{e:'🔭', en:'TELESCOPE', cap:'telescópio'},
+  magnifying:{e:'🔍', en:'MAGNIFYING GLASS', cap:'lupa'},
+  scale:{e:'⚖️', en:'SCALE', cap:'balança'},
+  /* categorias */
+  then:{e:'⏳', en:'THEN', cap:'antes'},
+  now:{e:'🆕', en:'NOW', cap:'agora'},
+  living:{e:'🌱', en:'LIVING THING', cap:'ser vivo'},
+  nonliving:{e:'🪨', en:'NON-LIVING', cap:'não é vivo'},
+  food:{e:'🍎', en:'FOOD', cap:'comida'},
+  water:{e:'💧', en:'WATER', cap:'água'},
+  air:{e:'💨', en:'AIR', cap:'ar'},
+  soft:{e:'🧸', en:'SOFT', cap:'macio'},
+  hard:{e:'🪨', en:'HARD', cap:'duro'},
+  natural:{e:'🍃', en:'NATURAL', cap:'natural'},
+  manmade:{e:'🏭', en:'MANMADE', cap:'feito pelo homem'},
+  flexible:{e:'🐍', en:'FLEXIBLE', cap:'flexível'},
+  rigid:{e:'🪵', en:'RIGID', cap:'rígido'},
+  ilike:{e:'😀', en:'I LIKE TO...', cap:'eu gosto'},
+  idont:{e:'🙁', en:"I DON'T LIKE TO...", cap:'eu não gosto'},
+  /* modernos */
+  car:{e:'🚗', en:'CAR', cap:'carro'},
+  cellphone:{e:'📱', en:'CELLPHONE', cap:'celular'},
+  computer:{e:'💻', en:'COMPUTER', cap:'computador'},
+  lamp:{e:'💡', en:'LAMP', cap:'lâmpada'},
+  train:{e:'🚄', en:'TRAIN', cap:'trem'},
+  /* objetos */
+  rock:{e:'🪨', en:'ROCK', cap:'pedra'},
+  flower:{e:'🌸', en:'FLOWER', cap:'flor'},
+  chair:{e:'🪑', en:'CHAIR', cap:'cadeira'},
+  teddy:{e:'🧸', en:'TEDDY BEAR', cap:'ursinho'},
+  glass:{e:'🥛', en:'GLASS', cap:'copo'},
+  leaf:{e:'🍃', en:'LEAF', cap:'folha'},
+  cotton:{e:'☁️', en:'COTTON', cap:'algodão'},
+  pillow:{e:'🛏️', en:'PILLOW', cap:'travesseiro'},
+  pencil:{e:'✏️', en:'PENCIL', cap:'lápis'},
+  dog:{e:'🐕', en:'DOG', cap:'cachorro'},
+  tree:{e:'🌳', en:'TREE', cap:'árvore'},
+  turtle:{e:'🐢', en:'TURTLE', cap:'tartaruga'},
+  cat:{e:'🐈', en:'CAT', cap:'gato'},
+  bird:{e:'🐦', en:'BIRD', cap:'passarinho'},
+  fish:{e:'🐟', en:'FISH', cap:'peixe'},
+  ball:{e:'⚽', en:'BALL', cap:'bola'},
+  sun:{e:'☀️', en:'SUN', cap:'sol'},
+  snake:{e:'🐍', en:'SNAKE', cap:'cobra'},
+  rope:{e:'🪢', en:'ROPE', cap:'corda'},
+  wood:{e:'🪵', en:'WOOD', cap:'madeira'},
+  spoon:{e:'🥄', en:'SPOON', cap:'colher'},
+  ruler:{e:'📏', en:'RULER', cap:'régua'},
+  scarf:{e:'🧣', en:'SCARF', cap:'cachecol'},
+  sponge:{e:'🧽', en:'SPONGE', cap:'esponja'},
+  brick:{e:'🧱', en:'BRICK', cap:'tijolo'},
+  apple:{e:'🍎', en:'APPLE', cap:'maçã'},
+  shell:{e:'🐚', en:'SHELL', cap:'concha'},
+  ribbon:{e:'🎀', en:'RIBBON', cap:'fita'},
+  plant:{e:'🌱', en:'PLANT', cap:'plantinha'},
+  kite:{e:'🪁', en:'KITE', cap:'pipa'},
+  /* cientistas */
+  airplane:{e:'✈️', en:'AIRPLANE', cap:'avião'},
+  xray:{e:'🩻', en:'X-RAY', cap:'raio-x'},
+};
+
+/* opção com a PALAVRA em inglês em destaque + tradução (áudio bilíngue) */
+function enOpt(key, correct){
+  const w=WORDS[key];
+  return {label:'<b>'+w.en+'</b><span class="cap">'+w.cap+'</span>', aud:['en_'+key,'tr_'+key], correct:!!correct};
+}
+/* opção com EMOJI + tradução em português (para compreensão) */
+function ptOpt(key, correct){
+  const w=WORDS[key];
+  return {label:w.e+'<span class="cap">'+w.cap+'</span>', aud:['tr_'+key], correct:!!correct};
+}
+/* palco: emoji grande + legenda em português */
+function stageEmo(key,size){ const w=WORDS[key]; return emo(w.e,size||90)+'<div class="cardtxt">'+w.cap+'</div>'; }
+
+/* ============================================================
+   LISTAS DE CONTEÚDO
+   ============================================================ */
+const ACTION_KEYS=['play_ball','play_video','play_board','jump_rope','play_dolls','play_cars','assemble','ride_bike','color','skateboard','fly_kite','blocks'];
+const TOOL_KEYS=['microscope','telescope','magnifying','scale'];
+const TOOL_USE={microscope:'use_micro', telescope:'use_tele', magnifying:'use_mag', scale:'use_scale'};
+
+/* invenções para classificar em THEN / NOW */
+const THENNOW=[
+  {e:'🖥️', cap:'computador antigo', era:'then'},
+  {e:'💻', cap:'notebook moderno',  era:'now'},
+  {e:'🚂', cap:'trem a vapor antigo',era:'then'},
+  {e:'🚄', cap:'trem-bala moderno',  era:'now'},
+  {e:'📻', cap:'rádio antigo',        era:'then'},
+  {e:'📱', cap:'celular moderno',     era:'now'},
+  {e:'🕯️', cap:'vela antiga',         era:'then'},
+  {e:'💡', cap:'lâmpada moderna',     era:'now'},
+  {e:'📷', cap:'câmera antiga',       era:'then'},
+  {e:'✈️', cap:'avião moderno',       era:'now'},
+];
+/* "antes era assim, e hoje?" -> escolher o objeto moderno em inglês */
+const PASTNOW=[
+  {e:'🐴', cap:'viajar de carruagem', ans:'car'},
+  {e:'✉️', cap:'escrever cartas',      ans:'cellphone'},
+  {e:'📚', cap:'ler muitos livros na biblioteca', ans:'computer'},
+  {e:'🔥', cap:'usar o fogo para ver à noite',     ans:'lamp'},
+  {e:'🐌', cap:'viajar devagar por muitas horas',  ans:'train'},
+];
+const MODERN_KEYS=['car','cellphone','computer','lamp','train'];
+
+/* seres vivos / não vivos */
+const LIVING_YES=['dog','tree','flower','turtle','cat','bird','fish','plant'];
+const LIVING_NO=['rock','ball','sun','glass','car','chair','cellphone'];
+const NEED_KEYS=['food','water','air'];
+const NEED_DISTR=['ball','cellphone','car','teddy'];
+
+/* macio / duro */
+const SOFT_YES=['teddy','pillow','cotton','scarf','sponge'];
+const SOFT_NO=['rock','chair','glass','pencil','spoon','brick'];
+/* natural / feito pelo homem */
+const NAT_YES=['rock','flower','leaf','cotton','tree','shell','apple'];
+const NAT_NO=['chair','teddy','glass','pencil','car','cellphone','brick'];
+/* flexível / rígido */
+const FLEX_YES=['rope','snake','scarf','ribbon'];
+const FLEX_NO=['wood','pencil','rock','spoon','ruler','brick'];
+
+/* ============================================================
+   GERADORES DE CONTEÚDO (9 jogos)
+   ============================================================ */
+const BUILDERS={
+  /* 1. BRINCADEIRAS (action vocabulary) */
+  actions(){
+    return shuffle(ACTION_KEYS).slice(0,7).map(key=>{
+      if(Math.random()<0.5){
+        /* modo A: figura -> palavra em inglês */
+        const distr=pickN(ACTION_KEYS,2,[key]);
+        const opts=shuffle([enOpt(key,true),enOpt(distr[0]),enOpt(distr[1])]);
+        return { q:'Como se diz em <b>inglês</b>? 🗣️', audio:['tr_'+key,'q_action_en'], stage:emo(WORDS[key].e,120), colorOpts:false, options:opts };
+      }else{
+        /* modo B: palavra em inglês -> figura certa */
+        const distr=pickN(ACTION_KEYS,2,[key]);
+        const opts=shuffle([ptOpt(key,true),ptOpt(distr[0]),ptOpt(distr[1])]);
+        return { q:'O que quer dizer? 🖼️', audio:['en_'+key,'q_action_pt'], stage:'<div class="quote">'+WORDS[key].en+'</div>', colorOpts:false, options:opts };
+      }
+    });
+  },
+
+  /* 2. EU GOSTO (I like / I don't like) */
+  opinion(){
+    const rounds=[];
+    /* modo A: carinha + atividade -> frase certa */
+    shuffle(ACTION_KEYS).slice(0,4).forEach(key=>{
+      const like=Math.random()<0.5;
+      const face=like?'😀':'🙁';
+      const opts=[enOpt('ilike',like),enOpt('idont',!like)];
+      rounds.push({ q:'A carinha diz o quê? 🗣️',
+        audio:['q_opinion_face'],
+        stage:'<div class="row">'+emo(face,80)+emo(WORDS[key].e,64)+'</div><div class="cardtxt">'+(like?'GOSTA de ':'NÃO gosta de ')+WORDS[key].cap+'</div>',
+        colorOpts:true, options:opts });
+    });
+    /* modo B: frase em inglês -> significado */
+    for(let n=0;n<3;n++){
+      const like=Math.random()<0.5;
+      const pk=like?'ilike':'idont';
+      const opts=[
+        {label:'😀<span class="cap">Eu GOSTO</span>', aud:['tr_ilike'], correct:like},
+        {label:'🙁<span class="cap">Eu NÃO gosto</span>', aud:['tr_idont'], correct:!like},
+      ];
+      rounds.push({ q:'O que quer dizer? 🤔', audio:['en_'+pk,'q_opinion_mean'], stage:'<div class="quote">'+WORDS[pk].en+'</div>', colorOpts:true, options:opts });
+    }
+    return shuffle(rounds).slice(0,7);
+  },
+
+  /* 3. INSTRUMENTOS (scientific tools) */
+  tools(){
+    const rounds=[];
+    TOOL_KEYS.forEach(key=>{
+      /* modo A: figura -> nome em inglês */
+      rounds.push({ q:'Como se diz este instrumento em <b>inglês</b>? 🔎',
+        audio:['tr_'+key,'q_tool_en'], stage:emo(WORDS[key].e,120), colorOpts:false,
+        options:shuffle(TOOL_KEYS.map(k=>enOpt(k,k===key))) });
+      /* modo B: para que serve -> qual instrumento */
+      rounds.push({ q:'Qual instrumento devo usar? 🧑‍🔬',
+        audio:[TOOL_USE[key],'q_tool_use'], stage:'<div class="quote">'+useTxt(key)+'</div>', colorOpts:false,
+        options:shuffle(TOOL_KEYS.map(k=>enOpt(k,k===key))) });
+    });
+    return shuffle(rounds).slice(0,7);
+  },
+
+  /* 4. ANTES OU AGORA (Then & Now) */
+  thennow(){
+    const clas=THENNOW.map(it=>({
+      q:'Isto é do <b>passado</b> ou de <b>hoje</b>? ⏳',
+      audio:['q_thennow'], stage:emo(it.e,96)+'<div class="cardtxt">'+it.cap+'</div>', colorOpts:true,
+      options:[enOpt('then',it.era==='then'),enOpt('now',it.era==='now')],
+      _exp: it.era==='then'?'exp_then':'exp_now'
+    }));
+    clas.forEach(r=>{ r.options.forEach(o=>{ if(o.correct) o.expAud=r._exp; }); });
+    const match=PASTNOW.map(it=>{
+      const distr=pickN(MODERN_KEYS,2,[it.ans]);
+      return { q:'Antes era assim. E <b>hoje</b>? 🕐',
+        audio:['q_pastnow'], stage:emo(it.e,88)+'<div class="cardtxt">'+it.cap+'</div>', colorOpts:false,
+        options:shuffle([enOpt(it.ans,true),enOpt(distr[0]),enOpt(distr[1])]) };
+    });
+    return shuffle([...clas,...match]).slice(0,7);
+  },
+
+  /* 5. VIVO OU NÃO (living / non-living) */
+  living(){
+    const yes=LIVING_YES.map(k=>({k,alive:true}));
+    const no=LIVING_NO.map(k=>({k,alive:false}));
+    const beings=shuffle([...yes,...no]).slice(0,5).map(({k,alive})=>{
+      const opts=[enOpt('living',alive),enOpt('nonliving',!alive)];
+      opts.forEach(o=>{ if(o.correct) o.expAud=alive?'exp_alive':'exp_notalive'; });
+      return { q:'Isto é um <b>ser vivo</b>? 🌱', audio:['en_'+k,'tr_'+k,'q_living'], stage:stageEmo(k,96), colorOpts:true, options:opts };
+    });
+    const needs=shuffle(NEED_KEYS).slice(0,2).map(need=>{
+      const distr=pickN(NEED_DISTR,2);
+      return { q:'Do que os <b>seres vivos</b> precisam? 💧', audio:['q_needs'], stage:emo('🌱🐶🌳',80),
+        colorOpts:false, options:shuffle([enOpt(need,true),enOpt(distr[0]),enOpt(distr[1])]) };
+    });
+    return shuffle([...beings,...needs]).slice(0,7);
+  },
+
+  /* 6. MACIO OU DURO (soft / hard) */
+  softhard(){
+    const yes=SOFT_YES.map(k=>({k,soft:true}));
+    const no=SOFT_NO.map(k=>({k,soft:false}));
+    return shuffle([...yes,...no]).slice(0,7).map(({k,soft})=>({
+      q:'Este objeto é <b>macio</b> ou <b>duro</b>? 🤲', audio:['en_'+k,'tr_'+k,'q_soft'], stage:stageEmo(k,96),
+      colorOpts:true, options:[enOpt('soft',soft),enOpt('hard',!soft)]
+    }));
+  },
+
+  /* 7. NATURAL OU FEITO PELO HOMEM (natural / manmade) */
+  natmade(){
+    const yes=NAT_YES.map(k=>({k,nat:true}));
+    const no=NAT_NO.map(k=>({k,nat:false}));
+    return shuffle([...yes,...no]).slice(0,7).map(({k,nat})=>({
+      q:'Isto é <b>natural</b> ou <b>feito pelo homem</b>? 🌍', audio:['en_'+k,'tr_'+k,'q_natural'], stage:stageEmo(k,96),
+      colorOpts:true, options:[enOpt('natural',nat),enOpt('manmade',!nat)]
+    }));
+  },
+
+  /* 8. FLEXÍVEL OU RÍGIDO (flexible / rigid) */
+  flexrig(){
+    const yes=FLEX_YES.map(k=>({k,flex:true}));
+    const no=FLEX_NO.map(k=>({k,flex:false}));
+    return shuffle([...yes,...no]).slice(0,7).map(({k,flex})=>({
+      q:'Este objeto é <b>flexível</b> ou <b>rígido</b>? 🤸', audio:['en_'+k,'tr_'+k,'q_flex'], stage:stageEmo(k,96),
+      colorOpts:true, options:[enOpt('flexible',flex),enOpt('rigid',!flex)]
+    }));
+  },
+
+  /* 9. CIENTISTAS FAMOSOS */
+  science(){
+    const name=(key,correct)=>({label:WORDS[key].en.replace('-',' '), aud:['en_'+key,'tr_'+key], correct:!!correct});
+    const rounds=[
+      { q:'Quem inventou o <b>avião</b>? ✈️', audio:['q_sci_invent'], stage:emo('✈️',96)+'<div class="cardtxt">o avião (o 14-Bis)</div>',
+        colorOpts:true, options:[{label:'Santos Dumont',aud:['en_santos','tr_santos'],correct:true},{label:'Marie Curie',aud:['en_marie','tr_marie']}] },
+      { q:'Quem descobriu o <b>Raio-X</b>? 🩻', audio:['q_sci_invent'], stage:emo('🩻',96)+'<div class="cardtxt">o raio-x (X-ray)</div>',
+        colorOpts:true, options:[{label:'Marie Curie',aud:['en_marie','tr_marie'],correct:true},{label:'Santos Dumont',aud:['en_santos','tr_santos']}] },
+      { q:'De qual <b>país</b> era o Santos Dumont? 🌎', audio:['q_sci_country'], stage:emo('🧑‍✈️',90),
+        colorOpts:true, options:shuffle([{label:'🇧🇷<span class="cap">Brasil</span>',aud:['c_brasil'],correct:true},{label:'🇺🇸<span class="cap">Estados Unidos</span>',aud:['c_eua']},{label:'🇫🇷<span class="cap">França</span>',aud:['c_franca']}]) },
+      { q:'Como se diz <b>AVIÃO</b> em inglês? ✈️', audio:['tr_airplane','q_action_en'], stage:emo('✈️',96),
+        colorOpts:false, options:shuffle([enOpt('airplane',true),enOpt('car'),enOpt('kite')]) },
+      { q:'Como se diz <b>RAIO-X</b> em inglês? 🩻', audio:['tr_xray','q_action_en'], stage:emo('🩻',96),
+        colorOpts:false, options:shuffle([enOpt('xray',true),enOpt('telescope'),enOpt('scale')]) },
+      { q:'O que os <b>cientistas</b> fazem? 🧑‍🔬', audio:['q_sci_help'], stage:emo('🧑‍🔬🔬',80),
+        colorOpts:false, options:shuffle([{label:'❤️<span class="cap">Ajudam as pessoas</span>',aud:['sci_help'],correct:true},{label:'😴<span class="cap">Só dormem</span>',aud:['sci_sleep']},{label:'🙅<span class="cap">Não fazem nada</span>',aud:['sci_nothing']}]) },
+      { q:'Que instrumento vê as <b>estrelas</b>? 🌟', audio:['q_sci_star'], stage:emo('🌟🌙',80),
+        colorOpts:false, options:shuffle([enOpt('telescope',true),enOpt('microscope'),enOpt('magnifying')]) },
+    ];
+    return shuffle(rounds).slice(0,7);
+  },
+};
+function useTxt(key){
+  return {microscope:'Quero ver coisas bem pequenininhas 🐜', telescope:'Quero ver as estrelas no céu 🌟', magnifying:'Quero olhar bem de pertinho 🔍', scale:'Quero pesar e medir ⚖️'}[key];
+}
+
+/* ===== SPLASH -> INÍCIO ===== */
+function enterApp(){
+  initAudio();
+  unlockAudio();
+  document.getElementById('splash').style.display='none';
+  goHome(true);
+  setTimeout(()=>playKeys(['greet']),350);
+}
+document.getElementById('startBtn').addEventListener('click',enterApp);
+document.getElementById('splash').addEventListener('click',e=>{ if(e.target.id!=='startBtn'){ enterApp(); } });
+</script>
+</body>
+</html>
