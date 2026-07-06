@@ -197,49 +197,13 @@ const VOICE = {
   q_flex:"Este objeto é flexível ou rígido?",
   q_sci_invent:"Quem inventou isto?",
   q_sci_country:"De qual país era o Santos Dumont?",
-  q_sci_help:"O que os cientistas fazem pelas pessoas?",
   q_sci_star:"Qual instrumento a gente usa para ver as estrelas?",
 
-  /* falas de propósito dos instrumentos */
+  /* falas de propósito dos instrumentos (contexto da pergunta) */
   use_micro:"Quero ver coisas bem pequenininhas.",
   use_tele:"Quero ver as estrelas lá no céu.",
   use_mag:"Quero olhar bem de pertinho.",
   use_scale:"Quero pesar e medir as coisas.",
-
-  /* respostas dos cientistas */
-  c_brasil:"o Brasil", c_eua:"os Estados Unidos", c_franca:"a França",
-  sci_help:"ajudam as pessoas e o mundo", sci_sleep:"ficam só dormindo", sci_nothing:"não fazem nada",
-
-  /* explicações extras */
-  exp_then:"Isso! É uma invenção antiga, do passado.",
-  exp_now:"Isso! É uma invenção moderna, de hoje.",
-  exp_alive:"Isso! Nasce, cresce e precisa de comida, água e ar.",
-  exp_notalive:"Isso! Não nasce nem cresce, não é um ser vivo.",
-
-  /* TRADUÇÕES (faladas em pt logo depois da palavra em inglês) */
-  tr_play_ball:"jogar bola", tr_play_video:"jogar videogame", tr_play_board:"jogar jogo de tabuleiro",
-  tr_jump_rope:"pular corda", tr_play_dolls:"brincar de boneca", tr_play_cars:"brincar de carrinho",
-  tr_assemble:"montar quebra-cabeça", tr_ride_bike:"andar de bicicleta", tr_color:"pintar e colorir",
-  tr_skateboard:"andar de skate", tr_fly_kite:"soltar pipa", tr_blocks:"brincar de blocos de montar",
-  tr_microscope:"o microscópio, para ver coisas pequenas", tr_telescope:"o telescópio, para ver as estrelas",
-  tr_magnifying:"a lupa, para olhar de pertinho", tr_scale:"a balança, para pesar e medir",
-  tr_then:"antes, no passado", tr_now:"agora, nos dias de hoje",
-  tr_living:"é um ser vivo", tr_nonliving:"não é um ser vivo",
-  tr_food:"comida", tr_water:"água", tr_air:"ar",
-  tr_soft:"macio", tr_hard:"duro",
-  tr_natural:"natural, vem da natureza", tr_manmade:"feito pelo homem",
-  tr_flexible:"flexível, dobra fácil", tr_rigid:"rígido, não dobra",
-  tr_ilike:"eu gosto de", tr_idont:"eu não gosto de",
-  tr_car:"o carro", tr_cellphone:"o celular", tr_computer:"o computador", tr_lamp:"a lâmpada", tr_train:"o trem",
-  tr_rock:"a pedra", tr_flower:"a flor", tr_chair:"a cadeira", tr_teddy:"o ursinho de pelúcia",
-  tr_glass:"o copo de vidro", tr_leaf:"a folha", tr_cotton:"o algodão", tr_pillow:"o travesseiro",
-  tr_pencil:"o lápis", tr_dog:"o cachorro", tr_tree:"a árvore", tr_turtle:"a tartaruga",
-  tr_cat:"o gato", tr_bird:"o passarinho", tr_fish:"o peixe", tr_ball:"a bola",
-  tr_sun:"o sol", tr_snake:"a cobra", tr_rope:"a corda", tr_wood:"a madeira",
-  tr_spoon:"a colher", tr_ruler:"a régua", tr_scarf:"o cachecol", tr_sponge:"a esponja",
-  tr_brick:"o tijolo", tr_apple:"a maçã", tr_shell:"a concha", tr_ribbon:"a fita",
-  tr_plant:"a plantinha", tr_kite:"a pipa",
-  tr_airplane:"o avião", tr_xray:"o raio-x", tr_marie:"a Marie Curie", tr_santos:"o Santos Dumont",
 };
 
 /* ============================================================
@@ -247,7 +211,6 @@ const VOICE = {
    O gerar-audios.py usa a voz inglesa para todas estas chaves.
    ============================================================ */
 const VOICE_EN = {
-  hello:"Hello! Let's play in English!",
   /* ações */
   en_play_ball:"Play ball.", en_play_video:"Play video games.", en_play_board:"Play board games.",
   en_jump_rope:"Jump rope.", en_play_dolls:"Play with dolls.", en_play_cars:"Play with cars.",
@@ -274,8 +237,9 @@ const VOICE_EN = {
   en_spoon:"Spoon.", en_ruler:"Ruler.", en_scarf:"Scarf.", en_sponge:"Sponge.",
   en_brick:"Brick.", en_apple:"Apple.", en_shell:"Shell.", en_ribbon:"Ribbon.",
   en_plant:"Plant.", en_kite:"Kite.",
-  /* cientistas */
+  /* cientistas e países */
   en_airplane:"Airplane.", en_xray:"X ray.", en_marie:"Marie Curie.", en_santos:"Santos Dumont.",
+  en_brazil:"Brazil.", en_usa:"The U.S.A.", en_france:"France.",
 };
 
 /* ============================================================
@@ -569,23 +533,22 @@ const WORDS={
   ribbon:{e:'🎀', en:'RIBBON', cap:'fita'},
   plant:{e:'🌱', en:'PLANT', cap:'plantinha'},
   kite:{e:'🪁', en:'KITE', cap:'pipa'},
-  /* cientistas */
+  /* cientistas e países */
   airplane:{e:'✈️', en:'AIRPLANE', cap:'avião'},
   xray:{e:'🩻', en:'X-RAY', cap:'raio-x'},
+  brazil:{e:'🇧🇷', en:'BRAZIL', cap:'Brasil'},
+  usa:{e:'🇺🇸', en:'U.S.A.', cap:'Estados Unidos'},
+  france:{e:'🇫🇷', en:'FRANCE', cap:'França'},
 };
 
-/* opção com a PALAVRA em inglês em destaque + tradução (áudio bilíngue) */
+/* OPÇÃO (box de resposta): SÓ a palavra em inglês, e o áudio SÓ em inglês.
+   Nada de português nas respostas — assim o Vítor precisa aprender de verdade. */
 function enOpt(key, correct){
   const w=WORDS[key];
-  return {label:'<b>'+w.en+'</b><span class="cap">'+w.cap+'</span>', aud:['en_'+key,'tr_'+key], correct:!!correct};
+  return {label:'<b>'+w.en+'</b>', aud:['en_'+key], correct:!!correct};
 }
-/* opção com EMOJI + tradução em português (para compreensão) */
-function ptOpt(key, correct){
-  const w=WORDS[key];
-  return {label:w.e+'<span class="cap">'+w.cap+'</span>', aud:['tr_'+key], correct:!!correct};
-}
-/* palco: emoji grande + legenda em português */
-function stageEmo(key,size){ const w=WORDS[key]; return emo(w.e,size||90)+'<div class="cardtxt">'+w.cap+'</div>'; }
+/* palco (enunciado): emoji grande + a palavra em INGLÊS (imersão, sem tradução) */
+function stageEmo(key,size){ const w=WORDS[key]; return emo(w.e,size||90)+'<div class="cardtxt">'+w.en+'</div>'; }
 
 /* ============================================================
    LISTAS DE CONTEÚDO
@@ -594,18 +557,15 @@ const ACTION_KEYS=['play_ball','play_video','play_board','jump_rope','play_dolls
 const TOOL_KEYS=['microscope','telescope','magnifying','scale'];
 const TOOL_USE={microscope:'use_micro', telescope:'use_tele', magnifying:'use_mag', scale:'use_scale'};
 
-/* invenções para classificar em THEN / NOW */
+/* invenções para classificar em THEN / NOW.
+   Só o emoji aparece — a criança decide pela aparência (antiga x moderna),
+   sem nenhuma pista escrita que entregue a resposta. */
 const THENNOW=[
-  {e:'🖥️', cap:'computador antigo', era:'then'},
-  {e:'💻', cap:'notebook moderno',  era:'now'},
-  {e:'🚂', cap:'trem a vapor antigo',era:'then'},
-  {e:'🚄', cap:'trem-bala moderno',  era:'now'},
-  {e:'📻', cap:'rádio antigo',        era:'then'},
-  {e:'📱', cap:'celular moderno',     era:'now'},
-  {e:'🕯️', cap:'vela antiga',         era:'then'},
-  {e:'💡', cap:'lâmpada moderna',     era:'now'},
-  {e:'📷', cap:'câmera antiga',       era:'then'},
-  {e:'✈️', cap:'avião moderno',       era:'now'},
+  {e:'🕯️', era:'then'}, {e:'💡', era:'now'},
+  {e:'🚂', era:'then'}, {e:'🚄', era:'now'},
+  {e:'📻', era:'then'}, {e:'📱', era:'now'},
+  {e:'🐴', era:'then'}, {e:'🚗', era:'now'},
+  {e:'✉️', era:'then'}, {e:'💻', era:'now'},
 ];
 /* "antes era assim, e hoje?" -> escolher o objeto moderno em inglês */
 const PASTNOW=[
@@ -637,47 +597,26 @@ const FLEX_NO=['wood','pencil','rock','spoon','ruler','brick'];
    GERADORES DE CONTEÚDO (9 jogos)
    ============================================================ */
 const BUILDERS={
-  /* 1. BRINCADEIRAS (action vocabulary) */
+  /* 1. BRINCADEIRAS (action vocabulary) — figura no palco, resposta só em inglês */
   actions(){
     return shuffle(ACTION_KEYS).slice(0,7).map(key=>{
-      if(Math.random()<0.5){
-        /* modo A: figura -> palavra em inglês */
-        const distr=pickN(ACTION_KEYS,2,[key]);
-        const opts=shuffle([enOpt(key,true),enOpt(distr[0]),enOpt(distr[1])]);
-        return { q:'Como se diz em <b>inglês</b>? 🗣️', audio:['tr_'+key,'q_action_en'], stage:emo(WORDS[key].e,120), colorOpts:false, options:opts };
-      }else{
-        /* modo B: palavra em inglês -> figura certa */
-        const distr=pickN(ACTION_KEYS,2,[key]);
-        const opts=shuffle([ptOpt(key,true),ptOpt(distr[0]),ptOpt(distr[1])]);
-        return { q:'O que quer dizer? 🖼️', audio:['en_'+key,'q_action_pt'], stage:'<div class="quote">'+WORDS[key].en+'</div>', colorOpts:false, options:opts };
-      }
+      const distr=pickN(ACTION_KEYS,2,[key]);
+      const opts=shuffle([enOpt(key,true),enOpt(distr[0]),enOpt(distr[1])]);
+      return { q:'Como se diz esta brincadeira em <b>inglês</b>? 🗣️', audio:['q_action_en'], stage:emo(WORDS[key].e,130), colorOpts:false, options:opts };
     });
   },
 
-  /* 2. EU GOSTO (I like / I don't like) */
+  /* 2. EU GOSTO (I like / I don't like) — carinha decide, resposta só em inglês */
   opinion(){
-    const rounds=[];
-    /* modo A: carinha + atividade -> frase certa */
-    shuffle(ACTION_KEYS).slice(0,4).forEach(key=>{
+    return shuffle(ACTION_KEYS).slice(0,7).map(key=>{
       const like=Math.random()<0.5;
       const face=like?'😀':'🙁';
       const opts=[enOpt('ilike',like),enOpt('idont',!like)];
-      rounds.push({ q:'A carinha diz o quê? 🗣️',
+      return { q:'Olhe a carinha. O que ele diz? 🗣️',
         audio:['q_opinion_face'],
-        stage:'<div class="row">'+emo(face,80)+emo(WORDS[key].e,64)+'</div><div class="cardtxt">'+(like?'GOSTA de ':'NÃO gosta de ')+WORDS[key].cap+'</div>',
-        colorOpts:true, options:opts });
+        stage:'<div class="row">'+emo(face,96)+emo(WORDS[key].e,84)+'</div>',
+        colorOpts:true, options:opts };
     });
-    /* modo B: frase em inglês -> significado */
-    for(let n=0;n<3;n++){
-      const like=Math.random()<0.5;
-      const pk=like?'ilike':'idont';
-      const opts=[
-        {label:'😀<span class="cap">Eu GOSTO</span>', aud:['tr_ilike'], correct:like},
-        {label:'🙁<span class="cap">Eu NÃO gosto</span>', aud:['tr_idont'], correct:!like},
-      ];
-      rounds.push({ q:'O que quer dizer? 🤔', audio:['en_'+pk,'q_opinion_mean'], stage:'<div class="quote">'+WORDS[pk].en+'</div>', colorOpts:true, options:opts });
-    }
-    return shuffle(rounds).slice(0,7);
   },
 
   /* 3. INSTRUMENTOS (scientific tools) */
@@ -686,9 +625,9 @@ const BUILDERS={
     TOOL_KEYS.forEach(key=>{
       /* modo A: figura -> nome em inglês */
       rounds.push({ q:'Como se diz este instrumento em <b>inglês</b>? 🔎',
-        audio:['tr_'+key,'q_tool_en'], stage:emo(WORDS[key].e,120), colorOpts:false,
+        audio:['q_tool_en'], stage:emo(WORDS[key].e,130), colorOpts:false,
         options:shuffle(TOOL_KEYS.map(k=>enOpt(k,k===key))) });
-      /* modo B: para que serve -> qual instrumento */
+      /* modo B: para que serve (contexto em pt) -> qual instrumento em inglês */
       rounds.push({ q:'Qual instrumento devo usar? 🧑‍🔬',
         audio:[TOOL_USE[key],'q_tool_use'], stage:'<div class="quote">'+useTxt(key)+'</div>', colorOpts:false,
         options:shuffle(TOOL_KEYS.map(k=>enOpt(k,k===key))) });
@@ -696,19 +635,17 @@ const BUILDERS={
     return shuffle(rounds).slice(0,7);
   },
 
-  /* 4. ANTES OU AGORA (Then & Now) */
+  /* 4. ANTES OU AGORA (Then & Now) — só o emoji aparece, sem pista escrita */
   thennow(){
     const clas=THENNOW.map(it=>({
-      q:'Isto é do <b>passado</b> ou de <b>hoje</b>? ⏳',
-      audio:['q_thennow'], stage:emo(it.e,96)+'<div class="cardtxt">'+it.cap+'</div>', colorOpts:true,
-      options:[enOpt('then',it.era==='then'),enOpt('now',it.era==='now')],
-      _exp: it.era==='then'?'exp_then':'exp_now'
+      q:'Isto é do passado (THEN) ou de hoje (NOW)? ⏳',
+      audio:['q_thennow'], stage:emo(it.e,130), colorOpts:true,
+      options:[enOpt('then',it.era==='then'),enOpt('now',it.era==='now')]
     }));
-    clas.forEach(r=>{ r.options.forEach(o=>{ if(o.correct) o.expAud=r._exp; }); });
     const match=PASTNOW.map(it=>{
       const distr=pickN(MODERN_KEYS,2,[it.ans]);
-      return { q:'Antes era assim. E <b>hoje</b>? 🕐',
-        audio:['q_pastnow'], stage:emo(it.e,88)+'<div class="cardtxt">'+it.cap+'</div>', colorOpts:false,
+      return { q:'Antes era '+it.cap+'. E <b>hoje</b>? 🕐',
+        audio:['q_pastnow'], stage:emo(it.e,120), colorOpts:false,
         options:shuffle([enOpt(it.ans,true),enOpt(distr[0]),enOpt(distr[1])]) };
     });
     return shuffle([...clas,...match]).slice(0,7);
@@ -719,13 +656,11 @@ const BUILDERS={
     const yes=LIVING_YES.map(k=>({k,alive:true}));
     const no=LIVING_NO.map(k=>({k,alive:false}));
     const beings=shuffle([...yes,...no]).slice(0,5).map(({k,alive})=>{
-      const opts=[enOpt('living',alive),enOpt('nonliving',!alive)];
-      opts.forEach(o=>{ if(o.correct) o.expAud=alive?'exp_alive':'exp_notalive'; });
-      return { q:'Isto é um <b>ser vivo</b>? 🌱', audio:['en_'+k,'tr_'+k,'q_living'], stage:stageEmo(k,96), colorOpts:true, options:opts };
+      return { q:'Isto é um <b>ser vivo</b>? 🌱', audio:['en_'+k,'q_living'], stage:stageEmo(k,110), colorOpts:true, options:[enOpt('living',alive),enOpt('nonliving',!alive)] };
     });
     const needs=shuffle(NEED_KEYS).slice(0,2).map(need=>{
       const distr=pickN(NEED_DISTR,2);
-      return { q:'Do que os <b>seres vivos</b> precisam? 💧', audio:['q_needs'], stage:emo('🌱🐶🌳',80),
+      return { q:'Do que os <b>seres vivos</b> precisam? 💧', audio:['q_needs'], stage:emo('🌱🐶🌳',96),
         colorOpts:false, options:shuffle([enOpt(need,true),enOpt(distr[0]),enOpt(distr[1])]) };
     });
     return shuffle([...beings,...needs]).slice(0,7);
@@ -736,7 +671,7 @@ const BUILDERS={
     const yes=SOFT_YES.map(k=>({k,soft:true}));
     const no=SOFT_NO.map(k=>({k,soft:false}));
     return shuffle([...yes,...no]).slice(0,7).map(({k,soft})=>({
-      q:'Este objeto é <b>macio</b> ou <b>duro</b>? 🤲', audio:['en_'+k,'tr_'+k,'q_soft'], stage:stageEmo(k,96),
+      q:'Este objeto é <b>macio</b> ou <b>duro</b>? 🤲', audio:['en_'+k,'q_soft'], stage:stageEmo(k,110),
       colorOpts:true, options:[enOpt('soft',soft),enOpt('hard',!soft)]
     }));
   },
@@ -746,7 +681,7 @@ const BUILDERS={
     const yes=NAT_YES.map(k=>({k,nat:true}));
     const no=NAT_NO.map(k=>({k,nat:false}));
     return shuffle([...yes,...no]).slice(0,7).map(({k,nat})=>({
-      q:'Isto é <b>natural</b> ou <b>feito pelo homem</b>? 🌍', audio:['en_'+k,'tr_'+k,'q_natural'], stage:stageEmo(k,96),
+      q:'Isto é <b>natural</b> ou <b>feito pelo homem</b>? 🌍', audio:['en_'+k,'q_natural'], stage:stageEmo(k,110),
       colorOpts:true, options:[enOpt('natural',nat),enOpt('manmade',!nat)]
     }));
   },
@@ -756,31 +691,28 @@ const BUILDERS={
     const yes=FLEX_YES.map(k=>({k,flex:true}));
     const no=FLEX_NO.map(k=>({k,flex:false}));
     return shuffle([...yes,...no]).slice(0,7).map(({k,flex})=>({
-      q:'Este objeto é <b>flexível</b> ou <b>rígido</b>? 🤸', audio:['en_'+k,'tr_'+k,'q_flex'], stage:stageEmo(k,96),
+      q:'Este objeto é <b>flexível</b> ou <b>rígido</b>? 🤸', audio:['en_'+k,'q_flex'], stage:stageEmo(k,110),
       colorOpts:true, options:[enOpt('flexible',flex),enOpt('rigid',!flex)]
     }));
   },
 
-  /* 9. CIENTISTAS FAMOSOS */
+  /* 9. CIENTISTAS FAMOSOS — respostas só em inglês (nomes próprios e vocabulário) */
   science(){
-    const name=(key,correct)=>({label:WORDS[key].en.replace('-',' '), aud:['en_'+key,'tr_'+key], correct:!!correct});
     const rounds=[
-      { q:'Quem inventou o <b>avião</b>? ✈️', audio:['q_sci_invent'], stage:emo('✈️',96)+'<div class="cardtxt">o avião (o 14-Bis)</div>',
-        colorOpts:true, options:[{label:'Santos Dumont',aud:['en_santos','tr_santos'],correct:true},{label:'Marie Curie',aud:['en_marie','tr_marie']}] },
-      { q:'Quem descobriu o <b>Raio-X</b>? 🩻', audio:['q_sci_invent'], stage:emo('🩻',96)+'<div class="cardtxt">o raio-x (X-ray)</div>',
-        colorOpts:true, options:[{label:'Marie Curie',aud:['en_marie','tr_marie'],correct:true},{label:'Santos Dumont',aud:['en_santos','tr_santos']}] },
-      { q:'De qual <b>país</b> era o Santos Dumont? 🌎', audio:['q_sci_country'], stage:emo('🧑‍✈️',90),
-        colorOpts:true, options:shuffle([{label:'🇧🇷<span class="cap">Brasil</span>',aud:['c_brasil'],correct:true},{label:'🇺🇸<span class="cap">Estados Unidos</span>',aud:['c_eua']},{label:'🇫🇷<span class="cap">França</span>',aud:['c_franca']}]) },
-      { q:'Como se diz <b>AVIÃO</b> em inglês? ✈️', audio:['tr_airplane','q_action_en'], stage:emo('✈️',96),
+      { q:'Quem inventou o <b>avião</b>? ✈️', audio:['q_sci_invent'], stage:emo('✈️',120),
+        colorOpts:true, options:shuffle([{label:'Santos Dumont',aud:['en_santos'],correct:true},{label:'Marie Curie',aud:['en_marie']}]) },
+      { q:'Quem descobriu o <b>Raio-X</b>? 🩻', audio:['q_sci_invent'], stage:emo('🩻',120),
+        colorOpts:true, options:shuffle([{label:'Marie Curie',aud:['en_marie'],correct:true},{label:'Santos Dumont',aud:['en_santos']}]) },
+      { q:'De qual <b>país</b> era o Santos Dumont? 🌎', audio:['q_sci_country'], stage:emo('🧑‍✈️',110),
+        colorOpts:true, options:shuffle([enOpt('brazil',true),enOpt('usa'),enOpt('france')]) },
+      { q:'Como se diz <b>AVIÃO</b> em inglês? ✈️', audio:['q_action_en'], stage:emo('✈️',120),
         colorOpts:false, options:shuffle([enOpt('airplane',true),enOpt('car'),enOpt('kite')]) },
-      { q:'Como se diz <b>RAIO-X</b> em inglês? 🩻', audio:['tr_xray','q_action_en'], stage:emo('🩻',96),
+      { q:'Como se diz <b>RAIO-X</b> em inglês? 🩻', audio:['q_action_en'], stage:emo('🩻',120),
         colorOpts:false, options:shuffle([enOpt('xray',true),enOpt('telescope'),enOpt('scale')]) },
-      { q:'O que os <b>cientistas</b> fazem? 🧑‍🔬', audio:['q_sci_help'], stage:emo('🧑‍🔬🔬',80),
-        colorOpts:false, options:shuffle([{label:'❤️<span class="cap">Ajudam as pessoas</span>',aud:['sci_help'],correct:true},{label:'😴<span class="cap">Só dormem</span>',aud:['sci_sleep']},{label:'🙅<span class="cap">Não fazem nada</span>',aud:['sci_nothing']}]) },
-      { q:'Que instrumento vê as <b>estrelas</b>? 🌟', audio:['q_sci_star'], stage:emo('🌟🌙',80),
+      { q:'Que instrumento vê as <b>estrelas</b>? 🌟', audio:['q_sci_star'], stage:emo('🌟🌙',96),
         colorOpts:false, options:shuffle([enOpt('telescope',true),enOpt('microscope'),enOpt('magnifying')]) },
     ];
-    return shuffle(rounds).slice(0,7);
+    return shuffle(rounds).slice(0,6);
   },
 };
 function useTxt(key){

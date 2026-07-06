@@ -20,14 +20,15 @@ Feito como **um único arquivo `index.html`** — sem instalação, sem internet
 
 ## 👶 Pensado para quem ainda não lê — e está aprendendo inglês
 
-- 🔊🇧🇷🇺🇸 **Narração BILÍNGUE com voz natural** — a palavra é falada **em inglês** (voz nativa `en-US`) e logo em seguida a tradução **em português** (voz `pt-BR`). A criança ouve *"Microscope… o microscópio"* e vai associando. O áudio é **pré-gravado em MP3** (pasta `audio/`), então funciona em qualquer aparelho, **online ou offline**.
-- 🗣️ **Cada opção fala** — ao tocar numa resposta, o app fala a palavra (inglês + português), ajudando a aprender mesmo errando.
+- 🇺🇸 **Respostas 100% em inglês (imersão)** — os boxes de resposta mostram e falam **só inglês** (voz nativa `en-US`), **sem tradução em português**. Assim a criança precisa aprender de verdade, sem "colar" pela tradução.
+- 🇧🇷 **Perguntas em português** — a instrução ("Como se diz…?", "Isto é macio ou duro?") é falada em português (voz `pt-BR`), para a criança entender a tarefa. Só a **resposta** é que é em inglês.
+- 🗣️ **Cada opção fala em inglês** — ao tocar numa resposta, o app pronuncia a palavra em inglês, ajudando a aprender mesmo errando.
 - ⭐ **Estrelas e pontos** — recompensa a cada acerto, com confete e som de vitória.
-- 🎨 **Visual grande e colorido** — emojis e botões enormes, fáceis de tocar.
+- 🎨 **Visual grande e colorido** — emojis grandes no enunciado e botões enormes, fáceis de tocar.
 - 🔁 **Repetição infinita** — as perguntas são sorteadas, sempre tem treino novo.
 
 ### 🔈 Sobre o áudio
-- 185 arquivos `.mp3` na pasta `audio/` (114 em português + 71 em inglês).
+- 106 arquivos `.mp3` na pasta `audio/` (33 perguntas/instruções em português + 73 palavras em inglês).
 - **Toque sempre em "▶ START / COMEÇAR" primeiro** — esse toque libera o som (regra dos navegadores).
 - **iPhone/iPad**: tire do **modo silencioso** (chavinha lateral) e suba o volume.
 - Para **repetir** a leitura, toque no botão amarelo **🔊** ao lado da pergunta.
