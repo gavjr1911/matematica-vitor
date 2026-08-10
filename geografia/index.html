@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏠 Geografia e História Divertida 🏠</title>
+<style>
+  :root{
+    --rosa:#ff6b9d; --roxo:#a06cd5; --azul:#4d96ff; --verde:#6bcB77;
+    --amarelo:#ffd93d; --laranja:#ff924c; --vermelho:#ff5e5e; --ceu:#b8e3ff;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'Comic Sans MS','Baloo',"Trebuchet MS",sans-serif;
+    background:linear-gradient(160deg,#ffe9c7 0%,#d7e6ff 50%,#d8ffe3 100%);
+    color:#3a3a55; overflow-x:hidden; user-select:none;
+    min-height:100%; touch-action:manipulation;
+  }
+  #app{max-width:760px; margin:0 auto; padding:14px; min-height:100vh;}
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#fff; border-radius:22px; padding:8px 14px; margin-bottom:14px;
+    box-shadow:0 6px 0 rgba(0,0,0,.08);
+  }
+  .topbar .home-btn{
+    background:var(--azul); color:#fff; border:none; border-radius:16px;
+    font-size:22px; padding:8px 14px; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #2f6fd0;
+  }
+  .topbar .home-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #2f6fd0;}
+  .stars{font-size:24px; font-weight:bold; color:var(--laranja); display:flex; align-items:center; gap:6px;}
+  .stars .num{background:var(--amarelo); border-radius:14px; padding:2px 12px; box-shadow:0 3px 0 #d9a800;}
+
+  .hero{
+    text-align:center; background:#fff; border-radius:30px; padding:22px 18px;
+    box-shadow:0 8px 0 rgba(0,0,0,.08); margin-bottom:18px;
+  }
+  .hero h1{font-size:32px; margin:6px 0; color:var(--laranja); line-height:1.2;}
+  .hero p{font-size:18px; margin:4px 0; color:#666;}
+  .mascote{font-size:78px; display:inline-block; animation:flutua 2.5s ease-in-out infinite;}
+  @keyframes flutua{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-14px) rotate(3deg);}}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .card{
+    border:none; border-radius:26px; padding:16px 10px; cursor:pointer;
+    color:#fff; font-size:19px; font-weight:bold; text-align:center;
+    box-shadow:0 7px 0 rgba(0,0,0,.18); transition:transform .08s;
+    display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.15;
+  }
+  .card:active{transform:translateY(4px); box-shadow:0 3px 0 rgba(0,0,0,.18);}
+  .card .ico{font-size:46px;}
+  .c1{background:var(--rosa);} .c2{background:var(--azul);} .c3{background:var(--verde);}
+  .c4{background:var(--laranja);} .c5{background:var(--roxo);} .c6{background:var(--vermelho);}
+  .c7{background:#19c3b1;} .c8{background:#f76eb0;} .c9{background:#7c83ff;}
+
+  .game{
+    background:#fff; border-radius:30px; padding:18px; box-shadow:0 8px 0 rgba(0,0,0,.08);
+    text-align:center;
+  }
+  .game-title{font-size:24px; color:var(--laranja); margin:0 0 4px;}
+  .progress{font-size:16px; color:#999; margin-bottom:10px;}
+  .question{
+    font-size:23px; font-weight:bold; color:#3a3a55; margin:6px 0 14px; line-height:1.3;
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  }
+  .speak-btn{
+    background:var(--amarelo); border:none; border-radius:50%; width:54px; height:54px;
+    font-size:28px; cursor:pointer; box-shadow:0 4px 0 #d9a800; flex:0 0 auto;
+  }
+  .speak-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #d9a800;}
+  .speak-btn.playing{animation:pulse .7s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .stage{
+    min-height:120px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:10px; margin:10px auto 18px; padding:16px;
+    background:linear-gradient(160deg,#fff8ec,#eef5ff); border-radius:22px; border:4px dashed #f3d9a8;
+    flex-direction:column;
+  }
+  .obj{font-size:80px; animation:pop .35s ease; line-height:1;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+  .stage .cardtxt{font-size:22px; font-weight:bold; color:#2f6fd0; margin-top:4px; line-height:1.3;}
+  .stage .quote{font-size:21px; font-weight:bold; color:#a06cd5; font-style:italic; max-width:420px;}
+  .maprow{display:flex; gap:16px; align-items:flex-end; justify-content:center; flex-wrap:nowrap;}
+  .maprow .spot{text-align:center;}
+  .maprow .spot .se{font-size:58px; line-height:1; animation:pop .35s ease;}
+  .maprow .spot .sn{font-size:14px; font-weight:bold; color:#3a3a55; margin-top:4px;}
+
+  .options{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));}
+  .opt{
+    border:none; border-radius:22px; padding:16px 10px; font-size:24px; font-weight:bold;
+    cursor:pointer; background:var(--azul); color:#fff; box-shadow:0 6px 0 #2f6fd0;
+    min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    word-break:break-word; line-height:1.15;
+  }
+  .opt .cap{font-size:18px;}
+  .opt-colors .opt{font-size:20px;}
+  .opt:active{transform:translateY(3px); box-shadow:0 3px 0 #2f6fd0;}
+  .opt.big{font-size:44px;}
+  .opt.ok{background:var(--verde)!important; box-shadow:0 6px 0 #3f9c4f!important; animation:tada .5s;}
+  .opt.no{background:#cfcfe0!important; box-shadow:0 6px 0 #a0a0c0!important; opacity:.7;}
+  @keyframes tada{0%{transform:scale(1);}30%{transform:scale(1.18) rotate(-4deg);}60%{transform:scale(1.1) rotate(4deg);}100%{transform:scale(1);}}
+
+  .opt-colors .opt:nth-child(1){background:var(--rosa); box-shadow:0 6px 0 #d44d7c;}
+  .opt-colors .opt:nth-child(2){background:var(--verde); box-shadow:0 6px 0 #3f9c4f;}
+  .opt-colors .opt:nth-child(3){background:var(--laranja); box-shadow:0 6px 0 #d96d2e;}
+  .opt-colors .opt:nth-child(4){background:var(--roxo); box-shadow:0 6px 0 #7a4db0;}
+
+  .feedback{font-size:26px; font-weight:bold; min-height:40px; margin-top:12px;}
+  .feedback.good{color:var(--verde);} .feedback.bad{color:var(--laranja);}
+
+  .next-btn{
+    margin-top:14px; background:var(--verde); color:#fff; border:none; border-radius:22px;
+    font-size:24px; font-weight:bold; padding:14px 34px; cursor:pointer; box-shadow:0 6px 0 #3f9c4f;
+  }
+  .next-btn:active{transform:translateY(3px); box-shadow:0 3px 0 #3f9c4f;}
+
+  #splash{
+    position:fixed; inset:0; background:linear-gradient(160deg,var(--laranja),var(--azul));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; text-align:center; z-index:50; cursor:pointer; padding:20px;
+  }
+  #splash h1{font-size:34px; margin:10px;}
+  #splash .big{font-size:100px; animation:flutua 2.5s infinite;}
+  #splash .play{
+    margin-top:24px; background:var(--amarelo); color:#5a4500; border:none; border-radius:30px;
+    font-size:30px; font-weight:bold; padding:18px 44px; box-shadow:0 8px 0 #d9a800; cursor:pointer;
+  }
+
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:40;}
+  .win{text-align:center; padding:20px;}
+  .win .trophy{font-size:90px; animation:tada 1s;}
+
+  @media(max-width:480px){
+    .hero h1{font-size:26px;} .question{font-size:20px;} .card{font-size:17px;}
+    .obj{font-size:66px;} .maprow .spot .se{font-size:46px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="big">🏠</div>
+  <h1>Geografia e História<br>Divertida!</h1>
+  <p style="font-size:20px;max-width:340px;">Vamos aprender sobre a família, as moradias e os bons vizinhos para a prova! 🎉<br>Toque no botão para começar.</p>
+  <button class="play" id="startBtn">▶ COMEÇAR</button>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   GEOGRAFIA E HISTÓRIA DIVERTIDA — 1º ano (Bernoulli, Cap. 3 e 4)
+   Módulo 5 do projeto. Mesma estrutura dos apps de Matemática,
+   Português, Ciências e Inglês:
+   - narração por arquivos pré-gravados (pasta /audio) -> funciona
+     em qualquer aparelho, online ou offline;
+   - estrelas, confete, sons de efeito; tudo jogável sozinho.
+   Conteúdos: família como grupo social; laços familiares (avós,
+   tios, primos, bisavós); antepassados e fontes históricas;
+   nomes e sobrenomes; tipos de moradia (casa, sobrado,
+   apartamento, oca, geminadas, barraco); campo x cidade;
+   cômodos e suas funções; regras de convivência com vizinhos;
+   responsabilidades de adultos e crianças; rotina e localização
+   (esquerda, direita, no meio).
+   ============================================================ */
+
+const App = document.getElementById('app');
+let stars = parseInt(localStorage.getItem('vitor_geo_stars')||'0',10);
+
+/* ============================================================
+   VOCABULÁRIO DE VOZ (chave -> texto falado).
+   Fonte da verdade para o gerar-audios.py (gera audio/<chave>.mp3).
+   ============================================================ */
+const VOICE = {
+  /* navegação e feedback */
+  greet:"Olá! Bem-vindo aos jogos de Geografia e História! Escolha uma brincadeira para começar.",
+  test:"Olá! Você está me ouvindo? Vamos aprender sobre a família e as moradias!",
+  win:"Parabéns! Você conseguiu! Que orgulho de você!",
+  choose:"As respostas são:",
+  ok1:"Muito bem!", ok2:"Isso aí!", ok3:"Você acertou!",
+  ok4:"Boa demais!", ok5:"Mandou bem!", ok6:"Perfeito!",
+  no1:"Quase! Tenta outra.", no2:"Hmm, tenta de novo.", no3:"Não foi essa, tenta outra.",
+
+  /* 1. TIPOS DE MORADIA */
+  q_moradia:"Que tipo de moradia é essa?",
+  d_casa:"É uma moradia comum, com telhado, janelas e portas.",
+  d_sobrado:"É uma casa com dois ou mais andares, com escada dentro.",
+  d_apto:"É uma moradia que fica em um prédio com vários andares. É comum nos centros urbanos.",
+  d_oca:"É uma construção circular e simples, feita principalmente com palha. É comum em algumas culturas indígenas.",
+  d_geminada:"São um conjunto de moradias iguais, unidas pela sua estrutura.",
+  d_barraco:"É uma moradia mais simples, construída com materiais reutilizáveis, como madeira, papelão e latão.",
+  m_casa:"a casa", m_sobrado:"o sobrado", m_apto:"o apartamento",
+  m_oca:"a oca", m_geminada:"as casas geminadas", m_barraco:"o barraco",
+  q_campo:"Onde as casas são mais baixas, cercadas por áreas verdes e com quintais grandes?",
+  q_cidade:"Onde existem muitos prédios, que podem ser bem altos?",
+  l_campo:"no campo", l_cidade:"na cidade",
+  q_protege:"Do que a nossa moradia nos protege?",
+  p_certo:"do frio, do calor, das chuvas e dos ventos",
+  p_nada:"de nada", p_doces:"dos doces e chocolates",
+
+  /* 2. CÔMODOS DA CASA */
+  q_comodo:"Em qual cômodo da casa nós costumamos",
+  a_dormir:"dormir e guardar nossos objetos pessoais?",
+  a_banho:"tomar banho e escovar os dentes?",
+  a_comida:"preparar as nossas refeições?",
+  a_tv:"nos reunir com a família para ver TV e conversar?",
+  a_roupa:"lavar as roupas?",
+  a_jardim:"cuidar do jardim e brincar ao ar livre?",
+  c_quarto:"o quarto", c_banheiro:"o banheiro", c_cozinha:"a cozinha",
+  c_sala:"a sala", c_lavanderia:"a lavanderia", c_quintal:"o quintal",
+  q_espacos:"Como são chamados os diferentes espaços de uma moradia, como a sala e a cozinha?",
+  e_comodos:"cômodos", e_moveis:"móveis", e_brinquedos:"brinquedos",
+  q_lazer:"Nos prédios, como se chama o espaço ao ar livre onde podemos brincar e correr?",
+  e_lazer:"área de lazer", e_garagem:"garagem", e_elevador:"elevador",
+
+  /* 3. MINHA FAMÍLIA (laços familiares) */
+  q_avos:"Os pais dos meus pais são meus...",
+  q_tios:"Os irmãos dos meus pais são meus...",
+  q_primos:"Os filhos dos meus tios são meus...",
+  q_irmaos:"Os filhos dos meus pais são meus...",
+  q_bisavos:"Os pais dos meus avós são meus...",
+  f_avos:"avós", f_tios:"tios", f_primos:"primos",
+  f_irmaos:"irmãos", f_bisavos:"bisavós", f_sobrinhos:"sobrinhos",
+  q_grupo:"Qual é o primeiro grupo social do qual fazemos parte?",
+  g_familia:"a família", g_vizinhos:"os vizinhos", g_amigos:"os amigos", g_alunos:"os alunos",
+  q_formada:"As famílias são formadas por pessoas unidas por nascimento, adoção, casamento ou...",
+  fo_afeto:"laços afetivos", fo_sapato:"laços de sapato", fo_fita:"laços de fita",
+  q_especiais:"Todas as famílias são especiais e devem ser...",
+  es_respeitadas:"respeitadas", es_escondidas:"escondidas", es_iguais:"todas iguais",
+
+  /* 4. HISTÓRIA DA FAMÍLIA (antepassados e fontes históricas) */
+  q_antep:"Como chamamos os familiares que nasceram antes de nós, como os avós e os bisavós?",
+  an_antepassados:"os antepassados", an_vizinhos:"os vizinhos", an_colegas:"os colegas da escola",
+  q_ensina:"O que os antepassados nos ensinam?",
+  en_tradicoes:"as tradições, as histórias e os costumes da família",
+  en_nada:"nada", en_videogame:"a jogar videogame",
+  q_fonte_foto:"O vovô está mostrando um papel com uma imagem antiga da família. Que fonte histórica é essa?",
+  q_fonte_carta:"Um papel escrito à mão, que as pessoas mandavam pelo correio. Que fonte histórica é essa?",
+  fh_foto:"a fotografia", fh_carta:"a carta", fh_livro:"o livro", fh_roupa:"a roupa",
+  q_mus_avo:"Na música, o meu pai era paulista. E o meu avô era...",
+  q_mus_bisavo:"Na música, o meu bisavô era...",
+  q_mus_tataravo:"Na música, o meu tataravô era...",
+  mu_pernambucano:"pernambucano", mu_mineiro:"mineiro", mu_baiano:"baiano",
+
+  /* 5. NOMES E SOBRENOMES */
+  n_familia:"Meu nome é Pedro Henrique Silva. Meu pai se chama Fábio Silva. Minha mãe é Ana Cláudia Silva. E minha irmã é Fernanda Mara Silva.",
+  q_sobrenome:"Qual é o sobrenome da família de Pedro?",
+  n_silva:"Silva", n_pedro:"Pedro", n_henrique:"Henrique",
+  q_comum:"O que há em comum entre os nomes das pessoas da família de Pedro?",
+  co_sobrenome:"todos têm o mesmo sobrenome",
+  co_altura:"todos têm a mesma altura", co_idade:"todos têm a mesma idade",
+  q_pai_pedro:"Quem é o pai de Pedro?",
+  q_mae_pedro:"Quem é a mãe de Pedro?",
+  q_irma_pedro:"Quem é a irmã de Pedro?",
+  pf_fabio:"Fábio Silva", pf_ana:"Ana Cláudia Silva", pf_fernanda:"Fernanda Mara Silva",
+
+  /* 6. BONS VIZINHOS (convivência) */
+  q_conv:"Isso ajuda ou atrapalha a boa convivência com os vizinhos?",
+  s_musica:"Tocar música muito alta durante a noite.",
+  s_bater:"Bater na parede e fazer muito barulho.",
+  s_lixo_certo:"Jogar o lixo no lugar correto.",
+  s_ajuda:"Oferecer ajuda a um vizinho.",
+  s_educado:"Ser educado e cumprimentar as pessoas.",
+  s_limpo:"Manter os ambientes limpos e organizados.",
+  s_recolher:"Recolher o lixo da calçada.",
+  s_espaco:"Respeitar o espaço dos outros.",
+  v_op_ajuda:"ajuda", v_op_atrapalha:"atrapalha",
+  v_ajuda:"Isso ajuda! É uma boa regra de convivência.",
+  v_atrapalha:"Isso atrapalha a convivência! Não é legal com os vizinhos.",
+
+  /* 7. QUEM FAZ O QUÊ? (responsabilidades) */
+  q_resp:"Quem deve fazer essa atividade em casa?",
+  r_cozinhar:"cozinhar no fogão",
+  r_trabalhar:"trabalhar para cuidar da família",
+  r_compras:"fazer as compras",
+  r_passar:"passar roupa com o ferro quente",
+  r_louca:"lavar a louça",
+  r_brinquedos:"guardar os brinquedos",
+  r_licao:"fazer a lição de casa",
+  r_quarto:"organizar o próprio quarto",
+  r_animais:"alimentar os animais de estimação",
+  r_lixo:"recolher o lixo",
+  re_adulto:"somente um adulto", re_crianca:"a criança também pode",
+  x_adulto:"Isso mesmo! Essa atividade é para os adultos.",
+  x_crianca:"Isso! Criança também pode ajudar nessa atividade!",
+
+  /* 8. MAPA DA ROTINA (localização) */
+  q_rot_meio:"Qual lugar está no meio, entre os outros dois?",
+  q_rot_esq:"No mapa, qual lugar está à esquerda de",
+  q_rot_dir:"No mapa, qual lugar está à direita de",
+  pl_casa:"a minha casa", pl_escola:"a escola", pl_padaria:"a padaria",
+  pl_pracinha:"a pracinha", pl_clube:"o clube", pl_mercado:"o supermercado",
+  pl_vovo:"a casa da vovó",
+  q_estudar:"A rotina da família acontece em lugares diferentes. Para qual lugar vamos para estudar?",
+  q_pao:"Em qual lugar compramos o pãozinho?",
+  q_nadar:"Em qual lugar podemos nadar na piscina?",
+};
+
+/* ============================================================
+   PLAYER DE ÁUDIO (clipes em sequência) — um único <audio>
+   destravado no 1º toque (compatível com iPhone/iPad).
+   ============================================================ */
+const AUDIO_DIR='audio/', AUDIO_EXT='.mp3';
+const player=new Audio();
+player.preload='auto';
+let playToken=0, audioOn=true;
+function stopAudio(){ playToken++; try{player.pause();}catch(e){} setPlayingBadge(false); }
+function playKeys(keys){
+  if(!audioOn) return;
+  stopAudio();
+  const list=[].concat(...keys.map(k=>Array.isArray(k)?k:[k])).filter(Boolean);
+  if(!list.length) return;
+  const my=playToken; let i=0;
+  setPlayingBadge(true);
+  const next=()=>{
+    if(my!==playToken) return;
+    if(i>=list.length){ setPlayingBadge(false); return; }
+    const key=list[i++];
+    player.src=AUDIO_DIR+key+AUDIO_EXT;
+    player.onended=next;
+    player.onerror=()=>{ setTimeout(next,10); };
+    const p=player.play();
+    if(p&&p.catch) p.catch(()=>setTimeout(next,10));
+  };
+  next();
+}
+function setPlayingBadge(on){
+  const b=document.getElementById('qspeak'); if(b) b.classList.toggle('playing',on);
+}
+function unlockAudio(){
+  try{ player.muted=true; player.src=AUDIO_DIR+'greet'+AUDIO_EXT;
+       const p=player.play();
+       if(p&&p.then) p.then(()=>{player.pause();player.currentTime=0;player.muted=false;})
+                      .catch(()=>{player.muted=false;});
+       else {player.pause();player.muted=false;}
+  }catch(e){ player.muted=false; }
+}
+
+/* ===== SONS DE EFEITO (Web Audio) ===== */
+let actx=null;
+function initAudio(){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }catch(e){} }
+function tone(freq,start,dur,type='sine',vol=0.2){
+  if(!actx) return;
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+  const t=actx.currentTime+start;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function sndClick(){ initAudio(); tone(540,0,0.07,'triangle',0.14); }
+function sndRight(){ initAudio(); [523,659,784,1047].forEach((f,i)=>tone(f,i*0.09,0.25,'triangle',0.18)); }
+function sndWrong(){ initAudio(); tone(300,0,0.18,'sine',0.13); tone(220,0.12,0.25,'sine',0.13); }
+function sndWin(){ initAudio(); [523,659,784,1047,784,1047,1319].forEach((f,i)=>tone(f,i*0.12,0.3,'triangle',0.2)); }
+
+/* ===== UTILIDADES ===== */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rint(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+const OK_KEYS=['ok1','ok2','ok3','ok4','ok5','ok6'], NO_KEYS=['no1','no2','no3'];
+function emo(e,size){ return '<span class="obj" style="font-size:'+(size||80)+'px">'+e+'</span>'; }
+
+function updateStars(){ const el=document.getElementById('starNum'); if(el) el.textContent=stars; localStorage.setItem('vitor_geo_stars',stars); }
+function addStar(n=1){ stars+=n; updateStars(); }
+
+/* ---------------- CONFETE ---------------- */
+const cv=document.getElementById('confetti'), cx=cv.getContext('2d');
+let confs=[];
+function resizeCv(){cv.width=innerWidth;cv.height=innerHeight;}
+addEventListener('resize',resizeCv); resizeCv();
+function burst(){
+  const cols=['#ff6b9d','#ffd93d','#6bcB77','#4d96ff','#a06cd5','#ff924c'];
+  for(let i=0;i<70;i++){confs.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-0.5)*14,vy:Math.random()*-12-3,c:pick(cols),s:rint(7,14),r:Math.random()*6,vr:(Math.random()-.5)*.4});}
+}
+function loopConf(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  confs.forEach(p=>{p.vy+=0.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s);cx.restore();});
+  confs=confs.filter(p=>p.y<cv.height+30);
+  requestAnimationFrame(loopConf);
+}
+loopConf();
+
+/* ===== SHELL ===== */
+function shell(inner){
+  App.innerHTML=`
+    <div class="topbar">
+      <button class="home-btn" onclick="sndClick();goHome()">🏠</button>
+      <div class="stars">⭐ <span class="num" id="starNum">${stars}</span></div>
+    </div>
+    ${inner}`;
+}
+
+/* ===== MENU ===== */
+const GAMES=[
+  {id:'moradias',    ico:'🏠', nome:'Tipos de Moradia',  sub:'Casa, sobrado, oca...',    cls:'c1'},
+  {id:'comodos',     ico:'🚪', nome:'Cômodos da Casa',   sub:'Cada espaço, uma função',  cls:'c2'},
+  {id:'familia',     ico:'👨‍👩‍👧‍👦', nome:'Minha Família',  sub:'Avós, tios, primos',       cls:'c3'},
+  {id:'antepassados',ico:'📜', nome:'História da Família',sub:'Antepassados e fontes',   cls:'c4'},
+  {id:'nomes',       ico:'✍️', nome:'Nomes e Sobrenomes', sub:'A família Silva',         cls:'c5'},
+  {id:'convivencia', ico:'🤝', nome:'Bons Vizinhos',     sub:'Regras de convivência',    cls:'c6'},
+  {id:'responsa',    ico:'🧹', nome:'Quem Faz o Quê?',   sub:'Adultos e crianças',       cls:'c7'},
+  {id:'rotina',      ico:'🗺️', nome:'Mapa da Rotina',    sub:'Esquerda, direita, meio',  cls:'c8'},
+];
+function goHome(silent){
+  stopAudio();
+  shell(`
+    <div class="hero">
+      <div class="mascote">🏠</div>
+      <h1>Olá!</h1>
+      <p>Escolha uma brincadeira 👇</p>
+      <button onclick="testSound()" style="margin-top:6px;background:var(--amarelo);color:#5a4500;border:none;border-radius:18px;padding:9px 18px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #d9a800;">🔈 Testar som</button>
+    </div>
+    <div class="grid">
+      ${GAMES.map(g=>`<button class="card ${g.cls}" onclick="sndClick();startGame('${g.id}')">
+        <span class="ico">${g.ico}</span><span>${g.nome}</span>
+        <span style="font-size:13px;font-weight:normal;opacity:.9">${g.sub}</span>
+      </button>`).join('')}
+    </div>
+    <p style="text-align:center;color:#b8935a;margin-top:18px;font-size:14px;">Feito com 💜 para estudar pra prova</p>
+  `);
+  if(!silent) setTimeout(()=>playKeys(['greet']),250);
+}
+function testSound(){ initAudio(); sndClick(); playKeys(['test']); }
+
+/* ===== MOTOR DE RODADAS ===== */
+let current=null, locked=false;
+function startGame(id){
+  const rounds=BUILDERS[id]();
+  current={id, title:GAMES.find(g=>g.id===id).nome, rounds, idx:0};
+  renderRound();
+}
+function gameFrame(c,r,bodyHtml){
+  shell(`
+    <div class="game">
+      <h2 class="game-title">${GAMES.find(g=>g.id===c.id).ico} ${c.title}</h2>
+      <div class="progress">Pergunta ${c.idx+1} de ${c.rounds.length}</div>
+      <div class="question">
+        <button class="speak-btn" id="qspeak" onclick="sndClick();speakRound()">🔊</button>
+        <span>${r.q}</span>
+      </div>
+      <div class="stage">${r.stage||''}</div>
+      ${bodyHtml}
+      <div style="font-size:14px;color:#aaa;margin-top:6px;">👆 Toque para responder. Toque no 🔊 para ouvir de novo.</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+}
+function renderRound(){
+  locked=false;
+  const c=current, r=c.rounds[c.idx];
+  gameFrame(c,r,`<div class="options ${r.colorOpts?'opt-colors':''}" id="opts"></div>`);
+  const shown=shuffle(r.options);
+  const opts=document.getElementById('opts');
+  shown.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'+(o.big?' big':'');
+    b.innerHTML=o.label;
+    b.onclick=()=>answer(b,o);
+    opts.appendChild(b);
+  });
+  window._roundKeys=[].concat(r.audio||[], ['choose'], shown.map(o=>o.aud));
+  setTimeout(()=>speakRound(),400);
+}
+function speakRound(){ playKeys(window._roundKeys||[]); }
+
+function showNextButton(){
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=null);
+  const nb=document.createElement('button');
+  nb.className='next-btn';
+  const last=current.idx>=current.rounds.length-1;
+  nb.textContent=last?'🏆 Terminar':'Próxima ➡';
+  nb.onclick=()=>{sndClick();locked=false;if(last){winScreen();}else{current.idx++;renderRound();}};
+  document.querySelector('.game').appendChild(nb);
+}
+function correctFlow(extraAudio){
+  locked=true; sndRight(); burst(); addStar(1);
+  const fb=document.getElementById('fb'); if(fb){fb.className='feedback good'; fb.textContent='⭐ Muito bem!';}
+  playKeys(extraAudio.filter(Boolean));
+  showNextButton();
+}
+function answer(btn,opt){
+  if(locked) return;
+  if(opt.correct){
+    btn.classList.add('ok');
+    document.querySelectorAll('.opt').forEach(b=>{if(b!==btn)b.classList.add('no');});
+    correctFlow([opt.aud, pick(OK_KEYS), opt.expAud]);
+  }else{
+    btn.classList.add('no'); btn.onclick=null;
+    sndWrong();
+    const fb=document.getElementById('fb'); fb.className='feedback bad'; fb.textContent='🤔 Tenta de novo!';
+    playKeys([opt.aud, pick(NO_KEYS)].filter(Boolean));
+  }
+}
+
+function winScreen(){
+  sndWin(); burst(); setTimeout(burst,400); setTimeout(burst,800);
+  const c=current;
+  shell(`
+    <div class="game win">
+      <div class="trophy">🏆</div>
+      <h2 class="game-title">Parabéns!</h2>
+      <p style="font-size:22px;">Você ganhou <b>${c.rounds.length}</b> estrelas! ⭐</p>
+      <p style="font-size:18px;color:#888;">Você está ficando craque em <b>${c.title}</b>!</p>
+      <button class="next-btn" onclick="sndClick();startGame('${c.id}')">🔁 Jogar de novo</button>
+      <br>
+      <button class="next-btn" style="background:var(--azul);box-shadow:0 6px 0 #2f6fd0;margin-top:10px;" onclick="sndClick();goHome()">🏠 Escolher outro</button>
+    </div>
+  `);
+  setTimeout(()=>playKeys(['win']),250);
+}
+
+/* ============================================================
+   BASE DE DADOS DO CONTEÚDO
+   ============================================================ */
+
+/* ---- 1. TIPOS DE MORADIA ---- */
+const MORADIAS=[
+  {it:'m_casa',     e:'🏠', d:'d_casa',     dTxt:'Moradia comum, com telhado, janelas e portas'},
+  {it:'m_sobrado',  e:'🏡', d:'d_sobrado',  dTxt:'Casa com DOIS ou mais andares'},
+  {it:'m_apto',     e:'🏢', d:'d_apto',     dTxt:'Fica em um prédio com vários andares'},
+  {it:'m_oca',      e:'🛖', d:'d_oca',      dTxt:'Construção circular de PALHA, das culturas indígenas'},
+  {it:'m_geminada', e:'🏘️', d:'d_geminada', dTxt:'Moradias IGUAIS, unidas pela estrutura'},
+  {it:'m_barraco',  e:'🏚️', d:'d_barraco',  dTxt:'Moradia simples, de madeira, papelão e latão'},
+];
+const MOR_LBL={
+  m_casa:'🏠<span class="cap">Casa</span>', m_sobrado:'🏡<span class="cap">Sobrado</span>',
+  m_apto:'🏢<span class="cap">Apartamento</span>', m_oca:'🛖<span class="cap">Oca</span>',
+  m_geminada:'🏘️<span class="cap">Casas geminadas</span>', m_barraco:'🏚️<span class="cap">Barraco</span>',
+};
+const LOC2_LBL={l_campo:'🌳<span class="cap">No campo</span>', l_cidade:'🏙️<span class="cap">Na cidade</span>'};
+
+/* ---- 2. CÔMODOS ---- */
+const COMODOS=[
+  {c:'c_quarto',     e:'🛏️', a:'a_dormir', q:'<b>DORMIR</b> e guardar nossas coisas? 😴'},
+  {c:'c_banheiro',   e:'🚿', a:'a_banho',  q:'<b>TOMAR BANHO</b> e escovar os dentes? 🪥'},
+  {c:'c_cozinha',    e:'🍳', a:'a_comida', q:'<b>PREPARAR AS REFEIÇÕES</b>? 🥘'},
+  {c:'c_sala',       e:'🛋️', a:'a_tv',     q:'ver <b>TV</b> e conversar com a família? 📺'},
+  {c:'c_lavanderia', e:'🧺', a:'a_roupa',  q:'<b>LAVAR AS ROUPAS</b>? 👕'},
+  {c:'c_quintal',    e:'🌻', a:'a_jardim', q:'cuidar do <b>JARDIM</b> e brincar ao ar livre? ⚽'},
+];
+const CO_LBL={
+  c_quarto:'🛏️<span class="cap">Quarto</span>', c_banheiro:'🚿<span class="cap">Banheiro</span>',
+  c_cozinha:'🍳<span class="cap">Cozinha</span>', c_sala:'🛋️<span class="cap">Sala</span>',
+  c_lavanderia:'🧺<span class="cap">Lavanderia</span>', c_quintal:'🌻<span class="cap">Quintal</span>',
+};
+
+/* ---- 3. MINHA FAMÍLIA ---- */
+const LACOS=[
+  {qa:'q_avos',    q:'Os <b>PAIS</b> dos meus pais são meus...',    c:'f_avos',    e:'👴👵'},
+  {qa:'q_tios',    q:'Os <b>IRMÃOS</b> dos meus pais são meus...',  c:'f_tios',    e:'🧑‍🤝‍🧑'},
+  {qa:'q_primos',  q:'Os <b>FILHOS</b> dos meus tios são meus...',  c:'f_primos',  e:'🧒'},
+  {qa:'q_irmaos',  q:'Os <b>FILHOS</b> dos meus pais são meus...',  c:'f_irmaos',  e:'👦👧'},
+  {qa:'q_bisavos', q:'Os <b>PAIS</b> dos meus avós são meus...',    c:'f_bisavos', e:'🧓'},
+];
+const F_LBL={
+  f_avos:'👴<span class="cap">Avós</span>', f_tios:'🧑<span class="cap">Tios</span>',
+  f_primos:'🧒<span class="cap">Primos</span>', f_irmaos:'👦<span class="cap">Irmãos</span>',
+  f_bisavos:'🧓<span class="cap">Bisavós</span>', f_sobrinhos:'👶<span class="cap">Sobrinhos</span>',
+};
+
+/* ---- 4. HISTÓRIA DA FAMÍLIA ---- */
+const FH_LBL={
+  fh_foto:'📷<span class="cap">Fotografia</span>', fh_carta:'✉️<span class="cap">Carta</span>',
+  fh_livro:'📖<span class="cap">Livro</span>', fh_roupa:'👕<span class="cap">Roupa</span>',
+};
+const MU_LBL={
+  mu_pernambucano:'<span class="cap" style="font-size:22px">Pernambucano</span>',
+  mu_mineiro:'<span class="cap" style="font-size:22px">Mineiro</span>',
+  mu_baiano:'<span class="cap" style="font-size:22px">Baiano</span>',
+};
+
+/* ---- 5. NOMES E SOBRENOMES ---- */
+const FAM_PEDRO='<div class="cardtxt" style="font-size:17px">👦 PEDRO HENRIQUE <u>SILVA</u><br>👨 pai: FÁBIO <u>SILVA</u><br>👩 mãe: ANA CLÁUDIA <u>SILVA</u><br>👧 irmã: FERNANDA MARA <u>SILVA</u></div>';
+const PF_LBL={
+  pf_fabio:'👨<span class="cap">Fábio Silva</span>', pf_ana:'👩<span class="cap">Ana Cláudia Silva</span>',
+  pf_fernanda:'👧<span class="cap">Fernanda Mara Silva</span>',
+};
+
+/* ---- 6. BONS VIZINHOS ---- */
+const CONVIV=[
+  {s:'s_musica',     txt:'Tocar música MUITO ALTA à noite',      e:'🎸🌙', ok:false},
+  {s:'s_bater',      txt:'Bater na parede e fazer barulho',      e:'🔨',   ok:false},
+  {s:'s_lixo_certo', txt:'Jogar o lixo no lugar correto',        e:'🗑️',  ok:true},
+  {s:'s_ajuda',      txt:'Oferecer ajuda a um vizinho',          e:'📦',   ok:true},
+  {s:'s_educado',    txt:'Ser educado e cumprimentar as pessoas',e:'👋',   ok:true},
+  {s:'s_limpo',      txt:'Manter os ambientes limpos',           e:'🧹',   ok:true},
+  {s:'s_recolher',   txt:'Recolher o lixo da calçada',           e:'🚮',   ok:true},
+  {s:'s_espaco',     txt:'Respeitar o espaço dos outros',        e:'🤝',   ok:true},
+];
+const CV_LBL={v_op_ajuda:'✅<span class="cap">Ajuda</span>', v_op_atrapalha:'❌<span class="cap">Atrapalha</span>'};
+
+/* ---- 7. QUEM FAZ O QUÊ? ---- */
+const RESP=[
+  {r:'r_cozinhar',   txt:'COZINHAR no fogão',            e:'🍳', who:'re_adulto'},
+  {r:'r_trabalhar',  txt:'TRABALHAR para cuidar da família', e:'💼', who:'re_adulto'},
+  {r:'r_compras',    txt:'FAZER AS COMPRAS',             e:'🛒', who:'re_adulto'},
+  {r:'r_passar',     txt:'PASSAR ROUPA com ferro quente',e:'👔', who:'re_adulto'},
+  {r:'r_louca',      txt:'LAVAR A LOUÇA',                e:'🍽️', who:'re_adulto'},
+  {r:'r_brinquedos', txt:'GUARDAR OS BRINQUEDOS',        e:'🧸', who:'re_crianca'},
+  {r:'r_licao',      txt:'FAZER A LIÇÃO DE CASA',        e:'📚', who:'re_crianca'},
+  {r:'r_quarto',     txt:'ORGANIZAR O PRÓPRIO QUARTO',   e:'🛏️', who:'re_crianca'},
+  {r:'r_animais',    txt:'ALIMENTAR OS ANIMAIS',         e:'🐶', who:'re_crianca'},
+  {r:'r_lixo',       txt:'RECOLHER O LIXO',              e:'🗑️', who:'re_crianca'},
+];
+const RE_LBL={re_adulto:'🧑<span class="cap">Somente um adulto</span>', re_crianca:'🧒<span class="cap">A criança também pode</span>'};
+
+/* ---- 8. MAPA DA ROTINA ---- */
+const LUGARES=[
+  {k:'pl_casa',     nome:'MINHA CASA',    e:'🏠'},
+  {k:'pl_escola',   nome:'ESCOLA',        e:'🏫'},
+  {k:'pl_padaria',  nome:'PADARIA',       e:'🥐'},
+  {k:'pl_pracinha', nome:'PRACINHA',      e:'🌳'},
+  {k:'pl_clube',    nome:'CLUBE',         e:'🏊'},
+  {k:'pl_mercado',  nome:'SUPERMERCADO',  e:'🛒'},
+  {k:'pl_vovo',     nome:'CASA DA VOVÓ',  e:'👵'},
+];
+const PL_LBL={};
+LUGARES.forEach(l=>{ PL_LBL[l.k]=l.e+'<span class="cap">'+l.nome.charAt(0)+l.nome.slice(1).toLowerCase()+'</span>'; });
+function mapStage(trio){
+  return '<div class="maprow">'+trio.map(l=>'<div class="spot"><div class="se">'+l.e+'</div><div class="sn">'+l.nome+'</div></div>').join('')+'</div>';
+}
+
+/* helper para montar opções a partir de um mapa de rótulos */
+function mkOpts(correct, all, lblMap, extra){
+  return shuffle(all).map(k=>{
+    const o={label:lblMap[k], aud:k, correct:k===correct};
+    if(extra) Object.assign(o, extra(k));
+    return o;
+  });
+}
+
+/* ============================================================
+   GERADORES DE CONTEÚDO (8 jogos)
+   ============================================================ */
+const BUILDERS={
+  /* 1. TIPOS DE MORADIA */
+  moradias(){
+    const tipos=shuffle(MORADIAS).slice(0,5).map(it=>{
+      const others=shuffle(MORADIAS.filter(m=>m.it!==it.it)).slice(0,3).map(m=>m.it);
+      const opts=mkOpts(it.it, [it.it,...others], MOR_LBL);
+      return { q:'Que tipo de <b>moradia</b> é essa? 🤔', audio:['q_moradia',it.d], stage:emo(it.e,88)+'<div class="cardtxt">'+it.dTxt+'</div>', colorOpts:false, options:opts };
+    });
+    const extra=[
+      { q:'Onde as casas têm <b>quintais grandes</b> e áreas verdes? 🌳', audio:['q_campo'], stage:emo('🌳🐄',80), colorOpts:true, options:mkOpts('l_campo',['l_campo','l_cidade'],LOC2_LBL) },
+      { q:'Onde existem muitos <b>prédios altos</b>? 🏙️', audio:['q_cidade'], stage:emo('🏙️',80), colorOpts:true, options:mkOpts('l_cidade',['l_campo','l_cidade'],LOC2_LBL) },
+      { q:'Do que a nossa <b>moradia</b> nos protege? 🛡️', audio:['q_protege'], stage:emo('🏠🛡️',80), colorOpts:true,
+        options:mkOpts('p_certo',['p_certo','p_nada','p_doces'],{
+          p_certo:'🌧️<span class="cap">Do frio, do calor e da chuva</span>',
+          p_nada:'🙅<span class="cap">De nada</span>',
+          p_doces:'🍫<span class="cap">Dos doces</span>'}) },
+    ];
+    return shuffle([...tipos,...extra]).slice(0,7);
+  },
+
+  /* 2. CÔMODOS DA CASA */
+  comodos(){
+    const rounds=shuffle(COMODOS).map(it=>{
+      const others=shuffle(COMODOS.filter(c=>c.c!==it.c)).slice(0,3).map(c=>c.c);
+      const opts=mkOpts(it.c, [it.c,...others], CO_LBL);
+      return { q:'Em qual <b>cômodo</b> costumamos '+it.q, audio:['q_comodo',it.a], stage:emo(it.e,88), colorOpts:false, options:opts };
+    });
+    const extra=[
+      { q:'Como se chamam os <b>espaços</b> de uma moradia? 🚪', audio:['q_espacos'], stage:emo('🚪🛋️🍳',72), colorOpts:true,
+        options:mkOpts('e_comodos',['e_comodos','e_moveis','e_brinquedos'],{
+          e_comodos:'🚪<span class="cap">Cômodos</span>', e_moveis:'🪑<span class="cap">Móveis</span>', e_brinquedos:'🧸<span class="cap">Brinquedos</span>'}) },
+      { q:'Nos <b>prédios</b>, onde podemos brincar ao ar livre? 🏢', audio:['q_lazer'], stage:emo('🏢⚽',80), colorOpts:true,
+        options:mkOpts('e_lazer',['e_lazer','e_garagem','e_elevador'],{
+          e_lazer:'🤸<span class="cap">Área de lazer</span>', e_garagem:'🚗<span class="cap">Garagem</span>', e_elevador:'🛗<span class="cap">Elevador</span>'}) },
+    ];
+    return shuffle([...rounds,...extra]).slice(0,7);
+  },
+
+  /* 3. MINHA FAMÍLIA */
+  familia(){
+    const lacos=LACOS.map(it=>{
+      const others=shuffle(Object.keys(F_LBL).filter(k=>k!==it.c)).slice(0,3);
+      const opts=mkOpts(it.c, [it.c,...others], F_LBL);
+      return { q:it.q+' 💭', audio:[it.qa], stage:emo(it.e,80), colorOpts:false, options:opts };
+    });
+    const extra=[
+      { q:'Qual é o nosso <b>primeiro grupo social</b>? 💛', audio:['q_grupo'], stage:emo('👨‍👩‍👧‍👦',88), colorOpts:true,
+        options:mkOpts('g_familia',['g_familia','g_vizinhos','g_amigos','g_alunos'],{
+          g_familia:'👨‍👩‍👧‍👦<span class="cap">A família</span>', g_vizinhos:'🏘️<span class="cap">Os vizinhos</span>',
+          g_amigos:'🤗<span class="cap">Os amigos</span>', g_alunos:'🎒<span class="cap">Os alunos</span>'}) },
+      { q:'As famílias são unidas por nascimento, adoção, casamento ou... 💕', audio:['q_formada'], stage:emo('💕',80), colorOpts:true,
+        options:mkOpts('fo_afeto',['fo_afeto','fo_sapato','fo_fita'],{
+          fo_afeto:'💛<span class="cap">Laços afetivos</span>', fo_sapato:'👟<span class="cap">Laços de sapato</span>', fo_fita:'🎀<span class="cap">Laços de fita</span>'}) },
+      { q:'Todas as famílias são especiais e devem ser... ✨', audio:['q_especiais'], stage:emo('👨‍👩‍👧 👩‍👩‍👦 👴👧',56), colorOpts:true,
+        options:mkOpts('es_respeitadas',['es_respeitadas','es_escondidas','es_iguais'],{
+          es_respeitadas:'💖<span class="cap">Respeitadas</span>', es_escondidas:'🙈<span class="cap">Escondidas</span>', es_iguais:'📋<span class="cap">Todas iguais</span>'}) },
+    ];
+    return shuffle([...lacos,...extra]).slice(0,7);
+  },
+
+  /* 4. HISTÓRIA DA FAMÍLIA */
+  antepassados(){
+    return shuffle([
+      { q:'Quem são os familiares que <b>nasceram antes</b> de nós? 👴', audio:['q_antep'], stage:emo('👴👵🧓',72), colorOpts:true,
+        options:mkOpts('an_antepassados',['an_antepassados','an_vizinhos','an_colegas'],{
+          an_antepassados:'📜<span class="cap">Os antepassados</span>', an_vizinhos:'🏘️<span class="cap">Os vizinhos</span>', an_colegas:'🎒<span class="cap">Os colegas</span>'}) },
+      { q:'O que os <b>antepassados</b> nos ensinam? 🎁', audio:['q_ensina'], stage:emo('👵💬👧',72), colorOpts:true,
+        options:mkOpts('en_tradicoes',['en_tradicoes','en_nada','en_videogame'],{
+          en_tradicoes:'📖<span class="cap">Tradições e histórias</span>', en_nada:'🙅<span class="cap">Nada</span>', en_videogame:'🎮<span class="cap">Jogar videogame</span>'}) },
+      { q:'O vovô mostra uma <b>imagem antiga</b> da família. Que fonte histórica é? 📷', audio:['q_fonte_foto'], stage:emo('👴🖼️👧',72), colorOpts:false,
+        options:mkOpts('fh_foto',['fh_foto','fh_carta','fh_livro'],FH_LBL) },
+      { q:'Um papel <b>escrito à mão</b> que chegava pelo correio. O que é? ✉️', audio:['q_fonte_carta'], stage:emo('✉️📮',80), colorOpts:false,
+        options:mkOpts('fh_carta',['fh_carta','fh_foto','fh_roupa'],FH_LBL) },
+      { q:'Na música: "o meu pai era paulista, meu <b>AVÔ</b>..." 🎵', audio:['q_mus_avo'], stage:emo('🎵👴',80)+'<div class="quote">"O meu pai era paulista, meu avô..."</div>', colorOpts:true,
+        options:mkOpts('mu_pernambucano',['mu_pernambucano','mu_mineiro','mu_baiano'],MU_LBL) },
+      { q:'Na música: "o meu <b>BISAVÔ</b>..." 🎵', audio:['q_mus_bisavo'], stage:emo('🎵🧓',80)+'<div class="quote">"O meu bisavô..."</div>', colorOpts:true,
+        options:mkOpts('mu_mineiro',['mu_pernambucano','mu_mineiro','mu_baiano'],MU_LBL) },
+      { q:'Na música: "o meu <b>TATARAVÔ</b>..." 🎵', audio:['q_mus_tataravo'], stage:emo('🎵👴🏽',80)+'<div class="quote">"Meu tataravô..."</div>', colorOpts:true,
+        options:mkOpts('mu_baiano',['mu_pernambucano','mu_mineiro','mu_baiano'],MU_LBL) },
+    ]);
+  },
+
+  /* 5. NOMES E SOBRENOMES */
+  nomes(){
+    return [
+      { q:'Qual é o <b>SOBRENOME</b> da família de Pedro? ✍️', audio:['n_familia','q_sobrenome'], stage:FAM_PEDRO, colorOpts:true,
+        options:mkOpts('n_silva',['n_silva','n_pedro','n_henrique'],{
+          n_silva:'<span class="cap" style="font-size:24px">Silva</span>', n_pedro:'<span class="cap" style="font-size:24px">Pedro</span>', n_henrique:'<span class="cap" style="font-size:24px">Henrique</span>'}) },
+      { q:'O que há em <b>comum</b> nos nomes dessa família? 🤔', audio:['q_comum'], stage:FAM_PEDRO, colorOpts:true,
+        options:mkOpts('co_sobrenome',['co_sobrenome','co_altura','co_idade'],{
+          co_sobrenome:'✍️<span class="cap">O mesmo sobrenome</span>', co_altura:'📏<span class="cap">A mesma altura</span>', co_idade:'🎂<span class="cap">A mesma idade</span>'}) },
+      { q:'Quem é o <b>PAI</b> de Pedro? 👨', audio:['q_pai_pedro'], stage:FAM_PEDRO, colorOpts:false,
+        options:mkOpts('pf_fabio',['pf_fabio','pf_ana','pf_fernanda'],PF_LBL) },
+      { q:'Quem é a <b>MÃE</b> de Pedro? 👩', audio:['q_mae_pedro'], stage:FAM_PEDRO, colorOpts:false,
+        options:mkOpts('pf_ana',['pf_fabio','pf_ana','pf_fernanda'],PF_LBL) },
+      { q:'Quem é a <b>IRMÃ</b> de Pedro? 👧', audio:['q_irma_pedro'], stage:FAM_PEDRO, colorOpts:false,
+        options:mkOpts('pf_fernanda',['pf_fabio','pf_ana','pf_fernanda'],PF_LBL) },
+    ];
+  },
+
+  /* 6. BONS VIZINHOS */
+  convivencia(){
+    return shuffle(CONVIV).slice(0,7).map(it=>{
+      const correct=it.ok?'v_op_ajuda':'v_op_atrapalha';
+      const opts=mkOpts(correct, ['v_op_ajuda','v_op_atrapalha'], CV_LBL,
+        k=>({expAud: k===correct?(it.ok?'v_ajuda':'v_atrapalha'):null}));
+      return { q:'Isso <b>AJUDA</b> ou <b>ATRAPALHA</b> a convivência? 🤔', audio:['q_conv',it.s], stage:emo(it.e,80)+'<div class="cardtxt">'+it.txt+'</div>', colorOpts:false, options:opts };
+    });
+  },
+
+  /* 7. QUEM FAZ O QUÊ? */
+  responsa(){
+    return shuffle(RESP).slice(0,7).map(it=>{
+      const opts=mkOpts(it.who, ['re_adulto','re_crianca'], RE_LBL,
+        k=>({expAud: k===it.who?(it.who==='re_adulto'?'x_adulto':'x_crianca'):null}));
+      return { q:'Quem deve fazer isso em casa? 🏠', audio:['q_resp',it.r], stage:emo(it.e,80)+'<div class="cardtxt">'+it.txt+'</div>', colorOpts:false, options:opts };
+    });
+  },
+
+  /* 8. MAPA DA ROTINA */
+  rotina(){
+    const rounds=[];
+    const mkTrio=()=>shuffle(LUGARES).slice(0,3);
+    /* esquerda (2) e direita (2) do lugar do meio */
+    for(let i=0;i<2;i++){
+      const t=mkTrio();
+      rounds.push({ q:'Qual lugar está à <b>ESQUERDA</b> de '+t[1].nome+'? 👈', audio:['q_rot_esq',t[1].k],
+        stage:mapStage(t), colorOpts:false, options:mkOpts(t[0].k, t.map(l=>l.k), PL_LBL) });
+    }
+    for(let i=0;i<2;i++){
+      const t=mkTrio();
+      rounds.push({ q:'Qual lugar está à <b>DIREITA</b> de '+t[1].nome+'? 👉', audio:['q_rot_dir',t[1].k],
+        stage:mapStage(t), colorOpts:false, options:mkOpts(t[2].k, t.map(l=>l.k), PL_LBL) });
+    }
+    { const t=mkTrio();
+      rounds.push({ q:'Qual lugar está <b>NO MEIO</b>? 🎯', audio:['q_rot_meio'],
+        stage:mapStage(t), colorOpts:false, options:mkOpts(t[1].k, t.map(l=>l.k), PL_LBL) }); }
+    /* para que serve cada lugar */
+    const uso=[
+      {qa:'q_estudar', c:'pl_escola',  q:'Para qual lugar vamos para <b>ESTUDAR</b>? 📚', e:'📚'},
+      {qa:'q_pao',     c:'pl_padaria', q:'Onde compramos o <b>PÃOZINHO</b>? 🥖',          e:'🥖'},
+      {qa:'q_nadar',   c:'pl_clube',   q:'Onde podemos <b>NADAR</b> na piscina? 🏊',      e:'🏊'},
+    ];
+    uso.forEach(u=>{
+      const others=shuffle(LUGARES.filter(l=>l.k!==u.c)).slice(0,2).map(l=>l.k);
+      rounds.push({ q:u.q, audio:[u.qa], stage:emo(u.e,80), colorOpts:false, options:mkOpts(u.c,[u.c,...others],PL_LBL) });
+    });
+    return shuffle(rounds).slice(0,7);
+  },
+};
+
+/* ===== SPLASH -> INÍCIO ===== */
+function enterApp(){
+  initAudio();
+  unlockAudio();
+  document.getElementById('splash').style.display='none';
+  goHome(true);
+  setTimeout(()=>playKeys(['greet']),350);
+}
+document.getElementById('startBtn').addEventListener('click',enterApp);
+document.getElementById('splash').addEventListener('click',e=>{ if(e.target.id!=='startBtn'){ enterApp(); } });
+</script>
+</body>
+</html>
