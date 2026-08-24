@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎲 Matemática Divertida 2 🎲</title>
+<style>
+  :root{
+    --rosa:#ff6b9d; --roxo:#a06cd5; --azul:#4d96ff; --verde:#6bcB77;
+    --amarelo:#ffd93d; --laranja:#ff924c; --vermelho:#ff5e5e; --ceu:#b8e3ff;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'Comic Sans MS','Baloo',"Trebuchet MS",sans-serif;
+    background:linear-gradient(160deg,#ffe9c7 0%,#d7e6ff 50%,#d8ffe3 100%);
+    color:#3a3a55; overflow-x:hidden; user-select:none;
+    min-height:100%; touch-action:manipulation;
+  }
+  #app{max-width:760px; margin:0 auto; padding:14px; min-height:100vh;}
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#fff; border-radius:22px; padding:8px 14px; margin-bottom:14px;
+    box-shadow:0 6px 0 rgba(0,0,0,.08);
+  }
+  .topbar .home-btn{
+    background:var(--azul); color:#fff; border:none; border-radius:16px;
+    font-size:22px; padding:8px 14px; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #2f6fd0;
+  }
+  .topbar .home-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #2f6fd0;}
+  .stars{font-size:24px; font-weight:bold; color:var(--laranja); display:flex; align-items:center; gap:6px;}
+  .stars .num{background:var(--amarelo); border-radius:14px; padding:2px 12px; box-shadow:0 3px 0 #d9a800;}
+
+  .hero{
+    text-align:center; background:#fff; border-radius:30px; padding:22px 18px;
+    box-shadow:0 8px 0 rgba(0,0,0,.08); margin-bottom:18px;
+  }
+  .hero h1{font-size:32px; margin:6px 0; color:var(--laranja); line-height:1.2;}
+  .hero p{font-size:18px; margin:4px 0; color:#666;}
+  .mascote{font-size:78px; display:inline-block; animation:flutua 2.5s ease-in-out infinite;}
+  @keyframes flutua{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-14px) rotate(3deg);}}
+
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .card{
+    border:none; border-radius:26px; padding:16px 10px; cursor:pointer;
+    color:#fff; font-size:19px; font-weight:bold; text-align:center;
+    box-shadow:0 7px 0 rgba(0,0,0,.18); transition:transform .08s;
+    display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.15;
+  }
+  .card:active{transform:translateY(4px); box-shadow:0 3px 0 rgba(0,0,0,.18);}
+  .card .ico{font-size:46px;}
+  .c1{background:var(--rosa);} .c2{background:var(--azul);} .c3{background:var(--verde);}
+  .c4{background:var(--laranja);} .c5{background:var(--roxo);} .c6{background:var(--vermelho);}
+  .c7{background:#19c3b1;} .c8{background:#f76eb0;} .c9{background:#7c83ff;}
+
+  .game{
+    background:#fff; border-radius:30px; padding:18px; box-shadow:0 8px 0 rgba(0,0,0,.08);
+    text-align:center;
+  }
+  .game-title{font-size:24px; color:var(--laranja); margin:0 0 4px;}
+  .progress{font-size:16px; color:#999; margin-bottom:10px;}
+  .question{
+    font-size:23px; font-weight:bold; color:#3a3a55; margin:6px 0 14px; line-height:1.3;
+    display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  }
+  .speak-btn{
+    background:var(--amarelo); border:none; border-radius:50%; width:54px; height:54px;
+    font-size:28px; cursor:pointer; box-shadow:0 4px 0 #d9a800; flex:0 0 auto;
+  }
+  .speak-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #d9a800;}
+  .speak-btn.playing{animation:pulse .7s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .stage{
+    min-height:120px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap:10px; margin:10px auto 18px; padding:16px;
+    background:linear-gradient(160deg,#fff8ec,#eef5ff); border-radius:22px; border:4px dashed #f3d9a8;
+    flex-direction:column;
+  }
+  .obj{font-size:80px; animation:pop .35s ease; line-height:1;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+  .stage .cardtxt{font-size:20px; font-weight:bold; color:#2f6fd0; margin-top:4px; line-height:1.3;}
+  .stage .quote{font-size:21px; font-weight:bold; color:#a06cd5; font-style:italic; max-width:420px;}
+
+  /* ---- palitos de picolé ---- */
+  .sticks{display:flex; flex-wrap:wrap; gap:7px; justify-content:center; align-items:flex-end; max-width:430px;}
+  .stick{width:15px; height:62px; border-radius:9px; box-shadow:0 3px 0 rgba(0,0,0,.12); animation:pop .35s ease;}
+  .st-bege{background:linear-gradient(180deg,#ffe0a8,#f0b96a);}
+  .st-verde{background:linear-gradient(180deg,#a8e88a,#67bd45);}
+  .st-vermelho{background:linear-gradient(180deg,#ff9a9a,#e35555);}
+  .st-off{opacity:.28; filter:grayscale(1);}
+  .plus{font-size:40px; font-weight:bold; color:var(--laranja); align-self:center;}
+  .grupo{display:flex; gap:16px; align-items:center; justify-content:center; flex-wrap:wrap;}
+  .caixa{border:4px solid #ffc46b; border-radius:16px; padding:10px 12px; background:#fffdf6;}
+
+  /* ---- bolinhas / agrupamento ---- */
+  .dots{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; max-width:440px;}
+  .pack{display:flex; gap:4px; padding:6px 8px; border:3px dashed #7bb8ff; border-radius:40px; background:#f3f8ff;}
+  .dot{width:24px; height:24px; border-radius:50%; box-shadow:0 2px 0 rgba(0,0,0,.15); animation:pop .3s ease;}
+
+  /* ---- ábaco ---- */
+  .abaco{display:flex; flex-direction:column; align-items:center;}
+  .hastes{display:flex; gap:34px; align-items:flex-end;}
+  .haste{display:flex; flex-direction:column-reverse; align-items:center; justify-content:flex-start;
+         width:40px; min-height:150px; border-left:5px solid #d8a05a; border-right:5px solid #d8a05a;
+         border-radius:8px 8px 0 0; background:#fffaf0; padding-bottom:2px; gap:2px;}
+  .bead{width:30px; height:14px; border-radius:50%; box-shadow:0 2px 0 rgba(0,0,0,.15); animation:pop .3s ease;}
+  .bd-d{background:linear-gradient(180deg,#8fd4ff,#3f9bdd);} .bd-u{background:linear-gradient(180deg,#b6f0a0,#5cb741);}
+  .base{display:flex; gap:34px; background:linear-gradient(180deg,#f5c877,#d19a45); border-radius:10px;
+        padding:6px 0; margin-top:4px; box-shadow:0 4px 0 #b07c2e;}
+  .base span{width:40px; text-align:center; font-size:24px; font-weight:bold; color:#5a3d10;}
+
+  /* ---- gráfico de colunas (com malha, como no livro) ---- */
+  .chartwrap{display:flex; gap:8px; align-items:flex-end; justify-content:center; overflow-x:auto; max-width:100%;}
+  .yaxis{display:flex; flex-direction:column-reverse; justify-content:flex-start; gap:0;}
+  .yaxis .yl{height:20px; font-size:12px; font-weight:bold; color:#7a7a95; display:flex; align-items:center; justify-content:flex-end; width:26px;}
+  .chart{display:flex; gap:10px; align-items:flex-end; justify-content:center;}
+  .bar{display:flex; flex-direction:column; align-items:center; gap:3px; width:64px;}
+  .bar .col{display:flex; flex-direction:column-reverse; gap:0;}
+  .bar .cell{width:34px; height:20px; border:1px solid #bcd8e6; background:#7fd3d0; animation:pop .3s ease;}
+  .bar .lbl{font-size:24px; line-height:1;}
+  .bar .nm{font-size:12px; font-weight:bold; color:#3a3a55; text-align:center; line-height:1.1;}
+  .escala{font-size:14px; font-weight:bold; color:#d96d2e; margin-top:4px;}
+
+  /* ---- tabela ---- */
+  .tabela{border-collapse:collapse; font-size:18px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 3px 0 rgba(0,0,0,.1);}
+  .tabela th{background:#7fd3d0; color:#fff; padding:6px 14px; font-size:16px;}
+  .tabela td{border:1px solid #d8e6ee; padding:6px 14px; text-align:center; font-weight:bold;}
+  .tabela td.eq{color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.25);}
+
+  .options{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));}
+  .opt{
+    border:none; border-radius:22px; padding:16px 10px; font-size:24px; font-weight:bold;
+    cursor:pointer; background:var(--azul); color:#fff; box-shadow:0 6px 0 #2f6fd0;
+    min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    word-break:break-word; line-height:1.15;
+  }
+  .opt .cap{font-size:18px;}
+  .opt-colors .opt{font-size:20px;}
+  .opt:active{transform:translateY(3px); box-shadow:0 3px 0 #2f6fd0;}
+  .opt.big{font-size:44px;}
+  .opt.ok{background:var(--verde)!important; box-shadow:0 6px 0 #3f9c4f!important; animation:tada .5s;}
+  .opt.no{background:#cfcfe0!important; box-shadow:0 6px 0 #a0a0c0!important; opacity:.7;}
+  @keyframes tada{0%{transform:scale(1);}30%{transform:scale(1.18) rotate(-4deg);}60%{transform:scale(1.1) rotate(4deg);}100%{transform:scale(1);}}
+
+  .opt-colors .opt:nth-child(1){background:var(--rosa); box-shadow:0 6px 0 #d44d7c;}
+  .opt-colors .opt:nth-child(2){background:var(--verde); box-shadow:0 6px 0 #3f9c4f;}
+  .opt-colors .opt:nth-child(3){background:var(--laranja); box-shadow:0 6px 0 #d96d2e;}
+  .opt-colors .opt:nth-child(4){background:var(--roxo); box-shadow:0 6px 0 #7a4db0;}
+
+  .feedback{font-size:26px; font-weight:bold; min-height:40px; margin-top:12px;}
+  .feedback.good{color:var(--verde);} .feedback.bad{color:var(--laranja);}
+
+  .next-btn{
+    margin-top:14px; background:var(--verde); color:#fff; border:none; border-radius:22px;
+    font-size:24px; font-weight:bold; padding:14px 34px; cursor:pointer; box-shadow:0 6px 0 #3f9c4f;
+  }
+  .next-btn:active{transform:translateY(3px); box-shadow:0 3px 0 #3f9c4f;}
+
+  #splash{
+    position:fixed; inset:0; background:linear-gradient(160deg,var(--laranja),var(--azul));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; text-align:center; z-index:50; cursor:pointer; padding:20px;
+  }
+  #splash h1{font-size:34px; margin:10px;}
+  #splash .big{font-size:100px; animation:flutua 2.5s infinite;}
+  #splash .play{
+    margin-top:24px; background:var(--amarelo); color:#5a4500; border:none; border-radius:30px;
+    font-size:30px; font-weight:bold; padding:18px 44px; box-shadow:0 8px 0 #d9a800; cursor:pointer;
+  }
+
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:40;}
+  .win{text-align:center; padding:20px;}
+  .win .trophy{font-size:90px; animation:tada 1s;}
+
+  @media(max-width:480px){
+    .hero h1{font-size:26px;} .question{font-size:20px;} .card{font-size:17px;}
+    .obj{font-size:66px;} .stick{width:12px; height:52px;} .dot{width:20px;height:20px;}
+    .bar{width:56px;} .bar .col{width:32px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="big">🎲</div>
+  <h1>Matemática<br>Divertida 2!</h1>
+  <p style="font-size:20px;max-width:340px;">Vamos juntar, tirar, agrupar e ler gráficos para a prova! 🎉<br>Toque no botão para começar.</p>
+  <button class="play" id="startBtn">▶ COMEÇAR</button>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   MATEMÁTICA DIVERTIDA 2 — 1º ano (Bernoulli, Cap. 2, 3, 4 e 5)
+   Módulo 6 do projeto. Mesma estrutura dos apps de Matemática,
+   Português, Ciências, Inglês e Geografia:
+   - narração por arquivos pré-gravados (pasta /audio) -> funciona
+     em qualquer aparelho, online ou offline;
+   - estrelas, confete, sons de efeito; tudo jogável sozinho.
+   Conteúdos: ideias da ADIÇÃO (juntar e acrescentar); ideias da
+   SUBTRAÇÃO (tirar e completar); agrupar para contar (de 2 em 2
+   e de 5 em 5) e coleções; ábaco com dezena e unidade; pesquisa
+   estatística, tabela e gráfico de colunas; probabilidade
+   (com certeza, é possível, é impossível).
+   ============================================================ */
+
+const App = document.getElementById('app');
+let stars = parseInt(localStorage.getItem('vitor_mat2_stars')||'0',10);
+
+/* ============================================================
+   VOCABULÁRIO DE VOZ (chave -> texto falado).
+   Fonte da verdade para o gerar-audios.py (gera audio/<chave>.mp3).
+   ============================================================ */
+const VOICE = {
+  /* navegação e feedback */
+  greet:"Olá! Bem-vindo aos jogos de Matemática! Escolha uma brincadeira para começar.",
+  test:"Olá! Você está me ouvindo? Vamos somar, tirar e contar!",
+  win:"Parabéns! Você conseguiu! Que orgulho de você!",
+  choose:"As respostas são:",
+  ok1:"Muito bem!", ok2:"Isso aí!", ok3:"Você acertou!",
+  ok4:"Boa demais!", ok5:"Mandou bem!", ok6:"Perfeito!",
+  no1:"Quase! Tenta outra.", no2:"Hmm, tenta de novo.", no3:"Não foi essa, tenta outra.",
+
+  /* números 0 a 40 */
+  n0:"zero", n1:"um", n2:"dois", n3:"três", n4:"quatro", n5:"cinco",
+  n6:"seis", n7:"sete", n8:"oito", n9:"nove", n10:"dez",
+  n11:"onze", n12:"doze", n13:"treze", n14:"quatorze", n15:"quinze",
+  n16:"dezesseis", n17:"dezessete", n18:"dezoito", n19:"dezenove", n20:"vinte",
+  n21:"vinte e um", n22:"vinte e dois", n23:"vinte e três", n24:"vinte e quatro", n25:"vinte e cinco",
+  n26:"vinte e seis", n27:"vinte e sete", n28:"vinte e oito", n29:"vinte e nove", n30:"trinta",
+  n31:"trinta e um", n32:"trinta e dois", n33:"trinta e três", n34:"trinta e quatro", n35:"trinta e cinco",
+  n36:"trinta e seis", n37:"trinta e sete", n38:"trinta e oito", n39:"trinta e nove", n40:"quarenta",
+
+  /* pedacinhos da SENTENÇA NUMÉRICA (dita depois do acerto, como no livro) */
+  s_mais:"mais", s_menos:"menos", s_igual:"é igual a",
+  s_palitos:"palitos", s_criancas:"crianças", s_gols:"gols",
+  s_pompons:"pompons", s_objetos:"objetos",
+  s_palito:"palito", s_crianca:"criança", s_gol:"gol",
+  s_pompom:"pompom", s_objeto:"objeto",
+  f1:"uma", f2:"duas",
+
+  /* 1. JUNTAR (ideia de juntar da adição) */
+  j_dados:"No jogo Some 10, no primeiro lançamento saíram",
+  j_e:"palitos. No segundo lançamento saíram",
+  j_total:"palitos. Quantos palitos são no total?",
+  j_gols:"No campeonato, o time fez",
+  j_gols2:"gols em um jogo e",
+  j_gols3:"gols no outro jogo. Quantos gols o time fez ao todo?",
+  j_tres:"Os times adversários fizeram estes gols:",
+  j_quanto:"Quantos gols eles fizeram juntos?",
+  j_ponto1:"No jogo Some 10, quem junta dez palitos marca um ponto. Nessa rodada saíram",
+  j_ponto2:"palitos. Ele marcou ponto?",
+  sim_ponto:"sim, juntou dez e marcou ponto", nao_ponto:"não, não chegou a dez",
+  j_ideia:"Quando juntamos duas quantidades, estamos fazendo uma...",
+  op_adicao:"uma adição", op_subtracao:"uma subtração", op_contagem:"uma contagem",
+  j_exp:"É a ideia de JUNTAR da adição.",
+
+  /* 2. ACRESCENTAR (ideia de acrescentar da adição) */
+  a_tinha:"Murilo tinha",
+  a_mais:"palitos sobre a mesa. Depois ele acrescentou mais",
+  a_agora:"palitos. Quantos palitos ele tem agora?",
+  a_criancas:"Estavam",
+  a_criancas2:"crianças brincando no pátio. Depois chegaram mais",
+  a_criancas3:"crianças. Quantas crianças estão brincando agora?",
+  a_ideia:"Quando acrescentamos a uma quantidade que já existia, fazemos uma...",
+  a_exp:"É a ideia de ACRESCENTAR da adição.",
+
+  /* 3. TIRAR (ideia de tirar da subtração) */
+  t_cadeiras:"Na dança das cadeiras estavam",
+  t_cadeiras2:"crianças brincando. Quando a música parou, saíram",
+  t_cadeiras3:"crianças. Quantas continuaram brincando?",
+  t_palitos:"A equipe começou a prova com",
+  t_palitos2:"palitos. No dado saiu o número",
+  t_palitos3:"Quantos palitos sobraram?",
+  t_ideia:"Quando tiramos uma quantidade de outra, estamos fazendo uma...",
+  t_exp:"É a ideia de TIRAR da subtração.",
+
+  /* 4. COMPLETAR (ideia de completar da subtração) */
+  c_equipe:"A equipe precisa ter",
+  c_equipe2:"crianças, mas só chegaram",
+  c_equipe3:"crianças. Quantas crianças faltam para completar a equipe?",
+  c_pompons:"Ana precisava fazer",
+  c_pompons2:"pompons para a torcida, mas ela fez só",
+  c_pompons3:"pompons. Quantos pompons faltaram?",
+  c_ideia:"Quando calculamos quantos faltam para completar uma quantidade, fazemos uma...",
+  c_exp:"É a ideia de COMPLETAR da subtração.",
+
+  /* 5. AGRUPAR E CONTAR */
+  g_dois:"Os objetos estão agrupados de dois em dois. Conte de dois em dois e diga quantos são no total.",
+  g_cinco:"Os objetos estão agrupados de cinco em cinco. Conte de cinco em cinco e diga quantos são no total.",
+  g_oque:"O que é uma coleção?",
+  co_grupo:"um grupo de objetos com características em comum",
+  co_um:"um objeto sozinho", co_pessoa:"uma pessoa da família",
+  g_porque:"Por que agrupar os objetos ajuda a gente?",
+  po_facil:"porque facilita a contagem", po_bonito:"porque fica mais bonito", po_nada:"não ajuda em nada",
+  g_como:"O agrupamento pode ser feito de dois em dois, de cinco em cinco, pela cor ou pela...",
+  fo_forma:"forma", fo_musica:"música", fo_idade:"idade",
+  g_estimar:"O que quer dizer ESTIMAR uma quantidade?",
+  es_palpite:"dar um palpite sem saber o número certo",
+  es_contar:"contar um por um bem devagar", es_apagar:"apagar tudo e começar de novo",
+
+  /* 6. ÁBACO: DEZENA E UNIDADE */
+  ab_numero:"Olhe o ábaco. Que número está representado?",
+  ab_dezena:"Para representar esse número no ábaco, quantas peças ficam na DEZENA?",
+  ab_unidade:"Para representar esse número no ábaco, quantas peças ficam na UNIDADE?",
+  ab_letra_d:"No ábaco, a letra D quer dizer...",
+  ab_letra_u:"No ábaco, a letra U quer dizer...",
+  le_dezena:"dezena", le_unidade:"unidade", le_dado:"dado", le_dobro:"dobro",
+  ab_quanto:"Quantas unidades tem uma dezena?",
+  ab_soma:"Vamos somar no ábaco, juntando as dezenas com as dezenas e as unidades com as unidades.",
+  ab_igual:"Quanto dá no total?",
+  ab_dourado:"No material dourado, a barra vale dez e o cubinho vale um. Quantos cubinhos valem uma barra?",
+
+  /* 7. TABELAS E GRÁFICOS */
+  gr_maior:"Olhe o gráfico. Qual foi a mais escolhida pelas crianças?",
+  gr_menor:"Olhe o gráfico. Qual foi a menos escolhida pelas crianças?",
+  gr_maior_avos:"Olhe o gráfico. Qual foi a preferida pela maior quantidade de avós?",
+  gr_menor_avos:"Olhe o gráfico. Qual foi a escolhida pela menor quantidade de avós?",
+  gr_quantos:"Olhe o gráfico e conte os quadradinhos. Quantas crianças escolheram esta:",
+  gr_quantos_avos:"Olhe o gráfico e conte os quadradinhos. Quantos avós escolheram esta:",
+  gr_empate:"Duas empataram no gráfico. Quantas crianças escolheram cada uma delas?",
+  gr_escala:"Neste gráfico, cada quadradinho vale dois pulos. Conte de dois em dois. Quantos pulos deu esta equipe:",
+  gr_pesquisa:"Para descobrir informações sobre um assunto, a professora fez uma...",
+  pe_pesquisa:"uma pesquisa estatística", pe_receita:"uma receita", pe_viagem:"uma viagem",
+  gr_organiza:"O que usamos para organizar e mostrar os resultados de uma pesquisa?",
+  or_tabela:"tabelas e gráficos", or_brinquedo:"brinquedos", or_roupa:"roupas",
+  tb_maior:"Olhe a tabela. Qual equipe fez a coleção com a maior quantidade de objetos?",
+  tb_menor:"Olhe a tabela. Qual equipe fez a coleção com a menor quantidade de objetos?",
+  tb_quantos:"Olhe a tabela. Quantos objetos tem a coleção desta equipe:",
+  tb_linha:"Na tabela, como se chama cada faixa deitada, na horizontal?",
+  tb_coluna:"Na tabela, como se chama cada faixa em pé, na vertical?",
+  li_linha:"a linha", li_coluna:"a coluna", li_grafico:"o gráfico",
+  eq_verde:"a equipe verde", eq_amarela:"a equipe amarela", eq_azul:"a equipe azul",
+  eq_vermelha:"a equipe vermelha", eq_laranja:"a equipe laranja",
+  w_pularcorda:"pular corda", w_roda:"roda", w_estatua:"estátua", w_amarelinha:"amarelinha",
+  w_bolagude:"bola de gude", w_piao:"pião", w_cincomarias:"cinco-marias", w_passaanel:"passa-anel",
+  w_doam:"doam", w_guardam:"guardam", w_reciclam:"reciclam", w_trocam:"trocam",
+
+  /* 8. CERTEZA OU IMPOSSÍVEL? (probabilidade) */
+  pr_q:"Isso vai acontecer com certeza, é possível ou é impossível?",
+  pr_verde:"Na caixa só tem palitos VERDES. A professora vai tirar um palito verde.",
+  pr_vermelho:"Na caixa só tem palitos VERDES. A professora vai tirar um palito vermelho.",
+  pr_mistura:"Na caixa tem palitos verdes e palitos vermelhos. A professora vai tirar um palito verde.",
+  pr_dentes:"Você vai escovar os dentes hoje.",
+  pr_voar:"Você vai voar como um passarinho hoje.",
+  pr_almocar:"Você vai almoçar hoje.",
+  pr_banho:"Você vai tomar banho hoje.",
+  pr_colegas:"Você vai brincar com os colegas hoje.",
+  pr_paraquedas:"Você vai pular de paraquedas hoje.",
+  pr_chuva:"Vai chover hoje na hora do recreio.",
+  pr_livro:"Taís vai tirar um livro da mochila dela na escola.",
+  pr_brinquedo:"Taís só colocou material escolar na mochila. Ela vai tirar um brinquedo da mochila.",
+  pr_bicicleta_mochila:"Taís vai tirar uma bicicleta de dentro da mochila dela.",
+  ce_certeza:"com certeza", ce_possivel:"é possível", ce_impossivel:"é impossível",
+  ce_exp_certeza:"Isso mesmo! Isso acontece com certeza.",
+  ce_exp_possivel:"Isso! Pode acontecer ou não. É possível!",
+  ce_exp_impossivel:"Muito bem! Isso é impossível de acontecer.",
+};
+
+/* ============================================================
+   PLAYER DE ÁUDIO (clipes em sequência) — um único <audio>
+   destravado no 1º toque (compatível com iPhone/iPad).
+   ============================================================ */
+const AUDIO_DIR='audio/', AUDIO_EXT='.mp3';
+const player=new Audio();
+player.preload='auto';
+let playToken=0, audioOn=true;
+function stopAudio(){ playToken++; try{player.pause();}catch(e){} setPlayingBadge(false); }
+function playKeys(keys){
+  if(!audioOn) return;
+  stopAudio();
+  const list=[].concat(...keys.map(k=>Array.isArray(k)?k:[k])).filter(Boolean);
+  if(!list.length) return;
+  const my=playToken; let i=0;
+  setPlayingBadge(true);
+  const next=()=>{
+    if(my!==playToken) return;
+    if(i>=list.length){ setPlayingBadge(false); return; }
+    const key=list[i++];
+    player.src=AUDIO_DIR+key+AUDIO_EXT;
+    player.onended=next;
+    player.onerror=()=>{ setTimeout(next,10); };
+    const p=player.play();
+    if(p&&p.catch) p.catch(()=>setTimeout(next,10));
+  };
+  next();
+}
+function setPlayingBadge(on){
+  const b=document.getElementById('qspeak'); if(b) b.classList.toggle('playing',on);
+}
+function unlockAudio(){
+  try{ player.muted=true; player.src=AUDIO_DIR+'greet'+AUDIO_EXT;
+       const p=player.play();
+       if(p&&p.then) p.then(()=>{player.pause();player.currentTime=0;player.muted=false;})
+                      .catch(()=>{player.muted=false;});
+       else {player.pause();player.muted=false;}
+  }catch(e){ player.muted=false; }
+}
+
+/* ===== SONS DE EFEITO (Web Audio) ===== */
+let actx=null;
+function initAudio(){ try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); }catch(e){} }
+function tone(freq,start,dur,type='sine',vol=0.2){
+  if(!actx) return;
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+  const t=actx.currentTime+start;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function sndClick(){ initAudio(); tone(540,0,0.07,'triangle',0.14); }
+function sndRight(){ initAudio(); [523,659,784,1047].forEach((f,i)=>tone(f,i*0.09,0.25,'triangle',0.18)); }
+function sndWrong(){ initAudio(); tone(300,0,0.18,'sine',0.13); tone(220,0.12,0.25,'sine',0.13); }
+function sndWin(){ initAudio(); [523,659,784,1047,784,1047,1319].forEach((f,i)=>tone(f,i*0.12,0.3,'triangle',0.2)); }
+
+/* ===== UTILIDADES ===== */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rint(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+const OK_KEYS=['ok1','ok2','ok3','ok4','ok5','ok6'], NO_KEYS=['no1','no2','no3'];
+function emo(e,size){ return '<span class="obj" style="font-size:'+(size||80)+'px">'+e+'</span>'; }
+function numKey(v){ return 'n'+v; }
+
+function updateStars(){ const el=document.getElementById('starNum'); if(el) el.textContent=stars; localStorage.setItem('vitor_mat2_stars',stars); }
+function addStar(n=1){ stars+=n; updateStars(); }
+
+/* ---------------- CONFETE ---------------- */
+const cv=document.getElementById('confetti'), cx=cv.getContext('2d');
+let confs=[];
+function resizeCv(){cv.width=innerWidth;cv.height=innerHeight;}
+addEventListener('resize',resizeCv); resizeCv();
+function burst(){
+  const cols=['#ff6b9d','#ffd93d','#6bcB77','#4d96ff','#a06cd5','#ff924c'];
+  for(let i=0;i<70;i++){confs.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-0.5)*14,vy:Math.random()*-12-3,c:pick(cols),s:rint(7,14),r:Math.random()*6,vr:(Math.random()-.5)*.4});}
+}
+function loopConf(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  confs.forEach(p=>{p.vy+=0.35;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s);cx.restore();});
+  confs=confs.filter(p=>p.y<cv.height+30);
+  requestAnimationFrame(loopConf);
+}
+loopConf();
+
+/* ===== SHELL ===== */
+function shell(inner){
+  App.innerHTML=`
+    <div class="topbar">
+      <button class="home-btn" onclick="sndClick();goHome()">🏠</button>
+      <div class="stars">⭐ <span class="num" id="starNum">${stars}</span></div>
+    </div>
+    ${inner}`;
+}
+
+/* ===== MENU ===== */
+const GAMES=[
+  {id:'juntar',    ico:'🎲', nome:'Juntar',            sub:'Adição: juntar tudo',      cls:'c1'},
+  {id:'acrescentar',ico:'➕', nome:'Acrescentar',       sub:'Adição: ganhou mais',      cls:'c2'},
+  {id:'tirar',     ico:'➖', nome:'Tirar',              sub:'Subtração: quantos sobram',cls:'c3'},
+  {id:'completar', ico:'🧩', nome:'Completar',          sub:'Subtração: quantos faltam',cls:'c4'},
+  {id:'agrupar',   ico:'📦', nome:'Agrupar e Contar',   sub:'De 2 em 2 e de 5 em 5',    cls:'c5'},
+  {id:'abaco',     ico:'🧮', nome:'Ábaco D e U',        sub:'Dezena e unidade',         cls:'c6'},
+  {id:'grafico',   ico:'📊', nome:'Gráfico de Colunas', sub:'Ler tabelas e gráficos',   cls:'c7'},
+  {id:'chances',   ico:'🎯', nome:'Certeza ou Não?',    sub:'Certeza, possível, impossível', cls:'c8'},
+];
+function goHome(silent){
+  stopAudio();
+  shell(`
+    <div class="hero">
+      <div class="mascote">🎲</div>
+      <h1>Olá!</h1>
+      <p>Escolha uma brincadeira 👇</p>
+      <button onclick="testSound()" style="margin-top:6px;background:var(--amarelo);color:#5a4500;border:none;border-radius:18px;padding:9px 18px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #d9a800;">🔈 Testar som</button>
+    </div>
+    <div class="grid">
+      ${GAMES.map(g=>`<button class="card ${g.cls}" onclick="sndClick();startGame('${g.id}')">
+        <span class="ico">${g.ico}</span><span>${g.nome}</span>
+        <span style="font-size:13px;font-weight:normal;opacity:.9">${g.sub}</span>
+      </button>`).join('')}
+    </div>
+    <p style="text-align:center;color:#b8935a;margin-top:18px;font-size:14px;">Feito com 💜 para estudar pra prova</p>
+  `);
+  if(!silent) setTimeout(()=>playKeys(['greet']),250);
+}
+function testSound(){ initAudio(); sndClick(); playKeys(['test']); }
+
+/* ===== MOTOR DE RODADAS ===== */
+let current=null, locked=false;
+function startGame(id){
+  const rounds=BUILDERS[id]();
+  current={id, title:GAMES.find(g=>g.id===id).nome, rounds, idx:0};
+  renderRound();
+}
+function gameFrame(c,r,bodyHtml){
+  shell(`
+    <div class="game">
+      <h2 class="game-title">${GAMES.find(g=>g.id===c.id).ico} ${c.title}</h2>
+      <div class="progress">Pergunta ${c.idx+1} de ${c.rounds.length}</div>
+      <div class="question">
+        <button class="speak-btn" id="qspeak" onclick="sndClick();speakRound()">🔊</button>
+        <span>${r.q}</span>
+      </div>
+      <div class="stage">${r.stage||''}</div>
+      ${bodyHtml}
+      <div style="font-size:14px;color:#aaa;margin-top:6px;">👆 Toque para responder. Toque no 🔊 para ouvir de novo.</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+}
+function renderRound(){
+  locked=false;
+  const c=current, r=c.rounds[c.idx];
+  gameFrame(c,r,`<div class="options ${r.colorOpts?'opt-colors':''}" id="opts"></div>`);
+  const shown=shuffle(r.options);
+  const opts=document.getElementById('opts');
+  shown.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'+(o.big?' big':'');
+    b.innerHTML=o.label;
+    b.onclick=()=>answer(b,o);
+    opts.appendChild(b);
+  });
+  window._roundKeys=[].concat(r.audio||[], ['choose'], shown.map(o=>o.aud));
+  setTimeout(()=>speakRound(),400);
+}
+function speakRound(){ playKeys(window._roundKeys||[]); }
+
+function showNextButton(){
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=null);
+  const nb=document.createElement('button');
+  nb.className='next-btn';
+  const last=current.idx>=current.rounds.length-1;
+  nb.textContent=last?'🏆 Terminar':'Próxima ➡';
+  nb.onclick=()=>{sndClick();locked=false;if(last){winScreen();}else{current.idx++;renderRound();}};
+  document.querySelector('.game').appendChild(nb);
+}
+function correctFlow(extraAudio){
+  locked=true; sndRight(); burst(); addStar(1);
+  const fb=document.getElementById('fb'); if(fb){fb.className='feedback good'; fb.textContent='⭐ Muito bem!';}
+  playKeys(extraAudio.filter(Boolean));
+  showNextButton();
+}
+function answer(btn,opt){
+  if(locked) return;
+  if(opt.correct){
+    btn.classList.add('ok');
+    document.querySelectorAll('.opt').forEach(b=>{if(b!==btn)b.classList.add('no');});
+    correctFlow([opt.aud, pick(OK_KEYS), opt.expAud]);
+  }else{
+    btn.classList.add('no'); btn.onclick=null;
+    sndWrong();
+    const fb=document.getElementById('fb'); fb.className='feedback bad'; fb.textContent='🤔 Tenta de novo!';
+    playKeys([opt.aud, pick(NO_KEYS)].filter(Boolean));
+  }
+}
+
+function winScreen(){
+  sndWin(); burst(); setTimeout(burst,400); setTimeout(burst,800);
+  const c=current;
+  shell(`
+    <div class="game win">
+      <div class="trophy">🏆</div>
+      <h2 class="game-title">Parabéns!</h2>
+      <p style="font-size:22px;">Você ganhou <b>${c.rounds.length}</b> estrelas! ⭐</p>
+      <p style="font-size:18px;color:#888;">Você está ficando craque em <b>${c.title}</b>!</p>
+      <button class="next-btn" onclick="sndClick();startGame('${c.id}')">🔁 Jogar de novo</button>
+      <br>
+      <button class="next-btn" style="background:var(--azul);box-shadow:0 6px 0 #2f6fd0;margin-top:10px;" onclick="sndClick();goHome()">🏠 Escolher outro</button>
+    </div>
+  `);
+  setTimeout(()=>playKeys(['win']),250);
+}
+
+/* ============================================================
+   DESENHOS DA CENA (palitos, bolinhas, ábaco, tabela e gráfico)
+   ============================================================ */
+function sticks(n, cls, off){
+  let h='';
+  for(let i=0;i<n;i++) h+='<div class="stick '+(cls||'st-bege')+(off!==undefined&&i>=off?' st-off':'')+'"></div>';
+  return '<div class="sticks">'+h+'</div>';
+}
+function boxSticks(n, cls, off){ return '<div class="caixa">'+sticks(n,cls,off)+'</div>'; }
+function twoGroups(a,b,cls){
+  return '<div class="grupo">'+boxSticks(a,cls)+'<div class="plus">+</div>'+boxSticks(b,cls)+'</div>';
+}
+const DOT_COLORS=['#ff6b9d','#ffd93d','#6bcB77','#4d96ff','#a06cd5','#ff924c'];
+function packs(qtd, tam){
+  let h='';
+  for(let g=0;g<qtd;g++){
+    let d='';
+    for(let i=0;i<tam;i++) d+='<div class="dot" style="background:'+DOT_COLORS[g%DOT_COLORS.length]+'"></div>';
+    h+='<div class="pack">'+d+'</div>';
+  }
+  return '<div class="dots">'+h+'</div>';
+}
+function abaco(dez, uni){
+  let d='', u='';
+  for(let i=0;i<dez;i++) d+='<div class="bead bd-d"></div>';
+  for(let i=0;i<uni;i++) u+='<div class="bead bd-u"></div>';
+  return '<div class="abaco"><div class="hastes"><div class="haste">'+d+'</div><div class="haste">'+u+'</div></div>'+
+         '<div class="base"><span>D</span><span>U</span></div></div>';
+}
+function abacoSoma(a,b){
+  return '<div class="grupo">'+abaco(Math.floor(a/10),a%10)+'<div class="plus">+</div>'+abaco(Math.floor(b/10),b%10)+'</div>';
+}
+/* gráfico de colunas com MALHA: cada quadradinho vale `escala` (1 ou 2),
+   como no livro. O valor NÃO aparece escrito — a criança conta os quadradinhos. */
+function chart(dados, escala){
+  escala=escala||1;
+  const max=Math.max(...dados.map(d=>d.v));
+  const linhas=Math.ceil(max/escala);
+  let eixo='';
+  for(let i=1;i<=linhas;i++) eixo+='<div class="yl">'+(i*escala)+'</div>';
+  const cols=dados.map(d=>{
+    let cells='';
+    for(let i=0;i<Math.round(d.v/escala);i++) cells+='<div class="cell"></div>';
+    return '<div class="bar"><div class="col">'+cells+'</div><div class="lbl">'+d.e+'</div><div class="nm">'+d.nome+'</div></div>';
+  }).join('');
+  return '<div class="chartwrap"><div class="yaxis">'+eixo+'</div><div class="chart">'+cols+'</div></div>'+
+         (escala>1?'<div class="escala">🔎 cada quadradinho vale '+escala+'</div>':'');
+}
+function tabela(titulo, cabecalho, linhas){
+  return '<table class="tabela"><tr><th colspan="2">'+titulo+'</th></tr>'+
+    '<tr><th>'+cabecalho[0]+'</th><th>'+cabecalho[1]+'</th></tr>'+
+    linhas.map(l=>'<tr><td class="eq" style="background:'+l.cor+'">'+l.nome+'</td><td>'+l.v+'</td></tr>').join('')+
+    '</table>';
+}
+
+/* opções numéricas: a resposta certa + distratores.
+   step: distância dos distratores (5 para contagem de 5 em 5)
+   extras: distratores específicos (ex.: número com os algarismos trocados) */
+function numOpts(correct, o){
+  o=o||{};
+  const qtd=o.qtd||4, step=o.step||1;
+  const set=new Set([correct]);
+  (o.extras||[]).forEach(v=>{ if(v>=0&&v<=40&&set.size<qtd) set.add(v); });
+  let d=1;
+  while(set.size<qtd && d<=12){
+    [correct-d*step, correct+d*step].forEach(c=>{ if(set.size<qtd && c>=0 && c<=40) set.add(c); });
+    d++;
+  }
+  return shuffle([...set]).map(v=>({
+    label:String(v), big:true, aud:numKey(v), correct:v===correct,
+    expAud: (v===correct && o.expAud) ? o.expAud : null
+  }));
+}
+/* opções a partir de um mapa de rótulos */
+function mkOpts(correct, all, lblMap, extra){
+  return shuffle(all).map(k=>{
+    const o={label:lblMap[k], aud:k, correct:k===correct};
+    if(extra) Object.assign(o, extra(k));
+    return o;
+  });
+}
+/* CONCORDÂNCIA: "duas crianças" (feminino) e "um palito" (singular).
+   UN mapeia o substantivo no plural -> singular + gênero. */
+const UN={
+  s_palitos:{s:'s_palito',  fem:false},
+  s_criancas:{s:'s_crianca', fem:true},
+  s_gols:{s:'s_gol',        fem:false},
+  s_pompons:{s:'s_pompom',  fem:false},
+  s_objetos:{s:'s_objeto',  fem:false},
+};
+/* número concordando com o gênero do substantivo que vem depois */
+function numFem(v){ return v===1?'f1':(v===2?'f2':numKey(v)); }
+function numFor(v,un){ return (UN[un]&&UN[un].fem)?numFem(v):numKey(v); }
+/* substantivo no singular quando a quantidade é 1 */
+function unFor(v,un){ return v===1?UN[un].s:un; }
+/* sentença numérica falada depois do acerto (como no livro:
+   "4 palitos mais 6 palitos é igual a 10 palitos") */
+function sentAdd(a,b,t,un){ return [numFor(a,un),unFor(a,un),'s_mais',numFor(b,un),unFor(b,un),'s_igual',numFor(t,un),unFor(t,un)]; }
+function sentSub(a,b,t,un){ return [numFor(a,un),unFor(a,un),'s_menos',numFor(b,un),unFor(b,un),'s_igual',numFor(t,un),unFor(t,un)]; }
+/* monta a partida: garante que as perguntas conceituais apareçam */
+function mix(numericas, conceituais, total){
+  total=total||7;
+  const c=shuffle(conceituais).slice(0,Math.min(conceituais.length,total-1));
+  return shuffle(shuffle(numericas).slice(0,total-c.length).concat(c));
+}
+
+/* ============================================================
+   BASES DE DADOS DO CONTEÚDO
+   ============================================================ */
+const OPER_LBL={
+  op_adicao:'➕<span class="cap">Adição</span>',
+  op_subtracao:'➖<span class="cap">Subtração</span>',
+  op_contagem:'🔢<span class="cap">Contagem</span>',
+};
+const LETRA_LBL={
+  le_dezena:'🔟<span class="cap">Dezena</span>', le_unidade:'1️⃣<span class="cap">Unidade</span>',
+  le_dado:'🎲<span class="cap">Dado</span>', le_dobro:'✌️<span class="cap">Dobro</span>',
+};
+const CE_LBL={
+  ce_certeza:'✅<span class="cap">Com certeza</span>',
+  ce_possivel:'🤔<span class="cap">É possível</span>',
+  ce_impossivel:'🚫<span class="cap">É impossível</span>',
+};
+const CE_EXP={ce_certeza:'ce_exp_certeza', ce_possivel:'ce_exp_possivel', ce_impossivel:'ce_exp_impossivel'};
+const CHANCES=[
+  {k:'pr_verde',            txt:'Na caixa só tem palitos <b>VERDES</b>.<br>Tirar um palito <b>verde</b>.',      e:'📦💚', r:'ce_certeza'},
+  {k:'pr_vermelho',         txt:'Na caixa só tem palitos <b>VERDES</b>.<br>Tirar um palito <b>vermelho</b>.',   e:'📦❤️', r:'ce_impossivel'},
+  {k:'pr_mistura',          txt:'Na caixa tem palitos <b>verdes e vermelhos</b>.<br>Tirar um palito <b>verde</b>.', e:'📦💚❤️', r:'ce_possivel'},
+  {k:'pr_dentes',           txt:'Você vai <b>escovar os dentes</b> hoje.',        e:'🪥', r:'ce_certeza'},
+  {k:'pr_almocar',          txt:'Você vai <b>almoçar</b> hoje.',                  e:'🍽️', r:'ce_certeza'},
+  {k:'pr_banho',            txt:'Você vai <b>tomar banho</b> hoje.',              e:'🚿', r:'ce_certeza'},
+  {k:'pr_colegas',          txt:'Você vai <b>brincar com os colegas</b> hoje.',   e:'🧒🧒', r:'ce_certeza'},
+  {k:'pr_voar',             txt:'Você vai <b>voar</b> como um passarinho hoje.',  e:'🕊️', r:'ce_impossivel'},
+  {k:'pr_paraquedas',       txt:'Você vai <b>pular de paraquedas</b> hoje.',      e:'🪂', r:'ce_impossivel'},
+  {k:'pr_chuva',            txt:'Vai <b>chover</b> hoje na hora do recreio.',     e:'🌧️', r:'ce_possivel'},
+  {k:'pr_livro',            txt:'Taís vai tirar um <b>livro</b> da mochila dela.',e:'🎒📕', r:'ce_possivel'},
+  {k:'pr_brinquedo',        txt:'Taís só pôs <b>material escolar</b> na mochila.<br>Ela vai tirar um <b>brinquedo</b> dela.', e:'🎒🧸', r:'ce_impossivel'},
+  {k:'pr_bicicleta_mochila',txt:'Taís vai tirar uma <b>bicicleta</b> de dentro da mochila.', e:'🎒🚲', r:'ce_impossivel'},
+];
+/* pesquisas do livro (1º ano) */
+const PESQUISAS=[
+  {titulo:'De que as crianças querem brincar?', sujeito:'criancas', escala:1, dados:[
+    {k:'w_pularcorda', nome:'Pular corda', e:'🪢', v:8},
+    {k:'w_roda',       nome:'Roda',        e:'💃', v:5},
+    {k:'w_estatua',    nome:'Estátua',     e:'🧍', v:6},
+    {k:'w_amarelinha', nome:'Amarelinha',  e:'🦶', v:5},
+  ]},
+  {titulo:'O que fazem com os brinquedos que não usam mais?', sujeito:'criancas', escala:1, dados:[
+    {k:'w_guardam',  nome:'Guardam',  e:'📥', v:2},
+    {k:'w_doam',     nome:'Doam',     e:'🎁', v:8},
+    {k:'w_reciclam', nome:'Reciclam', e:'♻️', v:3},
+    {k:'w_trocam',   nome:'Trocam',   e:'🔁', v:5},
+  ]},
+  {titulo:'Brincadeira preferida dos avós', sujeito:'avos', escala:1, dados:[
+    {k:'w_cincomarias', nome:'Cinco-marias', e:'🪨', v:8},
+    {k:'w_piao',        nome:'Pião',         e:'🌀', v:6},
+    {k:'w_passaanel',   nome:'Passa-anel',   e:'💍', v:5},
+    {k:'w_bolagude',    nome:'Bola de gude', e:'🔵', v:9},
+  ]},
+];
+/* prova de pular corda: cada quadradinho vale 2 pulos (livro, p. 97) */
+const PULOS={titulo:'Prova de pular corda (de 2 em 2)', escala:2, dados:[
+  {k:'eq_vermelha', nome:'Vermelha', e:'🟥', v:12},
+  {k:'eq_azul',     nome:'Azul',     e:'🟦', v:16},
+  {k:'eq_amarela',  nome:'Amarela',  e:'🟨', v:10},
+  {k:'eq_verde',    nome:'Verde',    e:'🟩', v:6},
+  {k:'eq_laranja',  nome:'Laranja',  e:'🟧', v:14},
+]};
+/* tabela da prova das coleções (livro, p. 87) */
+const COLECOES=[
+  {k:'eq_verde',    nome:'VERDE',    cor:'#6bcB77', v:20},
+  {k:'eq_amarela',  nome:'AMARELA',  cor:'#e0b400', v:30},
+  {k:'eq_azul',     nome:'AZUL',     cor:'#4d96ff', v:18},
+  {k:'eq_vermelha', nome:'VERMELHA', cor:'#ff5e5e', v:25},
+  {k:'eq_laranja',  nome:'LARANJA',  cor:'#ff924c', v:28},
+];
+const EQ_LBL={};
+COLECOES.forEach(c=>{ EQ_LBL[c.k]='<span style="font-size:30px">■</span><span class="cap">'+c.nome.charAt(0)+c.nome.slice(1).toLowerCase()+'</span>'; });
+function pesqLbl(dados){
+  const m={};
+  dados.forEach(d=>{ m[d.k]=d.e+'<span class="cap">'+d.nome+'</span>'; });
+  return m;
+}
+const TAB_COLECOES=tabela('PROVA DAS COLEÇÕES',['EQUIPE','QUANTIDADE DE OBJETOS'],COLECOES);
+
+/* ============================================================
+   GERADORES DE CONTEÚDO (8 jogos)
+   ============================================================ */
+const BUILDERS={
+
+  /* 1. JUNTAR (ideia de juntar da adição) */
+  juntar(){
+    const nums=[];
+    for(let i=0;i<4;i++){
+      const a=rint(2,6), b=rint(2,6), t=a+b;
+      nums.push({
+        q:'No <b>Some 10</b>: saíram <b>'+a+'</b> palitos e depois <b>'+b+'</b> palitos.<br>Quantos são no <b>total</b>? 🎲',
+        audio:['j_dados',numKey(a),'j_e',numKey(b),'j_total'],
+        stage:twoGroups(a,b,'st-bege'), options:numOpts(t,{expAud:sentAdd(a,b,t,'s_palitos')})
+      });
+    }
+    for(let i=0;i<2;i++){
+      const a=rint(2,4), b=rint(2,4), t=a+b;
+      nums.push({
+        q:'O time fez <b>'+a+'</b> gols em um jogo e <b>'+b+'</b> gols no outro.<br>Quantos gols fez <b>ao todo</b>? ⚽',
+        audio:['j_gols',numKey(a),'j_gols2',numKey(b),'j_gols3'],
+        stage:emo('⚽'.repeat(a)+' ➕ '+'⚽'.repeat(b),34), options:numOpts(t,{expAud:sentAdd(a,b,t,'s_gols')})
+      });
+    }
+    /* adição com três parcelas (gols dos adversários juntos) */
+    for(let i=0;i<2;i++){
+      const a=rint(1,3), b=rint(1,3), c=rint(1,3), t=a+b+c;
+      nums.push({
+        q:'Os times adversários fizeram <b>'+a+'</b>, <b>'+b+'</b> e <b>'+c+'</b> gols.<br>Quantos gols fizeram <b>juntos</b>? ⚽',
+        audio:['j_tres',numKey(a),'s_mais',numKey(b),'s_mais',numKey(c),'j_quanto'],
+        stage:emo('⚽'.repeat(a)+' ➕ '+'⚽'.repeat(b)+' ➕ '+'⚽'.repeat(c),30), options:numOpts(t)
+      });
+    }
+    /* regra do Some 10: juntou 10? marcou ponto */
+    const marcou=Math.random()<0.5;
+    const a1=rint(4,6);
+    const b1=marcou?10-a1:pick([2,3,4,5,6].filter(v=>a1+v!==10));
+    const conc=[
+      { q:'No <b>Some 10</b>: saíram <b>'+a1+'</b> e <b>'+b1+'</b> palitos.<br>Ele <b>marcou ponto</b> nessa rodada? 🎯',
+        audio:['j_ponto1',numKey(a1),'s_mais',numKey(b1),'j_ponto2'],
+        stage:twoGroups(a1,b1,'st-bege'), colorOpts:true,
+        options:mkOpts(a1+b1===10?'sim_ponto':'nao_ponto',['sim_ponto','nao_ponto'],{
+          sim_ponto:'✅<span class="cap">Sim, juntou 10</span>', nao_ponto:'❌<span class="cap">Não chegou a 10</span>'},
+          k=>({expAud:(k===(a1+b1===10?'sim_ponto':'nao_ponto'))?sentAdd(a1,b1,a1+b1,'s_palitos'):null})) },
+      { q:'Quando <b>juntamos</b> duas quantidades, fazemos... 🤔',
+        audio:['j_ideia'], stage:emo('🧺➕🧺',60), colorOpts:true,
+        options:mkOpts('op_adicao',['op_adicao','op_subtracao','op_contagem'],OPER_LBL,
+          k=>({expAud:k==='op_adicao'?'j_exp':null})) },
+    ];
+    return mix(nums,conc);
+  },
+
+  /* 2. ACRESCENTAR (ideia de acrescentar da adição) */
+  acrescentar(){
+    const nums=[];
+    for(let i=0;i<4;i++){
+      const a=rint(2,6), b=rint(2,6), t=a+b;
+      nums.push({
+        q:'Murilo tinha <b>'+a+'</b> palitos e <b>acrescentou</b> mais <b>'+b+'</b>.<br>Quantos palitos ele tem <b>agora</b>? 🥢',
+        audio:['a_tinha',numKey(a),'a_mais',numKey(b),'a_agora'],
+        stage:twoGroups(a,b,'st-bege'), options:numOpts(t,{expAud:sentAdd(a,b,t,'s_palitos')})
+      });
+    }
+    for(let i=0;i<3;i++){
+      const a=rint(3,6), b=rint(2,4), t=a+b;
+      nums.push({
+        q:'Estavam <b>'+a+'</b> crianças brincando e chegaram mais <b>'+b+'</b>.<br>Quantas estão brincando <b>agora</b>? 🧒',
+        audio:['a_criancas',numFem(a),'a_criancas2',numFem(b),'a_criancas3'],
+        stage:emo('🧒'.repeat(a)+' ➕ '+'👧'.repeat(b),34), options:numOpts(t,{expAud:sentAdd(a,b,t,'s_criancas')})
+      });
+    }
+    const conc=[
+      { q:'Quando <b>acrescentamos</b> a uma quantidade que já existia, fazemos... 🤔',
+        audio:['a_ideia'], stage:emo('🥢➕🥢',60), colorOpts:true,
+        options:mkOpts('op_adicao',['op_adicao','op_subtracao','op_contagem'],OPER_LBL,
+          k=>({expAud:k==='op_adicao'?'a_exp':null})) },
+    ];
+    return mix(nums,conc);
+  },
+
+  /* 3. TIRAR (ideia de tirar da subtração) */
+  tirar(){
+    const nums=[];
+    for(let i=0;i<4;i++){
+      const a=rint(5,10), b=rint(2,3), t=a-b;
+      nums.push({
+        q:'Estavam <b>'+a+'</b> crianças na dança das cadeiras e <b>saíram '+b+'</b>.<br>Quantas <b>continuaram</b> brincando? 🪑',
+        audio:['t_cadeiras',numFem(a),'t_cadeiras2',numFem(b),'t_cadeiras3'],
+        stage:emo('🪑',52)+'<div class="cardtxt">'+'🧒'.repeat(t)+'<span style="opacity:.3">'+'🧒'.repeat(b)+'</span></div>',
+        options:numOpts(t,{expAud:sentSub(a,b,t,'s_criancas')})
+      });
+    }
+    for(let i=0;i<3;i++){
+      const b=rint(1,6), t=10-b;
+      nums.push({
+        q:'A equipe começou com <b>10 palitos</b> e no dado saiu <b>'+b+'</b>.<br>Quantos palitos <b>sobraram</b>? 🎲',
+        audio:['t_palitos',numKey(10),'t_palitos2',numKey(b),'t_palitos3'],
+        stage:boxSticks(10,'st-bege',t)+'<div class="cardtxt">🎲 saiu '+b+' — risque '+b+' palitos</div>',
+        options:numOpts(t,{expAud:sentSub(10,b,t,'s_palitos')})
+      });
+    }
+    const conc=[
+      { q:'Quando <b>tiramos</b> uma quantidade de outra, fazemos... 🤔',
+        audio:['t_ideia'], stage:emo('🧺➖🥢',60), colorOpts:true,
+        options:mkOpts('op_subtracao',['op_adicao','op_subtracao','op_contagem'],OPER_LBL,
+          k=>({expAud:k==='op_subtracao'?'t_exp':null})) },
+    ];
+    return mix(nums,conc);
+  },
+
+  /* 4. COMPLETAR (ideia de completar da subtração) */
+  completar(){
+    const nums=[];
+    for(let i=0;i<4;i++){
+      const b=rint(5,9), t=10-b;
+      nums.push({
+        q:'A equipe precisa ter <b>10</b> crianças, mas só chegaram <b>'+b+'</b>.<br>Quantas <b>faltam</b> para completar? 🧒',
+        audio:['c_equipe',numFem(10),'c_equipe2',numFem(b),'c_equipe3'],
+        stage:emo('🧒'.repeat(b)+'<span style="opacity:.25">'+'👤'.repeat(t)+'</span>',30),
+        options:numOpts(t,{expAud:sentSub(10,b,t,'s_criancas')})
+      });
+    }
+    for(let i=0;i<3;i++){
+      const a=rint(7,9), b=rint(3,6), t=a-b;
+      nums.push({
+        q:'Ana precisava fazer <b>'+a+'</b> pompons e fez só <b>'+b+'</b>.<br>Quantos pompons <b>faltaram</b>? 🎀',
+        audio:['c_pompons',numKey(a),'c_pompons2',numKey(b),'c_pompons3'],
+        stage:emo('🎀'.repeat(b)+'<span style="opacity:.25">'+'⚪'.repeat(t)+'</span>',30),
+        options:numOpts(t,{expAud:sentSub(a,b,t,'s_pompons')})
+      });
+    }
+    const conc=[
+      { q:'Quando calculamos <b>quantos faltam</b> para completar, fazemos... 🤔',
+        audio:['c_ideia'], stage:emo('🧩',66), colorOpts:true,
+        options:mkOpts('op_subtracao',['op_adicao','op_subtracao','op_contagem'],OPER_LBL,
+          k=>({expAud:k==='op_subtracao'?'c_exp':null})) },
+    ];
+    return mix(nums,conc);
+  },
+
+  /* 5. AGRUPAR E CONTAR */
+  agrupar(){
+    const nums=[];
+    for(let i=0;i<3;i++){
+      const g=rint(3,9), t=g*2;
+      nums.push({ q:'Conte de <b>2 em 2</b>. Quantos são no <b>total</b>? 📦',
+        audio:['g_dois'], stage:packs(g,2), options:numOpts(t,{step:2}) });
+    }
+    for(let i=0;i<3;i++){
+      const g=rint(2,6), t=g*5;
+      nums.push({ q:'Conte de <b>5 em 5</b>. Quantos são no <b>total</b>? 📦',
+        audio:['g_cinco'], stage:packs(g,5), options:numOpts(t,{step:5}) });
+    }
+    const conc=[
+      { q:'O que é uma <b>coleção</b>? 🧸', audio:['g_oque'], stage:emo('🧸⚽🪁',56), colorOpts:true,
+        options:mkOpts('co_grupo',['co_grupo','co_um','co_pessoa'],{
+          co_grupo:'📚<span class="cap">Um grupo de objetos com características em comum</span>',
+          co_um:'1️⃣<span class="cap">Um objeto sozinho</span>',
+          co_pessoa:'🧑<span class="cap">Uma pessoa da família</span>'}) },
+      { q:'Por que <b>agrupar</b> os objetos ajuda a gente? 🤔', audio:['g_porque'], stage:packs(4,2), colorOpts:true,
+        options:mkOpts('po_facil',['po_facil','po_bonito','po_nada'],{
+          po_facil:'✅<span class="cap">Porque facilita a contagem</span>',
+          po_bonito:'🎨<span class="cap">Porque fica mais bonito</span>',
+          po_nada:'🙅<span class="cap">Não ajuda em nada</span>'}) },
+      { q:'Podemos agrupar de 2 em 2, de 5 em 5, pela cor ou pela... 🔺', audio:['g_como'], stage:emo('🔺🟦🟡',56), colorOpts:true,
+        options:mkOpts('fo_forma',['fo_forma','fo_musica','fo_idade'],{
+          fo_forma:'🔷<span class="cap">Forma</span>', fo_musica:'🎵<span class="cap">Música</span>', fo_idade:'🎂<span class="cap">Idade</span>'}) },
+      { q:'O que quer dizer <b>ESTIMAR</b> uma quantidade? 🤔', audio:['g_estimar'], stage:emo('🤔🔢',60), colorOpts:true,
+        options:mkOpts('es_palpite',['es_palpite','es_contar','es_apagar'],{
+          es_palpite:'💭<span class="cap">Dar um palpite sem saber o número certo</span>',
+          es_contar:'👉<span class="cap">Contar um por um bem devagar</span>',
+          es_apagar:'🧽<span class="cap">Apagar tudo e recomeçar</span>'}) },
+    ];
+    return mix(nums,shuffle(conc).slice(0,2));
+  },
+
+  /* 6. ÁBACO: DEZENA, UNIDADE E ADIÇÃO */
+  abaco(){
+    const nums=[];
+    for(let i=0;i<3;i++){
+      const d=rint(1,3), u=rint(1,9), num=d*10+u;
+      const trocado=u*10+d;
+      nums.push({ q:'Olhe o <b>ábaco</b>. Que número está representado? 🧮',
+        audio:['ab_numero'], stage:abaco(d,u),
+        options:numOpts(num,{extras:[trocado<=40&&trocado!==num?trocado:null].filter(v=>v!==null)}) });
+    }
+    for(let i=0;i<2;i++){
+      const d=rint(1,3), u=rint(1,9), num=d*10+u;
+      const cena=emo(String(num),74)+'<div class="cardtxt">D = dezena &nbsp;•&nbsp; U = unidade</div>';
+      nums.push({ q:'Para representar o número <b>'+num+'</b> no ábaco,<br>quantas peças ficam na <b>DEZENA</b>? 🧮',
+        audio:[numKey(num),'ab_dezena'], stage:cena, options:numOpts(d,{qtd:4}) });
+      nums.push({ q:'Para representar o número <b>'+num+'</b> no ábaco,<br>quantas peças ficam na <b>UNIDADE</b>? 🧮',
+        audio:[numKey(num),'ab_unidade'], stage:cena, options:numOpts(u,{qtd:4}) });
+    }
+    /* adição no ábaco, sem reagrupar (como no livro: 13 + 26) */
+    for(let i=0;i<2;i++){
+      const d1=rint(1,2), d2=rint(1,3-d1<1?1:3-d1);
+      const u1=rint(1,5), u2=rint(1,9-u1);
+      const a=d1*10+u1, b=d2*10+u2, t=a+b;
+      nums.push({ q:'Some no <b>ábaco</b>: <b>'+a+'</b> + <b>'+b+'</b>.<br>Junte as dezenas e as unidades. Quanto dá? 🧮',
+        audio:['ab_soma',numKey(a),'s_mais',numKey(b),'ab_igual'],
+        stage:abacoSoma(a,b), options:numOpts(t,{extras:[a+b-10>=0?a+b-10:null].filter(v=>v!==null)}) });
+    }
+    const conc=[
+      { q:'No ábaco, a letra <b>D</b> quer dizer... 🧮', audio:['ab_letra_d'], stage:abaco(2,3), colorOpts:true,
+        options:mkOpts('le_dezena',['le_dezena','le_unidade','le_dado'],LETRA_LBL) },
+      { q:'No ábaco, a letra <b>U</b> quer dizer... 🧮', audio:['ab_letra_u'], stage:abaco(1,5), colorOpts:true,
+        options:mkOpts('le_unidade',['le_unidade','le_dezena','le_dobro'],LETRA_LBL) },
+      { q:'Quantas <b>unidades</b> tem <b>1 dezena</b>? 🔟', audio:['ab_quanto'], stage:abaco(1,0), options:numOpts(10) },
+      { q:'No <b>material dourado</b>, a barra vale 10 e o cubinho vale 1.<br>Quantos <b>cubinhos</b> valem <b>1 barra</b>? 🟫',
+        audio:['ab_dourado'], stage:emo('🟫 = 🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸',30), options:numOpts(10) },
+    ];
+    return mix(nums,shuffle(conc).slice(0,2));
+  },
+
+  /* 7. TABELAS E GRÁFICOS */
+  grafico(){
+    const nums=[];
+    PESQUISAS.forEach(p=>{
+      const lbl=pesqLbl(p.dados);
+      const avos=p.sujeito==='avos';
+      const max=Math.max(...p.dados.map(d=>d.v)), min=Math.min(...p.dados.map(d=>d.v));
+      const maiores=p.dados.filter(d=>d.v===max), menores=p.dados.filter(d=>d.v===min);
+      const st='<div class="cardtxt">'+p.titulo+'</div>'+chart(p.dados,p.escala);
+      if(maiores.length===1){
+        nums.push({ q:'<b>'+p.titulo+'</b><br>Qual foi a <b>MAIS</b> escolhida? 📈',
+          audio:[avos?'gr_maior_avos':'gr_maior'], stage:st, options:mkOpts(maiores[0].k, p.dados.map(d=>d.k), lbl) });
+      }
+      if(menores.length===1){
+        nums.push({ q:'<b>'+p.titulo+'</b><br>Qual foi a <b>MENOS</b> escolhida? 📉',
+          audio:[avos?'gr_menor_avos':'gr_menor'], stage:st, options:mkOpts(menores[0].k, p.dados.map(d=>d.k), lbl) });
+      }
+      /* contar os quadradinhos de uma coluna do meio (não a maior nem a menor) */
+      const meio=p.dados.filter(d=>d.v!==max && d.v!==min);
+      const alvo=pick(meio.length?meio:p.dados);
+      nums.push({ q:'<b>'+p.titulo+'</b><br>Conte os quadradinhos: quantos escolheram <b>'+alvo.nome+'</b>? 🔢',
+        audio:[avos?'gr_quantos_avos':'gr_quantos', alvo.k], stage:st,
+        options:numOpts(alvo.v,{extras:p.dados.filter(d=>d.k!==alvo.k).map(d=>d.v)}) });
+      if(menores.length>1){
+        nums.push({ q:'<b>'+p.titulo+'</b><br>Duas <b>empataram</b>. Quantas escolheram <b>cada uma</b>? 🤝',
+          audio:['gr_empate'], stage:st, options:numOpts(min) });
+      }
+    });
+    /* gráfico com escala: cada quadradinho vale 2 pulos */
+    const stPulos='<div class="cardtxt">'+PULOS.titulo+'</div>'+chart(PULOS.dados,PULOS.escala);
+    shuffle(PULOS.dados).slice(0,2).forEach(eq=>{
+      nums.push({ q:'<b>Cada quadradinho vale 2 pulos.</b><br>Quantos pulos deu a equipe <b>'+eq.nome+'</b>? 🪢',
+        audio:['gr_escala',eq.k], stage:stPulos, options:numOpts(eq.v,{step:2}) });
+    });
+    /* tabela das coleções */
+    const maiorC=COLECOES.reduce((a,b)=>a.v>b.v?a:b), menorC=COLECOES.reduce((a,b)=>a.v<b.v?a:b);
+    nums.push({ q:'Olhe a <b>tabela</b>. Qual equipe fez a <b>MAIOR</b> coleção? 📋',
+      audio:['tb_maior'], stage:TAB_COLECOES, options:mkOpts(maiorC.k, COLECOES.map(c=>c.k), EQ_LBL) });
+    nums.push({ q:'Olhe a <b>tabela</b>. Qual equipe fez a <b>MENOR</b> coleção? 📋',
+      audio:['tb_menor'], stage:TAB_COLECOES, options:mkOpts(menorC.k, COLECOES.map(c=>c.k), EQ_LBL) });
+    const alvoC=pick(COLECOES);
+    nums.push({ q:'Olhe a <b>tabela</b>. Quantos objetos tem a coleção da equipe <b>'+alvoC.nome+'</b>? 🔢',
+      audio:['tb_quantos',alvoC.k], stage:TAB_COLECOES,
+      options:numOpts(alvoC.v,{extras:COLECOES.filter(c=>c.k!==alvoC.k).map(c=>c.v)}) });
+    const conc=[
+      { q:'Para descobrir informações sobre um assunto, a professora fez uma... 🔍',
+        audio:['gr_pesquisa'], stage:emo('🔍📋',60), colorOpts:true,
+        options:mkOpts('pe_pesquisa',['pe_pesquisa','pe_receita','pe_viagem'],{
+          pe_pesquisa:'📋<span class="cap">Uma pesquisa estatística</span>', pe_receita:'🍰<span class="cap">Uma receita</span>', pe_viagem:'✈️<span class="cap">Uma viagem</span>'}) },
+      { q:'O que usamos para <b>organizar</b> os resultados de uma pesquisa? 📊',
+        audio:['gr_organiza'], stage:emo('📊📋',60), colorOpts:true,
+        options:mkOpts('or_tabela',['or_tabela','or_brinquedo','or_roupa'],{
+          or_tabela:'📊<span class="cap">Tabelas e gráficos</span>', or_brinquedo:'🧸<span class="cap">Brinquedos</span>', or_roupa:'👕<span class="cap">Roupas</span>'}) },
+      { q:'Na <b>tabela</b>, como se chama cada faixa <b>deitada</b> (na horizontal)? ➡️',
+        audio:['tb_linha'], stage:TAB_COLECOES, colorOpts:true,
+        options:mkOpts('li_linha',['li_linha','li_coluna','li_grafico'],{
+          li_linha:'➡️<span class="cap">A linha</span>', li_coluna:'⬇️<span class="cap">A coluna</span>', li_grafico:'📊<span class="cap">O gráfico</span>'}) },
+      { q:'Na <b>tabela</b>, como se chama cada faixa <b>em pé</b> (na vertical)? ⬇️',
+        audio:['tb_coluna'], stage:TAB_COLECOES, colorOpts:true,
+        options:mkOpts('li_coluna',['li_coluna','li_linha','li_grafico'],{
+          li_coluna:'⬇️<span class="cap">A coluna</span>', li_linha:'➡️<span class="cap">A linha</span>', li_grafico:'📊<span class="cap">O gráfico</span>'}) },
+    ];
+    return mix(nums,shuffle(conc).slice(0,2));
+  },
+
+  /* 8. CERTEZA OU IMPOSSÍVEL? (probabilidade) */
+  chances(){
+    return shuffle(CHANCES).slice(0,7).map(it=>({
+      q:it.txt+'<br><span style="color:#ff924c">Isso acontece <b>com certeza</b>, <b>é possível</b> ou <b>é impossível</b>?</span> 🤔',
+      audio:[it.k,'pr_q'],
+      stage:emo(it.e,74),
+      colorOpts:true,
+      options:mkOpts(it.r,['ce_certeza','ce_possivel','ce_impossivel'],CE_LBL,
+        k=>({expAud: k===it.r?CE_EXP[k]:null}))
+    }));
+  },
+};
+
+/* ===== SPLASH -> INÍCIO ===== */
+function enterApp(){
+  initAudio();
+  unlockAudio();
+  document.getElementById('splash').style.display='none';
+  goHome(true);
+  setTimeout(()=>playKeys(['greet']),350);
+}
+document.getElementById('startBtn').addEventListener('click',enterApp);
+document.getElementById('splash').addEventListener('click',e=>{ if(e.target.id!=='startBtn'){ enterApp(); } });
+</script>
+</body>
+</html>
